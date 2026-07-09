@@ -7,9 +7,9 @@ import { useRef } from 'react';
 import Button from '@/components/ui/Button';
 
 const stats = [
-  { value: 500, label: 'Unique Designs' },
-  { value: 10000, label: 'Happy Customers' },
-  { value: 7, label: 'Years of Craft' }
+  { value: 10, label: 'Unique Designs' },
+  { value: 100, label: 'Happy Customers' },
+  { value: 2, label: 'Years of Craft' }
 ];
 
 function Counter({ value }) {
