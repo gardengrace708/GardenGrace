@@ -1,0 +1,86 @@
+'use client';
+
+import Image from 'next/image';
+import { useEffect, useRef, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import Button from '@/components/ui/Button';
+
+const slides = [
+  { image: '/images/.jpg', headline: 'Crafted for the Extraordinary', sub: 'Luxury Pakistani Pret — New Collection 2026', cta: 'Explore Collection' },
+  { image: '/images/hero-2.jpg', headline: 'Where Culture Meets Couture', sub: 'Handcrafted fabrics. Timeless silhouettes.', cta: 'Shop Now' },
+  { image: '/images/hero-3.jpg', headline: 'خاص لوگوں کے لیے خاص لباس', sub: 'Because you deserve to feel Makhsoos', cta: 'View Lookbook' }
+];
+
+export default function HeroBanner() {
+  const [index, setIndex] = useState(0);
+  const [heroVideo, setHeroVideo] = useState('');
+  const paused = useRef(false);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      if (!paused.current) setIndex((current) => (current + 1) % slides.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, []);
+
+  useEffect(() => {
+    fetch('/api/site-content')
+      .then(res => res.json())
+      .then(data => {
+        if (data.content?.heroVideo) {
+          setHeroVideo(data.content.heroVideo);
+        }
+      })
+      .catch(console.error);
+  }, []);
+
+  const slide = slides[index];
+
+  return (
+    <section onMouseEnter={() => { paused.current = true; }} onMouseLeave={() => { paused.current = false; }} className="relative h-screen overflow-hidden bg-ivory">
+      {/* Mobile Background Video */}
+      {heroVideo && (
+        <div className="absolute inset-0 z-0 md:hidden">
+          <video
+            src={heroVideo}
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="h-full w-full object-cover md:opacity-50"
+          />
+          <div className="absolute inset-0 bg-black/50" />
+        </div>
+      )}
+      
+      <div className="luxury-container relative z-10 flex h-full items-center pt-20">
+        <AnimatePresence mode="wait">
+          <motion.div key={slide.headline} initial="hidden" animate="visible" exit="hidden" variants={{ visible: { transition: { staggerChildren: 0.16 } } }} className="max-w-3xl">
+            <motion.p variants={{ hidden: { opacity: 0, y: 24 }, visible: { opacity: 1, y: 0 } }} className="mb-5 text-sm font-bold uppercase tracking-[0.35em] text-gold">MAKHSOOS Atelier</motion.p>
+            <motion.h1 variants={{ hidden: { opacity: 0, y: 34 }, visible: { opacity: 1, y: 0 } }} className="font-display text-6xl leading-[0.95] text-white md:text-black md:text-7xl  md:w-[45vw]">{slide.headline}</motion.h1>
+            <motion.p variants={{ hidden: { opacity: 0, y: 34 }, visible: { opacity: 1, y: 0 } }} className="mt-6 max-w-xl text-lg text-white md:text-black md:text-2xl">{slide.sub}</motion.p>
+            <motion.div variants={{ hidden: { opacity: 0, y: 34 }, visible: { opacity: 1, y: 0 } }} className="mt-10 flex flex-wrap gap-4"><Button href="/collections">{slide.cta}</Button><Button className='text-yellow-600 md:text-yellow-900  ' href="/lookbook" variant="outline">View Lookbook</Button></motion.div>
+          </motion.div>
+        </AnimatePresence>
+      </div>
+      
+      {/* Desktop Right Side Video */}
+      {heroVideo && (
+        <div className="absolute right-0 top-0 hidden h-full w-1/2 md:block">
+          <video
+            src={heroVideo}
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="h-full w-full object-cover"
+          />
+        </div>
+      )}
+      
+      <div className="absolute bottom-8 left-1/2 z-20 flex -translate-x-1/2 gap-3">
+        {slides.map((item, itemIndex) => <button key={item.headline} onClick={() => setIndex(itemIndex)} className="relative h-1 w-16 overflow-hidden rounded-full bg-black/25">{index === itemIndex && <motion.span layoutId="heroIndicator" className="absolute inset-0 bg-gold" />}</button>)}
+      </div>
+    </section>
+  );
+}
