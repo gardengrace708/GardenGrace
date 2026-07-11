@@ -55,7 +55,7 @@ export default function NotificationPermission() {
         <div className="pr-8">
           <h3 className="font-display text-xl text-gold mb-2">Enable Notifications</h3>
           <p className="text-sm text-ivory/80 mb-4">
-            Get notified about your order status and updates. We'll also send you important updates about your orders.
+            Get notified about your order status and updates. We&apos;ll also send you important updates about your orders.
           </p>
           <div className="flex gap-3">
             <button

@@ -1,13 +1,13 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { formatPrice } from '@/lib/utils';
 import { showOrderNotification } from '@/lib/notifications';
 
-export default function OrderSuccessPage() {
+function OrderSuccessContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [orderData, setOrderData] = useState(null);
@@ -91,5 +91,13 @@ export default function OrderSuccessPage() {
       </main>
       <Footer />
     </>
+  );
+}
+
+export default function OrderSuccessPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-obsidian pt-28 text-ivory"><div className="luxury-container py-16">Loading...</div></div>}>
+      <OrderSuccessContent />
+    </Suspense>
   );
 }

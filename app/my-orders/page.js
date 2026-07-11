@@ -42,7 +42,7 @@ export default function MyOrdersPage() {
 
           {orders.length === 0 ? (
             <div className="rounded-[2rem] bg-surface p-12 text-center">
-              <p className="text-xl text-ivory/70 mb-6">You haven't placed any orders yet.</p>
+              <p className="text-xl text-ivory/70 mb-6">You haven&apos;t placed any orders yet.</p>
               <a
                 href="/shop"
                 className="inline-block rounded-full bg-gold px-8 py-4 text-sm font-bold uppercase tracking-[0.25em] text-obsidian transition hover:bg-ivory"
