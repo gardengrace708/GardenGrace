@@ -6,7 +6,7 @@ export default async function NewArrivals() {
   const products = await getProducts();
 
   return (
-    <section className="bg-ivory py-24 text-obsidian">
+    <section id="new-arrivals" className="bg-ivory py-24 text-obsidian">
       <div className="luxury-container">
         <div className="mb-12 flex items-end justify-between gap-6">
           <div><p className="text-sm font-bold uppercase tracking-[0.3em] text-gold">Freshly Arrived</p><h2 className="mt-2 font-display text-6xl">New Arrivals</h2></div>

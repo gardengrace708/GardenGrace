@@ -1,0 +1,95 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import Navbar from '@/components/layout/Navbar';
+import Footer from '@/components/layout/Footer';
+import { formatPrice } from '@/lib/utils';
+import { showOrderNotification } from '@/lib/notifications';
+
+export default function OrderSuccessPage() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const [orderData, setOrderData] = useState(null);
+
+  useEffect(() => {
+    const orderNumber = searchParams.get('order');
+    const total = searchParams.get('total');
+    const email = searchParams.get('email');
+
+    if (orderNumber && total && email) {
+      setOrderData({
+        orderNumber,
+        total: Number(total),
+        email
+      });
+      // Show notification to user
+      showOrderNotification(orderNumber, formatPrice(Number(total)));
+    } else {
+      router.push('/');
+    }
+  }, [searchParams, router]);
+
+  if (!orderData) {
+    return null;
+  }
+
+  return (
+    <>
+      <Navbar />
+      <main className="min-h-screen bg-obsidian pt-28 text-ivory">
+        <section className="luxury-container py-16">
+          <div className="max-w-2xl mx-auto text-center">
+            <div className="mb-8">
+              <div className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-green-500/20 mb-6">
+                <svg className="w-12 h-12 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+              <h1 className="font-display text-6xl mb-4">Order Placed Successfully!</h1>
+              <p className="text-xl text-ivory/70">Thank you for your order. A confirmation email has been sent to {orderData.email}</p>
+            </div>
+
+            <div className="rounded-[2rem] bg-surface p-8 text-left mb-8">
+              <div className="flex justify-between items-center border-b border-ivory/10 pb-6 mb-6">
+                <div>
+                  <p className="text-sm font-bold uppercase tracking-[0.22em] text-ivory/60">Order Number</p>
+                  <p className="mt-2 font-display text-4xl text-gold">{orderData.orderNumber}</p>
+                </div>
+                <div className="text-right">
+                  <p className="text-sm font-bold uppercase tracking-[0.22em] text-ivory/60">Total Amount</p>
+                  <p className="mt-2 font-display text-4xl">{formatPrice(orderData.total)}</p>
+                </div>
+              </div>
+
+              <div className="bg-ivory/5 rounded-2xl p-6 mb-6">
+                <h3 className="font-bold text-gold mb-2">Track Your Order</h3>
+                <p className="text-ivory/80 mb-4">Save your order number to track your order status anytime.</p>
+                <button
+                  onClick={() => router.push(`/track-order?order=${orderData.orderNumber}&email=${orderData.email}`)}
+                  className="w-full rounded-full bg-gold px-6 py-4 text-sm font-bold uppercase tracking-[0.25em] text-obsidian transition hover:bg-ivory"
+                >
+                  Track Order
+                </button>
+              </div>
+
+              <div className="space-y-2 text-sm text-ivory/60">
+                <p>• You can track your order using the order number and your email</p>
+                <p>• Order confirmation has been sent to your email</p>
+                <p>• Cash on Delivery (COD) payment will be collected upon delivery</p>
+              </div>
+            </div>
+
+            <button
+              onClick={() => router.push('/')}
+              className="rounded-full border border-gold/40 px-8 py-4 text-sm font-bold uppercase tracking-[0.25em] text-gold transition hover:bg-gold/10"
+            >
+              Continue Shopping
+            </button>
+          </div>
+        </section>
+      </main>
+      <Footer />
+    </>
+  );
+}

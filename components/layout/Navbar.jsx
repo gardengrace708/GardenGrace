@@ -11,8 +11,10 @@ import NavLink from '@/components/ui/NavLink';
 import OfferPopup from '@/components/ui/OfferPopup';
 
 const links = [
+  { href: '/shop', label: 'Shop' },
   { href: '/collections', label: 'Collections' },
   { href: '/lookbook', label: 'Lookbook' },
+  { href: '/my-orders', label: 'My Orders' },
   { href: '/about', label: 'About' }
 ];
 
