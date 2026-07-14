@@ -32,7 +32,7 @@ export default function Footer() {
           <h3 className="mb-4 text-sm font-bold uppercase tracking-[0.25em] text-gold">Contact</h3>
           <p className="text-muted">📍 Faisalabad, Pakistan</p>
           <p className="mt-2 text-muted">📞 <a href="tel:03280362181" className="text-gold hover:text-ivory transition">03280362181</a></p>
-          <p className="mt-2 text-muted">✉️ bc250428776hma@vu.edu.pk</p>
+          <p className="mt-2 text-muted">✉️ makhsoos708@gmail.com</p>
           <p className="mt-4 text-gold text-sm">🚚 All Pakistan Delivery - COD Available</p>
           {/* <div className="mt-6 flex flex-wrap gap-2">{['Visa', 'Mastercard', 'Easypaisa', 'JazzCash'].map((item) => <span key={item} className="rounded border border-gold/30 px-3 py-1 text-xs text-gold">{item}</span>)}</div> */}
         </div>
