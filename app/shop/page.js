@@ -1,8 +1,21 @@
-
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import ProductCard from '@/components/ui/ProductCard';
 import { getProducts } from '@/lib/products';
+import { Metadata } from 'next';
+
+export const metadata = {
+  title: 'Shop All Products',
+  description: 'Browse our complete collection of premium men\'s clothing. Find kurtas, shalwar kameez, waistcoats, and traditional Pakistani wear at MAKHSOOS.',
+  keywords: ['men\'s clothing shop', 'buy kurta online', 'shalwar kameez for men', 'waistcoat online shopping', 'Pakistani menswear store'],
+  openGraph: {
+    title: 'Shop All Products | MAKHSOOS',
+    description: 'Browse our complete collection of premium men\'s clothing. Find kurtas, shalwar kameez, waistcoats, and traditional Pakistani wear.',
+    url: 'https://makhsoos.shop/shop',
+  }
+};
+
+export const revalidate = 10;
 
 export default async function CollectionsPage() {
   const [ products] = await Promise.all([ getProducts()]);

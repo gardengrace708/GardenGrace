@@ -6,6 +6,19 @@ import ProductCard from '@/components/ui/ProductCard';
 import { getCollections } from '@/lib/collections';
 import { getProducts } from '@/lib/products';
 
+export const metadata = {
+  title: 'Collections',
+  description: 'Explore MAKHSOOS exclusive collections of premium men\'s Pakistani clothing. From traditional kurtas to modern shalwar kameez designs.',
+  keywords: ['men\'s fashion collections', 'Pakistani clothing collections', 'kurta collection', 'traditional wear collection', 'luxury menswear'],
+  openGraph: {
+    title: 'Collections | MAKHSOOS',
+    description: 'Explore MAKHSOOS exclusive collections of premium men\'s Pakistani clothing.',
+    url: 'https://makhsoos.shop/collections',
+  }
+};
+
+export const revalidate = 10;
+
 export default async function CollectionsPage() {
   const [collections, products] = await Promise.all([getCollections(), getProducts()]);
 

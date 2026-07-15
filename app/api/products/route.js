@@ -3,6 +3,8 @@ import { getCurrentUser } from '@/lib/auth';
 import { buildProductPayload, ensureProductsSeeded, getNextProductId, getProducts, searchProducts } from '@/lib/products';
 import { getDb } from '@/lib/mongodb';
 
+export const revalidate = 10;
+
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
   const query = searchParams.get('q');

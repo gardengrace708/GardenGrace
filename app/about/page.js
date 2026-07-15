@@ -7,6 +7,17 @@ const values = ['Craft with conscience', 'Modern Pakistani identity', 'Premium f
 
 export const dynamic = 'force-dynamic';
 
+export const metadata = {
+  title: 'About Us',
+  description: 'Discover MAKHSOOS - A Pakistani fashion house crafting premium men\'s clothing with conscience. Rooted in craft, restraint, and presence since our founding.',
+  keywords: ['about MAKHSOOS', 'Pakistani fashion brand', 'men\'s clothing brand Pakistan', 'luxury menswear Pakistan', 'traditional Pakistani clothing'],
+  openGraph: {
+    title: 'About Us | MAKHSOOS',
+    description: 'Discover MAKHSOOS - A Pakistani fashion house crafting premium men\'s clothing with conscience.',
+    url: 'https://makhsoos.shop/about',
+  }
+};
+
 export default async function AboutPage() {
   const content = await getSiteContent();
 
