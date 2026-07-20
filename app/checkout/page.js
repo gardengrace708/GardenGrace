@@ -86,9 +86,8 @@ export default function CheckoutPage() {
   function handleProceedToConfirmation(event) {
     event.preventDefault();
     
-    // Validate required fields
-    if (!formData.name || !formData.email || !formData.phone || !formData.address || !formData.city) {
-      setMessage('Please fill in all required fields');
+    if (!currentUser) {
+      setMessage('Please login to complete your order');
       return;
     }
 
@@ -109,7 +108,7 @@ export default function CheckoutPage() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          userId: currentUser?.id || null,
+          userId: currentUser.id,
           items: itemsWithWaistSizes,
           total: discountedTotal,
           discount,
@@ -133,24 +132,8 @@ export default function CheckoutPage() {
         return;
       }
 
-      // Save order to localStorage
-      const existingOrders = JSON.parse(localStorage.getItem('makhsoos_orders') || '[]');
-      const newOrder = {
-        ...data.order,
-        shippingAddress: {
-          name: formData.name,
-          email: formData.email,
-          phone: formData.phone,
-          address: formData.address,
-          city: formData.city,
-          postalCode: formData.postalCode
-        },
-        items: itemsWithWaistSizes
-      };
-      localStorage.setItem('makhsoos_orders', JSON.stringify([newOrder, ...existingOrders]));
-
       cart.clearCart();
-      router.push(`/order-success?order=${data.order.id}&total=${discountedTotal}&email=${formData.email}`);
+      router.push('/profile');
     } catch (error) {
       setMessage('An error occurred. Please try again.');
       setLoading(false);

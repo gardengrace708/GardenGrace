@@ -17,7 +17,7 @@ export default function WhatsAppChat() {
       aria-label="Chat on WhatsApp"
     >
       <MessageCircle size={20} />
-      <span className="hidden">Chat on WhatsApp</span>
+      <span className="hidden md:inline">Chat on WhatsApp</span>
     </button>
   );
 }

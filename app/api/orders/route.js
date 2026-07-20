@@ -3,9 +3,15 @@ import { NextResponse } from 'next/server';
 import { getCurrentUser } from '@/lib/auth';
 import { getDb } from '@/lib/mongodb';
 import { incrementCouponUsage } from '@/lib/coupons';
-import { sendOrderConfirmationEmail, sendOwnerOrderNotification } from '@/lib/email';
+import { sendOrderConfirmationEmail } from '@/lib/email';
 
 export async function POST(request) {
+  const currentUser = await getCurrentUser();
+
+  if (!currentUser) {
+    return NextResponse.json({ message: 'Authentication required' }, { status: 401 });
+  }
+
   try {
     const body = await request.json();
     const { userId, items, total, discount = 0, couponCode = null, shippingAddress } = body;
@@ -37,7 +43,7 @@ export async function POST(request) {
     }
 
     const result = await db.collection('orders').insertOne({
-      userId: userId ? new ObjectId(userId) : null,
+      userId: new ObjectId(userId),
       orderNumber,
       items,
       total,
@@ -55,13 +61,11 @@ export async function POST(request) {
 
     const order = await db.collection('orders').findOne({ _id: result.insertedId });
 
-    // Send confirmation email to shipping address email
-    if (shippingAddress && shippingAddress.email) {
-      await sendOrderConfirmationEmail(shippingAddress.email, orderNumber, items, total);
+    // Get user email and send confirmation email
+    const user = await db.collection('users').findOne({ _id: new ObjectId(userId) });
+    if (user && user.email) {
+      await sendOrderConfirmationEmail(user.email, orderNumber, items, total);
     }
-
-    // Send notification to owner
-    await sendOwnerOrderNotification(orderNumber, items, total, shippingAddress);
 
     return NextResponse.json({
       order: {

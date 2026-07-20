@@ -3,17 +3,6 @@ import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { getLookbookItems } from '@/lib/lookbook';
 
-export const metadata = {
-  title: 'Lookbook',
-  description: 'Explore MAKHSOOS lookbook featuring editorial styling of premium Pakistani men\'s clothing. Get inspired by our kurta, shalwar kameez, and traditional wear collections.',
-  keywords: ['men\'s fashion lookbook', 'Pakistani menswear inspiration', 'kurta styling ideas', 'traditional wear styling', 'luxury men\'s fashion'],
-  openGraph: {
-    title: 'Lookbook | MAKHSOOS',
-    description: 'Explore MAKHSOOS lookbook featuring editorial styling of premium Pakistani men\'s clothing.',
-    url: 'https://makhsoos.shop/lookbook',
-  }
-};
-
 export default async function LookbookPage() {
   const items = await getLookbookItems();
 
