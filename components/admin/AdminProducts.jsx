@@ -10,7 +10,7 @@ const emptyForm = {
   category: 'Luxury Pret',
   price: '',
   badge: 'NEW',
-  images: '/images/p1-a.jpg, /images/p1-b.jpg',
+  images: '/images/hero-1.jpg',
   slug: '',
   quantity: 10,
   description: '',

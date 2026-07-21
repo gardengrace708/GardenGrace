@@ -6,7 +6,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import Button from '@/components/ui/Button';
 
 const slides = [
-  { image: '/images/.jpg', headline: 'Crafted for the Extraordinary', sub: 'Luxury Pakistani Pret — New Collection 2026', cta: 'Explore Collection' },
+  { image: '/images/hero-1.jpg', headline: 'Crafted for the Extraordinary', sub: 'Luxury Pakistani Pret — New Collection 2026', cta: 'Explore Collection' },
   { image: '/images/hero-2.jpg', headline: 'Where Culture Meets Couture', sub: 'Handcrafted fabrics. Timeless silhouettes.', cta: 'Shop Now' },
   { image: '/images/hero-3.jpg', headline: 'خاص لوگوں کے لیے خاص لباس', sub: 'Because you deserve to feel Makhsoos', cta: 'View Lookbook' }
 ];
