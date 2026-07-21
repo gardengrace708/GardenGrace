@@ -3,18 +3,42 @@ import { getCurrentUser } from '@/lib/auth';
 import { getSiteContent, updateSiteContent } from '@/lib/siteContent';
 
 export async function GET() {
-  const content = await getSiteContent();
-  return NextResponse.json({ content });
+  try {
+    const content = await getSiteContent();
+    return NextResponse.json({ content });
+  } catch (error) {
+    console.error('GET error:', error);
+    return NextResponse.json({ message: 'Failed to get site content' }, { status: 500 });
+  }
 }
 
 export async function PUT(request) {
-  const currentUser = await getCurrentUser();
+  try {
+    const currentUser = await getCurrentUser();
 
-  if (currentUser?.user !== 1) {
-    return NextResponse.json({ message: 'Admin access required' }, { status: 403 });
+    console.log('PUT request - currentUser:', currentUser);
+
+    if (currentUser?.user !== 1) {
+      console.log('PUT request - auth failed, user:', currentUser);
+      return NextResponse.json({ message: 'Admin access required' }, { status: 403 });
+    }
+
+    const body = await request.json();
+    console.log('PUT request - body:', body);
+    const content = await updateSiteContent(body);
+    return NextResponse.json({ content });
+  } catch (error) {
+    console.error('PUT error:', error);
+    return NextResponse.json({ message: error.message || 'Failed to update site content' }, { status: 500 });
   }
+}
 
-  const body = await request.json();
-  const content = await updateSiteContent(body);
-  return NextResponse.json({ content });
+export async function OPTIONS() {
+  return new NextResponse(null, {
+    status: 200,
+    headers: {
+      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    },
+  });
 }
