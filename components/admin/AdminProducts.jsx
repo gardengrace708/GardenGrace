@@ -276,20 +276,41 @@ export default function AdminProducts({ initialProducts, initialOrders = [], ini
     setMessage('');
 
     try {
-      const formData = new FormData();
-      formData.append('file', file);
-
-      const response = await fetch('/api/upload-video', {
+      // Get upload parameters from our API
+      const paramsResponse = await fetch('/api/upload-video', {
         method: 'POST',
-        body: formData
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ filename: file.name })
       });
-      const data = await response.json();
+      const params = await paramsResponse.json();
 
-      if (!response.ok) {
-        throw new Error(data.message || 'Video upload nahi hui');
+      if (!paramsResponse.ok) {
+        throw new Error(params.message || 'Failed to get upload parameters');
       }
 
-      const nextContent = { ...siteContent, heroVideo: data.url };
+      // Upload directly to Cloudinary to bypass Vercel limits
+      const uploadFormData = new FormData();
+      uploadFormData.append('file', file);
+      uploadFormData.append('api_key', params.apiKey);
+      uploadFormData.append('timestamp', String(params.timestamp));
+      uploadFormData.append('folder', params.folder);
+      uploadFormData.append('signature', params.signature);
+      uploadFormData.append('resource_type', params.resource_type);
+
+      const uploadResponse = await fetch(
+        `https://api.cloudinary.com/v1_1/${params.cloudName}/video/upload`,
+        {
+          method: 'POST',
+          body: uploadFormData
+        }
+      );
+      const uploadData = await uploadResponse.json();
+
+      if (!uploadResponse.ok) {
+        throw new Error(uploadData?.error?.message || 'Video upload failed');
+      }
+
+      const nextContent = { ...siteContent, heroVideo: uploadData.secure_url };
       const saveResponse = await fetch('/api/site-content', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },

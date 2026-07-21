@@ -29,15 +29,8 @@ export async function POST(request) {
       );
     }
 
-    const incomingFormData = await request.formData();
-    const file = incomingFormData.get('file');
-
-    if (!file || typeof file === 'string') {
-      return NextResponse.json(
-        { message: 'Video file required' },
-        { status: 400 }
-      );
-    }
+    const body = await request.json();
+    const { filename } = body;
 
     const timestamp = Math.round(Date.now() / 1000);
     const folder = 'makhsoos/hero';
@@ -47,37 +40,13 @@ export async function POST(request) {
       apiSecret
     );
 
-    const uploadFormData = new FormData();
-
-    uploadFormData.append('file', file);
-    uploadFormData.append('api_key', apiKey);
-    uploadFormData.append('timestamp', String(timestamp));
-    uploadFormData.append('folder', folder);
-    uploadFormData.append('signature', signature);
-    uploadFormData.append('resource_type', 'video');
-
-    const uploadResponse = await fetch(
-      `https://api.cloudinary.com/v1_1/${cloudName}/video/upload`,
-      {
-        method: 'POST',
-        body: uploadFormData
-      }
-    );
-
-    const uploadData = await uploadResponse.json();
-
-    if (!uploadResponse.ok) {
-      return NextResponse.json(
-        {
-          message: uploadData?.error?.message || 'Video upload failed'
-        },
-        { status: 400 }
-      );
-    }
-
     return NextResponse.json({
-      url: uploadData.secure_url,
-      publicId: uploadData.public_id
+      cloudName,
+      apiKey,
+      timestamp,
+      signature,
+      folder,
+      resource_type: 'video'
     });
   } catch (error) {
     console.error(error);
