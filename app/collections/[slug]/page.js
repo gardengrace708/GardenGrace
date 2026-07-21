@@ -6,6 +6,8 @@ import ProductCard from '@/components/ui/ProductCard';
 import { getCollectionBySlug } from '@/lib/collections';
 import { getProducts } from '@/lib/products';
 
+export const revalidate = 20;
+
 export default async function CollectionDetailPage({ params }) {
   const [collection, products] = await Promise.all([getCollectionBySlug(params.slug), getProducts()]);
   if (!collection) notFound();

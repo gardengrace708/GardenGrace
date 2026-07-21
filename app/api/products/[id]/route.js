@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { getCurrentUser } from '@/lib/auth';
 import { buildProductPayload, ensureProductsSeeded } from '@/lib/products';
 import { getDb } from '@/lib/mongodb';
+import { revalidatePath } from 'next/cache';
 
 export async function PUT(request, { params }) {
   const currentUser = await getCurrentUser();
@@ -20,6 +21,11 @@ export async function PUT(request, { params }) {
     return NextResponse.json({ message: 'Product not found' }, { status: 404 });
   }
 
+  // Revalidate product-related pages
+  revalidatePath('/shop');
+  revalidatePath('/products/[id]');
+  revalidatePath('/collections');
+
   return NextResponse.json({ product });
 }
 
@@ -37,6 +43,11 @@ export async function DELETE(_request, { params }) {
   if (!result.deletedCount) {
     return NextResponse.json({ message: 'Product not found' }, { status: 404 });
   }
+
+  // Revalidate product-related pages
+  revalidatePath('/shop');
+  revalidatePath('/products/[id]');
+  revalidatePath('/collections');
 
   return NextResponse.json({ ok: true });
 }

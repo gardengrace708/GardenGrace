@@ -12,6 +12,8 @@ import Newsletter from '@/components/home/Newsletter';
 import { getCollections } from '@/lib/collections';
 import { getLookbookItems } from '@/lib/lookbook';
 
+export const revalidate = 20;
+
 export default async function Home() {
   const [collections, lookbookItems] = await Promise.all([getCollections(), getLookbookItems()]);
 
@@ -23,7 +25,7 @@ export default async function Home() {
           From this shop you will get classic and premium outfits at affordable prices
         </p>
       </div>
-  
+
       <HeroBanner />
       <MarqueeTicker />
       <NewArrivals />

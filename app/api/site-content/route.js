@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getCurrentUser } from '@/lib/auth';
 import { getSiteContent, updateSiteContent } from '@/lib/siteContent';
+import { revalidatePath } from 'next/cache';
 
 export async function GET() {
   try {
@@ -26,6 +27,11 @@ export async function PUT(request) {
     const body = await request.json();
     console.log('PUT request - body:', body);
     const content = await updateSiteContent(body);
+
+    // Revalidate home page to reflect changes immediately
+    revalidatePath('/');
+    revalidatePath('/about');
+
     return NextResponse.json({ content });
   } catch (error) {
     console.error('PUT error:', error);

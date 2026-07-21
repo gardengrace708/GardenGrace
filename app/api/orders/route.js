@@ -6,15 +6,11 @@ import { incrementCouponUsage } from '@/lib/coupons';
 import { sendOrderConfirmationEmail } from '@/lib/email';
 
 export async function POST(request) {
-  const currentUser = await getCurrentUser();
-
-  if (!currentUser) {
-    return NextResponse.json({ message: 'Authentication required' }, { status: 401 });
-  }
-
   try {
     const body = await request.json();
-    const { userId, items, total, discount = 0, couponCode = null, shippingAddress } = body;
+    const { userId, guestEmail, items, total, discount = 0, couponCode = null, shippingAddress } = body;
+
+    console.log('Received order request:', { userId, guestEmail, items, total, discount, couponCode });
 
     if (!items || !Array.isArray(items) || items.length === 0) {
       return NextResponse.json({ message: 'Invalid order items' }, { status: 400 });
@@ -25,7 +21,9 @@ export async function POST(request) {
 
     // Check stock availability and decrease quantities
     for (const item of items) {
+      console.log('Checking product with ID:', item.id, 'Type:', typeof item.id);
       const product = await db.collection('products').findOne({ id: Number(item.id) });
+      console.log('Found product:', product);
       if (!product) {
         return NextResponse.json({ message: `Product with ID ${item.id} not found` }, { status: 400 });
       }
@@ -42,8 +40,10 @@ export async function POST(request) {
       );
     }
 
-    const result = await db.collection('orders').insertOne({
-      userId: new ObjectId(userId),
+    // Handle both logged-in users and guest users
+    const orderData = {
+      userId: userId ? new ObjectId(userId) : null,
+      guestEmail: guestEmail || null,
       orderNumber,
       items,
       total,
@@ -52,7 +52,9 @@ export async function POST(request) {
       shippingAddress,
       status: 'Processing',
       createdAt: new Date()
-    });
+    };
+
+    const result = await db.collection('orders').insertOne(orderData);
 
     // Increment coupon usage if coupon was applied
     if (couponCode) {
@@ -61,16 +63,18 @@ export async function POST(request) {
 
     const order = await db.collection('orders').findOne({ _id: result.insertedId });
 
-    // Get user email and send confirmation email
-    const user = await db.collection('users').findOne({ _id: new ObjectId(userId) });
-    if (user && user.email) {
-      await sendOrderConfirmationEmail(user.email, orderNumber, items, total);
+    // Send confirmation email to the email provided in shipping form
+    // For both logged-in and guest users, use shippingAddress.email
+    const emailToSend = shippingAddress.email;
+    if (emailToSend) {
+      await sendOrderConfirmationEmail(emailToSend, orderNumber, items, total);
     }
 
     return NextResponse.json({
       order: {
         id: order.orderNumber || String(order._id),
         userId: order.userId,
+        guestEmail: order.guestEmail,
         status: order.status,
         total: Number(order.total),
         discount: Number(order.discount || 0),

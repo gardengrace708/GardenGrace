@@ -85,11 +85,6 @@ export default function CheckoutPage() {
 
   function handleProceedToConfirmation(event) {
     event.preventDefault();
-    
-    if (!currentUser) {
-      setMessage('Please login to complete your order');
-      return;
-    }
 
     setShowConfirmation(true);
   }
@@ -104,11 +99,14 @@ export default function CheckoutPage() {
         waistSize: waistSizes[item.key] || null
       }));
 
+      console.log('Order items being sent:', itemsWithWaistSizes);
+
       const response = await fetch('/api/orders', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          userId: currentUser.id,
+          userId: currentUser?.id || null,
+          guestEmail: currentUser ? null : formData.email,
           items: itemsWithWaistSizes,
           total: discountedTotal,
           discount,
@@ -132,8 +130,19 @@ export default function CheckoutPage() {
         return;
       }
 
+      // Save order to localStorage for guest users
+      if (!currentUser) {
+        try {
+          const savedOrders = JSON.parse(localStorage.getItem('makhsoos_orders') || '[]');
+          savedOrders.push(data.order);
+          localStorage.setItem('makhsoos_orders', JSON.stringify(savedOrders));
+        } catch (e) {
+          console.error('Failed to save order to localStorage:', e);
+        }
+      }
+
       cart.clearCart();
-      router.push('/profile');
+      router.push('/order-success');
     } catch (error) {
       setMessage('An error occurred. Please try again.');
       setLoading(false);
