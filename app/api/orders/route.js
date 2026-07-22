@@ -80,7 +80,8 @@ export async function POST(request) {
         discount: Number(order.discount || 0),
         couponCode: order.couponCode || null,
         createdAt: order.createdAt.toISOString(),
-        items: order.items
+        items: order.items,
+        shippingAddress: order.shippingAddress
       }
     }, { status: 201 });
   } catch (error) {

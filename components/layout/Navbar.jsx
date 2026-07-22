@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { Heart, LogOut, Menu, Search, ShoppingBag, User, X, Minus, Plus, Trash2 } from 'lucide-react';
+import { Heart, LogOut, Menu, Search, ShoppingBag, User, X, Minus, Plus, Trash2, Package } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCart } from '@/components/providers/CartProvider';
 import { useWishlist } from '@/components/providers/WishlistProvider';
@@ -110,6 +110,7 @@ export default function Navbar() {
           </AnimatePresence>
           <button onClick={() => setSearchOpen(!searchOpen)} className="hidden p-2 transition hover:text-gold md:block" aria-label="Search"><Search size={20} /></button>
           <NavLink href="/wishlist" className="relative hidden p-2 transition hover:text-gold md:block" aria-label="Wishlist"><Heart size={20} /><span className="absolute -right-1 -top-1 text-xs ">{wishlist?.count || 0}</span></NavLink>
+          <NavLink href="/my-orders" className="hidden p-2 transition hover:text-gold md:block" aria-label="My Orders"><Package size={20} /></NavLink>
           <button onClick={() => setCartOpen(true)} className="relative p-2 transition hover:text-gold" aria-label="Cart"><ShoppingBag size={20} /><span className="absolute -right-1 -top-1 text-xs ">{cart?.count || 0}</span></button>
           {currentUser ? <><NavLink href="/profile" className="hidden p-2 transition hover:text-gold md:block" aria-label="Profile"><User size={20} /></NavLink><button onClick={logout} className="hidden p-2 transition hover:text-gold md:block" aria-label="Logout"><LogOut size={20} /></button></> : <NavLink href="/login" className="hidden p-2 transition hover:text-gold md:block" aria-label="Login"><User size={20} /></NavLink>}
           <button onClick={() => setMenuOpen(true)} className="p-2 md:hidden" aria-label="Open menu"><Menu /></button>
@@ -151,6 +152,7 @@ export default function Navbar() {
               </motion.div>
               <motion.div variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0 } }} className="flex gap-6 pt-4">
                 <NavLink href="/wishlist" onClick={() => setMenuOpen(false)} className="relative p-3 rounded-full border border-ivory/20 transition hover:border-gold hover:text-gold"><Heart size={24} /><span className="absolute -right-1 -top-1 text-xs">{wishlist?.count || 0}</span></NavLink>
+                <NavLink href="/my-orders" onClick={() => setMenuOpen(false)} className="p-3 rounded-full border border-ivory/20 transition hover:border-gold hover:text-gold"><Package size={24} /></NavLink>
                 {currentUser ? <NavLink onClick={() => setMenuOpen(false)} href="/profile" className="p-3 rounded-full border border-ivory/20 transition hover:border-gold hover:text-gold"><User size={24} /></NavLink> : <NavLink onClick={() => setMenuOpen(false)} href="/login" className="p-3 rounded-full border border-ivory/20 transition hover:border-gold hover:text-gold"><User size={24} /></NavLink>}
               </motion.div>
             </motion.div>

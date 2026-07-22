@@ -142,7 +142,7 @@ export default function CheckoutPage() {
       }
 
       cart.clearCart();
-      router.push('/order-success');
+      router.push('/my-orders');
     } catch (error) {
       setMessage('An error occurred. Please try again.');
       setLoading(false);
