@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { formatPrice } from '@/lib/utils';
+import { Package, Calendar, MapPin, Phone, Mail, User } from 'lucide-react';
 
 export default function MyOrdersPage() {
   const [orders, setOrders] = useState([]);
@@ -15,6 +16,16 @@ export default function MyOrdersPage() {
     setOrders(savedOrders);
     setLoading(false);
   }, []);
+
+  const getStatusColor = (status) => {
+    switch (status?.toLowerCase()) {
+      case 'delivered': return 'text-green-400 bg-green-400/10';
+      case 'shipped': return 'text-blue-400 bg-blue-400/10';
+      case 'processing': return 'text-yellow-400 bg-yellow-400/10';
+      case 'cancelled': return 'text-red-400 bg-red-400/10';
+      default: return 'text-gold bg-gold/10';
+    }
+  };
 
   if (loading) {
     return (
@@ -42,6 +53,7 @@ export default function MyOrdersPage() {
 
           {orders.length === 0 ? (
             <div className="rounded-[2rem] bg-surface p-12 text-center">
+              <Package size={64} className="mx-auto mb-6 text-ivory/30" />
               <p className="text-xl text-ivory/70 mb-6">You haven&apos;t placed any orders yet.</p>
               <a
                 href="/shop"
@@ -53,62 +65,116 @@ export default function MyOrdersPage() {
           ) : (
             <div className="space-y-6">
               {orders.map((order, index) => (
-                <div key={order.id || index} className="rounded-[2rem] bg-surface p-8">
+                <div key={order.id || index} className="rounded-[2rem] bg-surface p-6 md:p-8">
+                  {/* Order Header */}
                   <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-ivory/10 pb-6 mb-6">
-                    <div>
-                      <p className="text-sm font-bold uppercase tracking-[0.22em] text-ivory/60">Order Number</p>
-                      <p className="mt-2 font-display text-3xl text-gold">{order.id}</p>
-                    </div>
-                    <div className="flex gap-6">
-                      <div className="text-center md:text-right">
-                        <p className="text-sm font-bold uppercase tracking-[0.22em] text-ivory/60">Status</p>
-                        <p className="mt-2 font-display text-2xl">{order.status}</p>
+                    <div className="flex items-center gap-3">
+                      <Package size={24} className="text-gold" />
+                      <div>
+                        <p className="text-xs font-bold uppercase tracking-[0.22em] text-ivory/60">Order Number</p>
+                        <p className="mt-1 font-display text-2xl text-gold">{order.id}</p>
                       </div>
-                      <div className="text-center md:text-right">
-                        <p className="text-sm font-bold uppercase tracking-[0.22em] text-ivory/60">Total</p>
-                        <p className="mt-2 font-display text-2xl">{formatPrice(order.total)}</p>
+                    </div>
+                    <div className="flex flex-wrap gap-4">
+                      <div className={`px-4 py-2 rounded-full text-sm font-bold uppercase tracking-wider ${getStatusColor(order.status)}`}>
+                        {order.status}
+                      </div>
+                      <div className="text-right">
+                        <p className="text-xs font-bold uppercase tracking-[0.22em] text-ivory/60">Total</p>
+                        <p className="mt-1 font-display text-xl text-gold">{formatPrice(order.total)}</p>
                       </div>
                     </div>
                   </div>
 
+                  {/* Order Items */}
                   <div className="mb-6">
-                    <h3 className="font-bold text-gold mb-4">Order Items</h3>
+                    <h3 className="font-bold text-gold mb-4 flex items-center gap-2">
+                      <Package size={18} />
+                      Order Items
+                    </h3>
                     <div className="space-y-3">
                       {order.items?.map((item, itemIndex) => (
                         <div key={itemIndex} className="flex justify-between gap-4 pb-3 border-b border-ivory/10 last:border-0">
                           <div className="flex-1">
-                            <h4 className="font-semibold">{item.name}</h4>
-                            <p className="text-sm text-ivory/60">
+                            <h4 className="font-semibold text-lg">{item.name}</h4>
+                            <p className="text-sm text-ivory/60 mt-1">
                               Size: {item.size} · Qty: {item.quantity}
                               {item.waistSize && ` · Waist: ${item.waistSize}`}
                             </p>
                           </div>
-                          <p className="font-bold text-gold">{formatPrice(item.price * item.quantity)}</p>
+                          <p className="font-bold text-gold text-lg">{formatPrice(item.price * item.quantity)}</p>
                         </div>
                       ))}
                     </div>
                   </div>
 
+                  {/* Order Details */}
                   <div className="grid gap-4 md:grid-cols-2">
-                    <div className="bg-ivory/5 rounded-2xl p-4">
-                      <h3 className="font-bold text-gold mb-3">Shipping Information</h3>
-                      <div className="space-y-1 text-sm text-ivory/80">
-                        <p><span className="text-ivory/60">Name:</span> {order.shippingAddress?.name}</p>
-                        <p><span className="text-ivory/60">Email:</span> {order.shippingAddress?.email}</p>
-                        <p><span className="text-ivory/60">Phone:</span> {order.shippingAddress?.phone}</p>
-                        <p><span className="text-ivory/60">Address:</span> {order.shippingAddress?.address}, {order.shippingAddress?.city}</p>
+                    <div className="bg-ivory/5 rounded-2xl p-5">
+                      <h3 className="font-bold text-gold mb-4 flex items-center gap-2">
+                        <MapPin size={18} />
+                        Shipping Information
+                      </h3>
+                      <div className="space-y-3 text-sm">
+                        <div className="flex items-start gap-3">
+                          <User size={16} className="text-ivory/60 mt-0.5" />
+                          <div>
+                            <p className="text-ivory/60 text-xs uppercase tracking-wider">Name</p>
+                            <p className="font-semibold">{order.shippingAddress?.name}</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-3">
+                          <Mail size={16} className="text-ivory/60 mt-0.5" />
+                          <div>
+                            <p className="text-ivory/60 text-xs uppercase tracking-wider">Email</p>
+                            <p className="font-semibold">{order.shippingAddress?.email}</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-3">
+                          <Phone size={16} className="text-ivory/60 mt-0.5" />
+                          <div>
+                            <p className="text-ivory/60 text-xs uppercase tracking-wider">Phone</p>
+                            <p className="font-semibold">{order.shippingAddress?.phone}</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-3">
+                          <MapPin size={16} className="text-ivory/60 mt-0.5" />
+                          <div>
+                            <p className="text-ivory/60 text-xs uppercase tracking-wider">Address</p>
+                            <p className="font-semibold">{order.shippingAddress?.address}, {order.shippingAddress?.city}</p>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                    <div className="bg-ivory/5 rounded-2xl p-4">
-                      <h3 className="font-bold text-gold mb-3">Order Details</h3>
-                      <div className="space-y-1 text-sm text-ivory/80">
-                        <p><span className="text-ivory/60">Placed on:</span> {new Date(order.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+                    <div className="bg-ivory/5 rounded-2xl p-5">
+                      <h3 className="font-bold text-gold mb-4 flex items-center gap-2">
+                        <Calendar size={18} />
+                        Order Details
+                      </h3>
+                      <div className="space-y-3 text-sm">
+                        <div className="flex items-start gap-3">
+                          <Calendar size={16} className="text-ivory/60 mt-0.5" />
+                          <div>
+                            <p className="text-ivory/60 text-xs uppercase tracking-wider">Order Date</p>
+                            <p className="font-semibold">{new Date(order.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+                          </div>
+                        </div>
                         {order.discount > 0 && (
-                          <p><span className="text-ivory/60">Discount:</span> {formatPrice(order.discount)}</p>
+                          <div className="flex items-center justify-between py-2 border-b border-ivory/10">
+                            <span className="text-ivory/60">Discount</span>
+                            <span className="font-bold text-green-400">{formatPrice(order.discount)}</span>
+                          </div>
                         )}
                         {order.couponCode && (
-                          <p><span className="text-ivory/60">Coupon:</span> {order.couponCode}</p>
+                          <div className="flex items-center justify-between py-2 border-b border-ivory/10">
+                            <span className="text-ivory/60">Coupon Code</span>
+                            <span className="font-bold text-gold">{order.couponCode}</span>
+                          </div>
                         )}
+                        <div className="flex items-center justify-between py-2 bg-ivory/10 rounded-lg px-3 mt-2">
+                          <span className="font-bold">Total Paid</span>
+                          <span className="font-bold text-gold text-lg">{formatPrice(order.total)}</span>
+                        </div>
                       </div>
                     </div>
                   </div>

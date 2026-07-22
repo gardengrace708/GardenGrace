@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 import { getCurrentUser } from '@/lib/auth';
 import { getDb } from '@/lib/mongodb';
 import { incrementCouponUsage } from '@/lib/coupons';
-import { sendOrderConfirmationEmail } from '@/lib/email';
+import { sendOrderConfirmationEmail, sendOrderNotificationToOwner } from '@/lib/email';
 
 export async function POST(request) {
   try {
@@ -69,6 +69,9 @@ export async function POST(request) {
     if (emailToSend) {
       await sendOrderConfirmationEmail(emailToSend, orderNumber, items, total);
     }
+
+    // Send notification email to owner with order details
+    await sendOrderNotificationToOwner(orderNumber, items, total, shippingAddress);
 
     return NextResponse.json({
       order: {

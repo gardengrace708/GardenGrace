@@ -11,9 +11,10 @@ import NavLink from '@/components/ui/NavLink';
 import OfferPopup from '@/components/ui/OfferPopup';
 
 const links = [
+  { href: '/shop', label: 'Products' },
   { href: '/collections', label: 'Collections' },
   { href: '/lookbook', label: 'Lookbook' },
-  { href: '/about', label: 'About' }
+  { href: '/about', label: 'About' },
 ];
 
 export default function Navbar() {

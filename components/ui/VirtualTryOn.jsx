@@ -84,13 +84,13 @@ export default function VirtualTryOn({ productImage, productName }) {
 
   return (
     <>
-      <button
+      {/* <button
         onClick={() => setIsOpen(true)}
         className="flex items-center gap-2 rounded-full border border-gold/40 px-6 py-3 text-sm font-bold uppercase tracking-[0.25em] text-gold transition hover:bg-gold hover:text-obsidian"
       >
         <Sparkles size={18} />
-        Try It On Yourself
-      </button>
+        Try it onYourself
+      </button> */}
 
       <AnimatePresence>
         {isOpen && (
