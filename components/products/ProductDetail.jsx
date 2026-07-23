@@ -93,7 +93,7 @@ export default function ProductDetail({ product, related }) {
         </div>
         <div className="lg:sticky lg:top-28 lg:self-start">
           <p className="text-sm font-bold uppercase tracking-[0.3em] text-gold">{product.category}</p>
-          <h1 className="mt-3 font-display text-7xl leading-none">{product.name}</h1>
+          <h1 className="mt-3 font-display text-2xl md:text-5xl leading-none">{product.name}</h1>
           {averageRating && (
             <div className="mt-3 flex items-center gap-2">
               <div className="flex">
@@ -137,9 +137,9 @@ export default function ProductDetail({ product, related }) {
             </div>
           </div>
           <div className="mt-10  flex gap-4">
-            <Button className="flex-1" onClick={() => cart?.addToCart(product, size, color)}>{product.inStock ? 'Add to Cart' : 'Sold Out'}</Button>
+            <Button className="flex-1 text-sm" onClick={() => cart?.addToCart(product, size, color)}>{product.inStock ? 'Add to Cart' : 'Sold Out'}</Button>
             {product.inStock && (
-              <Button className="flex-1 bg-white shadow-xl text-ivory hover:bg-obsidian/10" onClick={() => { cart?.addToCart(product, size, color); window.location.href = '/checkout'; }}>
+              <Button className="flex-1 bg-white shadow-xl text-ivory hover:bg-obsidian/10 text-lg" onClick={() => { cart?.addToCart(product, size, color); window.location.href = '/checkout'; }}>
                 Buy Now
               </Button>
             )}
@@ -156,7 +156,7 @@ export default function ProductDetail({ product, related }) {
       {/* Reviews Section */}
       <section className="luxury-container py-20">
         <div className="flex items-center justify-between">
-          <h2 className="font-display text-6xl">Reviews</h2>
+          <h2 className="font-display text-2xl md:text-6xl">Reviews</h2>
           {user && (
             <button onClick={() => setShowReviewForm(!showReviewForm)} className="rounded-full bg-gold px-6 py-3 text-sm font-bold uppercase tracking-[0.2em] text-obsidian transition hover:bg-obsidian hover:text-ivory">
               {showReviewForm ? 'Cancel' : 'Write a Review'}

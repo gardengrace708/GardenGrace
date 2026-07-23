@@ -16,7 +16,8 @@ const emptyForm = {
   description: '',
   characteristics: '',
   colors: '',
-  availableSizes: ''
+  availableSizes: '',
+  allowCustomMeasurements: false
 };
 
 const emptyCollectionForm = {
@@ -602,40 +603,53 @@ export default function AdminProducts({ initialProducts, initialOrders = [], ini
           <form onSubmit={submitProduct} className="rounded-[2rem] bg-ivory p-6 text-obsidian shadow-2xl">
             <div className="mb-6 flex items-center justify-between"><h2 className="font-display text-4xl">{editingId ? 'Edit Product' : 'Add Product'}</h2>{editingId && <button type="button" onClick={resetForm} className="rounded-full bg-obsidian p-2 text-ivory"><X size={18} /></button>}</div>
             <div className="space-y-4">
-              <input value={form.name} onChange={(event) => updateField('name', event.target.value)} required placeholder="Product name" className="w-full rounded-2xl border border-obsidian/15 px-4 py-3 outline-none focus:border-gold" />
-              <div className="grid grid-cols-2 gap-3"><input value={form.category} onChange={(event) => updateField('category', event.target.value)} required placeholder="Category" list="admin-categories" className="rounded-2xl border border-obsidian/15 px-4 py-3 outline-none focus:border-gold" /><input value={form.badge} onChange={(event) => updateField('badge', event.target.value)} placeholder="Badge" className="rounded-2xl border border-obsidian/15 px-4 py-3 outline-none focus:border-gold" /></div>
+              <input value={form.name} onChange={(event) => updateField('name', event.target.value)} required placeholder="Product name" className="w-full rounded-2xl border border-obsidian/15 bg-white px-4 py-3 text-obsidian outline-none focus:border-gold" />
+              <div className="grid grid-cols-2 gap-3"><input value={form.category} onChange={(event) => updateField('category', event.target.value)} required placeholder="Category" list="admin-categories" className="rounded-2xl border border-obsidian/15 bg-white px-4 py-3 text-obsidian outline-none focus:border-gold" /><input value={form.badge} onChange={(event) => updateField('badge', event.target.value)} placeholder="Badge" className="rounded-2xl border border-obsidian/15 bg-white px-4 py-3 text-obsidian outline-none focus:border-gold" /></div>
               <datalist id="admin-categories">{categories.map((category) => <option key={category} value={category} />)}</datalist>
-              <div className="grid grid-cols-2 gap-3"><input value={form.price} onChange={(event) => updateField('price', event.target.value)} required type="number" placeholder="Price" className="rounded-2xl border border-obsidian/15 px-4 py-3 outline-none focus:border-gold" /><input value={form.slug} onChange={(event) => updateField('slug', event.target.value)} placeholder="Slug optional" className="rounded-2xl border border-obsidian/15 px-4 py-3 outline-none focus:border-gold" /></div>
+              <div className="grid grid-cols-2 gap-3"><input value={form.price} onChange={(event) => updateField('price', event.target.value)} required type="number" placeholder="Price" className="rounded-2xl border border-obsidian/15 bg-white px-4 py-3 text-obsidian outline-none focus:border-gold" /><input value={form.slug} onChange={(event) => updateField('slug', event.target.value)} placeholder="Slug optional" className="rounded-2xl border border-obsidian/15 bg-white px-4 py-3 text-obsidian outline-none focus:border-gold" /></div>
               <div className="rounded-2xl border border-obsidian/15 p-4">
                 <label className="flex cursor-pointer items-center justify-center gap-2 rounded-full bg-obsidian px-5 py-3 text-sm font-bold uppercase tracking-[0.2em] text-ivory transition hover:bg-gold hover:text-obsidian">
                   <ImagePlus size={18} />
                   {uploading ? 'Uploading...' : 'Upload Product Images'}
                   <input type="file" accept="image/*" multiple disabled={uploading} onChange={uploadImages} className="hidden" />
                 </label>
-                <input value={form.images} onChange={(event) => updateField('images', event.target.value)} required placeholder="Image URLs comma separated" className="mt-3 w-full rounded-2xl border border-obsidian/15 px-4 py-3 outline-none focus:border-gold" />
+                <input value={form.images} onChange={(event) => updateField('images', event.target.value)} required placeholder="Image URLs comma separated" className="mt-3 w-full rounded-2xl border border-obsidian/15 bg-white px-4 py-3 text-obsidian outline-none focus:border-gold" />
                 {getImageList().length > 0 && <div className="mt-4 grid grid-cols-3 gap-3">{getImageList().map((image) => <div key={image} className="relative h-24 overflow-hidden rounded-2xl border border-obsidian/10 bg-white"><Image src={image} alt="Product preview" fill sizes="120px" className="object-cover" /><button type="button" onClick={() => removeImage(image)} className="absolute right-2 top-2 rounded-full bg-obsidian p-1 text-ivory"><X size={14} /></button></div>)}</div>}
               </div>
-              <textarea value={form.description} onChange={(event) => updateField('description', event.target.value)} required placeholder="Description" rows={5} className="w-full rounded-2xl border border-obsidian/15 px-4 py-3 outline-none focus:border-gold" />
+              <textarea value={form.description} onChange={(event) => updateField('description', event.target.value)} required placeholder="Description" rows={5} className="w-full rounded-2xl border border-obsidian/15 bg-white px-4 py-3 text-obsidian outline-none focus:border-gold" />
               <div>
                 <label className="mb-2 block text-sm font-bold uppercase tracking-[0.2em]">Characteristics (comma separated)</label>
-                <input value={form.characteristics} onChange={(event) => updateField('characteristics', event.target.value)} placeholder="🔥 Best Sellers, ⭐ Most Popular, 🛒 Customers&apos; Choice" className="w-full rounded-2xl border border-obsidian/15 px-4 py-3 outline-none focus:border-gold" />
+                <input value={form.characteristics} onChange={(event) => updateField('characteristics', event.target.value)} placeholder="🔥 Best Sellers, ⭐ Most Popular, 🛒 Customers&apos; Choice" className="w-full rounded-2xl border border-obsidian/15 bg-white px-4 py-3 text-obsidian outline-none focus:border-gold" />
                 <p className="mt-1 text-xs text-obsidian/60">Examples: 🔥 Best Sellers, ⭐ Most Popular, 🛒 Customers&apos; Choice</p>
               </div>
               <div>
                 <label className="mb-2 block text-sm font-bold uppercase tracking-[0.2em]">Colors (comma separated)</label>
-                <input value={form.colors} onChange={(event) => updateField('colors', event.target.value)} placeholder="Black, White, Red, Blue" className="w-full rounded-2xl border border-obsidian/15 px-4 py-3 outline-none focus:border-gold" />
+                <input value={form.colors} onChange={(event) => updateField('colors', event.target.value)} placeholder="Black, White, Red, Blue" className="w-full rounded-2xl border border-obsidian/15 bg-white px-4 py-3 text-obsidian outline-none focus:border-gold" />
                 <p className="mt-1 text-xs text-obsidian/60">Available colors for this product</p>
               </div>
               <div>
                 <label className="mb-2 block text-sm font-bold uppercase tracking-[0.2em]">Available Sizes (comma separated)</label>
-                <input value={form.availableSizes} onChange={(event) => updateField('availableSizes', event.target.value)} placeholder="XS, S, M, L, XL" className="w-full rounded-2xl border border-obsidian/15 px-4 py-3 outline-none focus:border-gold" />
+                <input value={form.availableSizes} onChange={(event) => updateField('availableSizes', event.target.value)} placeholder="XS, S, M, L, XL" className="w-full rounded-2xl border border-obsidian/15 bg-white px-4 py-3 text-obsidian outline-none focus:border-gold" />
                 <p className="mt-1 text-xs text-obsidian/60">Available sizes for this product</p>
               </div>
               <div>
                 <label className="mb-2 block text-sm font-bold uppercase tracking-[0.2em]">Quantity</label>
-                <input value={form.quantity} onChange={(event) => updateField('quantity', event.target.value)} type="number" min="0" placeholder="Quantity in stock" className="w-full rounded-2xl border border-obsidian/15 px-4 py-3 outline-none focus:border-gold" />
+                <input value={form.quantity} onChange={(event) => updateField('quantity', event.target.value)} type="number" min="0" placeholder="Quantity in stock" className="w-full rounded-2xl border border-obsidian/15 bg-white px-4 py-3 text-obsidian outline-none focus:border-gold" />
                 <p className="mt-1 text-xs text-obsidian/60">0 = Sold Out, 1-10 = Limited Stock, 10+ = Available</p>
               </div>
+              <div className="flex items-center gap-3 rounded-2xl border border-obsidian/15 p-4">
+                <input
+                  type="checkbox"
+                  id="allowCustomMeasurements"
+                  checked={form.allowCustomMeasurements}
+                  onChange={(event) => updateField('allowCustomMeasurements', event.target.checked)}
+                  className="h-5 w-5 accent-gold"
+                />
+                <label htmlFor="allowCustomMeasurements" className="text-sm font-semibold">
+                  Allow Custom Measurements
+                </label>
+              </div>
+              <p className="text-xs text-obsidian/60">If checked, customers can provide custom waist and length measurements during checkout</p>
               <button disabled={saving} className="flex w-full items-center justify-center gap-2 rounded-full bg-obsidian px-6 py-4 text-sm font-bold uppercase tracking-[0.25em] text-ivory transition hover:bg-gold hover:text-obsidian disabled:opacity-60">{editingId ? <Save size={18} /> : <Plus size={18} />}{saving ? 'Saving...' : editingId ? 'Save Changes' : 'Add Product'}</button>
               {message && <p className="text-center text-sm font-bold text-gold">{message}</p>}
             </div>
@@ -653,16 +667,16 @@ export default function AdminProducts({ initialProducts, initialOrders = [], ini
           <form onSubmit={submitCollection} className="rounded-[2rem] bg-ivory p-6 text-obsidian shadow-2xl">
             <div className="mb-6 flex items-center justify-between"><h2 className="font-display text-4xl">{editingCollectionId ? 'Edit Collection' : 'Add Collection'}</h2>{editingCollectionId && <button type="button" onClick={resetCollectionForm} className="rounded-full bg-obsidian p-2 text-ivory"><X size={18} /></button>}</div>
             <div className="space-y-4">
-              <input value={collectionForm.name} onChange={(event) => updateCollectionField('name', event.target.value)} required placeholder="Collection name" className="w-full rounded-2xl border border-obsidian/15 px-4 py-3 outline-none focus:border-gold" />
-              <div className="grid grid-cols-2 gap-3"><input value={collectionForm.slug} onChange={(event) => updateCollectionField('slug', event.target.value)} placeholder="Slug optional" className="rounded-2xl border border-obsidian/15 px-4 py-3 outline-none focus:border-gold" /><input value={collectionForm.tag} onChange={(event) => updateCollectionField('tag', event.target.value)} placeholder="Tag" className="rounded-2xl border border-obsidian/15 px-4 py-3 outline-none focus:border-gold" /></div>
+              <input value={collectionForm.name} onChange={(event) => updateCollectionField('name', event.target.value)} required placeholder="Collection name" className="w-full rounded-2xl border border-obsidian/15 bg-white px-4 py-3 text-obsidian outline-none focus:border-gold" />
+              <div className="grid grid-cols-2 gap-3"><input value={collectionForm.slug} onChange={(event) => updateCollectionField('slug', event.target.value)} placeholder="Slug optional" className="rounded-2xl border border-obsidian/15 bg-white px-4 py-3 text-obsidian outline-none focus:border-gold" /><input value={collectionForm.tag} onChange={(event) => updateCollectionField('tag', event.target.value)} placeholder="Tag" className="rounded-2xl border border-obsidian/15 bg-white px-4 py-3 text-obsidian outline-none focus:border-gold" /></div>
               <label className="flex cursor-pointer items-center justify-center gap-2 rounded-full bg-obsidian px-5 py-3 text-sm font-bold uppercase tracking-[0.2em] text-ivory transition hover:bg-gold hover:text-obsidian">
                 <ImagePlus size={18} />
                 {uploading ? 'Uploading...' : 'Upload Collection Image'}
                 <input type="file" accept="image/*" disabled={uploading} onChange={uploadCollectionImage} className="hidden" />
               </label>
-              <input value={collectionForm.image} onChange={(event) => updateCollectionField('image', event.target.value)} required placeholder="Collection image URL" className="w-full rounded-2xl border border-obsidian/15 px-4 py-3 outline-none focus:border-gold" />
+              <input value={collectionForm.image} onChange={(event) => updateCollectionField('image', event.target.value)} required placeholder="Collection image URL" className="w-full rounded-2xl border border-obsidian/15 bg-white px-4 py-3 text-obsidian outline-none focus:border-gold" />
               {collectionForm.image && <div className="relative h-44 overflow-hidden rounded-2xl border border-obsidian/10 bg-white"><Image src={collectionForm.image} alt="Collection preview" fill sizes="420px" className="object-cover" /></div>}
-              <textarea value={collectionForm.description} onChange={(event) => updateCollectionField('description', event.target.value)} required placeholder="Description" rows={5} className="w-full rounded-2xl border border-obsidian/15 px-4 py-3 outline-none focus:border-gold" />
+              <textarea value={collectionForm.description} onChange={(event) => updateCollectionField('description', event.target.value)} required placeholder="Description" rows={5} className="w-full rounded-2xl border border-obsidian/15 bg-white px-4 py-3 text-obsidian outline-none focus:border-gold" />
               <button disabled={saving} className="flex w-full items-center justify-center gap-2 rounded-full bg-obsidian px-6 py-4 text-sm font-bold uppercase tracking-[0.25em] text-ivory transition hover:bg-gold hover:text-obsidian disabled:opacity-60">{editingCollectionId ? <Save size={18} /> : <Plus size={18} />}{saving ? 'Saving...' : editingCollectionId ? 'Save Changes' : 'Add Collection'}</button>
               {message && <p className="text-center text-sm font-bold text-gold">{message}</p>}
             </div>
@@ -680,14 +694,14 @@ export default function AdminProducts({ initialProducts, initialOrders = [], ini
           <form onSubmit={submitLookbookItem} className="rounded-[2rem] bg-ivory p-6 text-obsidian shadow-2xl">
             <div className="mb-6 flex items-center justify-between"><h2 className="font-display text-4xl">{editingLookbookId ? 'Edit Lookbook' : 'Add Lookbook'}</h2>{editingLookbookId && <button type="button" onClick={resetLookbookForm} className="rounded-full bg-obsidian p-2 text-ivory"><X size={18} /></button>}</div>
             <div className="space-y-4">
-              <input value={lookbookForm.title} onChange={(event) => updateLookbookField('title', event.target.value)} required placeholder="Title" className="w-full rounded-2xl border border-obsidian/15 px-4 py-3 outline-none focus:border-gold" />
-              <div className="grid grid-cols-2 gap-3"><input value={lookbookForm.subtitle} onChange={(event) => updateLookbookField('subtitle', event.target.value)} required placeholder="Subtitle" className="rounded-2xl border border-obsidian/15 px-4 py-3 outline-none focus:border-gold" /><input value={lookbookForm.sortOrder} onChange={(event) => updateLookbookField('sortOrder', event.target.value)} type="number" placeholder="Sort order" className="rounded-2xl border border-obsidian/15 px-4 py-3 outline-none focus:border-gold" /></div>
+              <input value={lookbookForm.title} onChange={(event) => updateLookbookField('title', event.target.value)} required placeholder="Title" className="w-full rounded-2xl border border-obsidian/15 bg-white px-4 py-3 text-obsidian outline-none focus:border-gold" />
+              <div className="grid grid-cols-2 gap-3"><input value={lookbookForm.subtitle} onChange={(event) => updateLookbookField('subtitle', event.target.value)} required placeholder="Subtitle" className="rounded-2xl border border-obsidian/15 bg-white px-4 py-3 text-obsidian outline-none focus:border-gold" /><input value={lookbookForm.sortOrder} onChange={(event) => updateLookbookField('sortOrder', event.target.value)} type="number" placeholder="Sort order" className="rounded-2xl border border-obsidian/15 bg-white px-4 py-3 text-obsidian outline-none focus:border-gold" /></div>
               <label className="flex cursor-pointer items-center justify-center gap-2 rounded-full bg-obsidian px-5 py-3 text-sm font-bold uppercase tracking-[0.2em] text-ivory transition hover:bg-gold hover:text-obsidian">
                 <ImagePlus size={18} />
                 {uploading ? 'Uploading...' : 'Upload Lookbook Image'}
                 <input type="file" accept="image/*" disabled={uploading} onChange={uploadLookbookImage} className="hidden" />
               </label>
-              <input value={lookbookForm.image} onChange={(event) => updateLookbookField('image', event.target.value)} required placeholder="Image URL" className="w-full rounded-2xl border border-obsidian/15 px-4 py-3 outline-none focus:border-gold" />
+              <input value={lookbookForm.image} onChange={(event) => updateLookbookField('image', event.target.value)} required placeholder="Image URL" className="w-full rounded-2xl border border-obsidian/15 bg-white px-4 py-3 text-obsidian outline-none focus:border-gold" />
               {lookbookForm.image && <div className="relative aspect-[3/4] overflow-hidden rounded-2xl border border-obsidian/10 bg-white"><Image src={lookbookForm.image} alt="Lookbook preview" fill sizes="420px" className="object-cover" /></div>}
               <button disabled={saving} className="flex w-full items-center justify-center gap-2 rounded-full bg-obsidian px-6 py-4 text-sm font-bold uppercase tracking-[0.25em] text-ivory transition hover:bg-gold hover:text-obsidian disabled:opacity-60">{editingLookbookId ? <Save size={18} /> : <Plus size={18} />}{saving ? 'Saving...' : editingLookbookId ? 'Save Changes' : 'Add Lookbook'}</button>
               {message && <p className="text-center text-sm font-bold text-gold">{message}</p>}
@@ -711,7 +725,7 @@ export default function AdminProducts({ initialProducts, initialOrders = [], ini
                 {uploading ? 'Uploading...' : 'Upload Hero Video'}
                 <input type="file" accept="video/*" disabled={uploading} onChange={uploadHeroVideo} className="hidden" />
               </label>
-              <input value={siteContent.heroVideo} onChange={(event) => updateSiteContentField('heroVideo', event.target.value)} placeholder="Hero video URL" className="w-full rounded-2xl border border-obsidian/15 px-4 py-3 outline-none focus:border-gold" />
+              <input value={siteContent.heroVideo} onChange={(event) => updateSiteContentField('heroVideo', event.target.value)} placeholder="Hero video URL" className="w-full rounded-2xl border border-obsidian/15 bg-white px-4 py-3 text-obsidian outline-none focus:border-gold" />
               {siteContent.heroVideo && <div className="relative aspect-video overflow-hidden rounded-2xl border border-obsidian/10 bg-obsidian">
                 <video src={siteContent.heroVideo} controls className="h-full w-full object-cover" />
               </div>}
@@ -722,7 +736,7 @@ export default function AdminProducts({ initialProducts, initialOrders = [], ini
                   {uploading ? 'Uploading...' : 'Upload About Image'}
                   <input type="file" accept="image/*" disabled={uploading} onChange={uploadAboutImage} className="hidden" />
                 </label>
-                <input value={siteContent.aboutImage} onChange={(event) => updateSiteContentField('aboutImage', event.target.value)} required placeholder="About image URL" className="mt-3 w-full rounded-2xl border border-obsidian/15 px-4 py-3 outline-none focus:border-gold" />
+                <input value={siteContent.aboutImage} onChange={(event) => updateSiteContentField('aboutImage', event.target.value)} required placeholder="About image URL" className="mt-3 w-full rounded-2xl border border-obsidian/15 bg-white px-4 py-3 text-obsidian outline-none focus:border-gold" />
               </div>
               <button disabled={saving} className="flex w-full items-center justify-center gap-2 rounded-full bg-obsidian px-6 py-4 text-sm font-bold uppercase tracking-[0.25em] text-ivory transition hover:bg-gold hover:text-obsidian disabled:opacity-60"><Save size={18} />{saving ? 'Saving...' : 'Save Changes'}</button>
               {message && <p className="text-center text-sm font-bold text-gold">{message}</p>}
@@ -753,6 +767,9 @@ export default function AdminProducts({ initialProducts, initialOrders = [], ini
               </div>
               <div className="mt-7 space-y-5">
                 <div><p className="text-xs font-bold uppercase tracking-[0.22em] text-obsidian/50">Customer</p><p className="mt-1 font-display text-3xl">{selectedOrder.customer?.name || 'Unknown Customer'}</p><p className="text-sm text-obsidian/60">{selectedOrder.customer?.email || 'No email available'}</p><p className="text-sm text-obsidian/60">{selectedOrder.customer?.phone || 'No phone available'}</p></div>
+                {selectedOrder.shippingAddress?.customMeasurements && (selectedOrder.shippingAddress.customMeasurements.waist || selectedOrder.shippingAddress.customMeasurements.length) && (
+                  <div><p className="text-xs font-bold uppercase tracking-[0.22em] text-obsidian/50">Custom Measurements</p><div className="mt-2 rounded-2xl bg-obsidian/5 p-4 text-sm"><p className="text-obsidian/60">Waist: {selectedOrder.shippingAddress.customMeasurements.waist || 'Not provided'}</p><p className="text-obsidian/60">Length: {selectedOrder.shippingAddress.customMeasurements.length || 'Not provided'}</p></div></div>
+                )}
                 <div><p className="text-xs font-bold uppercase tracking-[0.22em] text-obsidian/50">Status Change</p><select value={selectedOrder.status} disabled={orderSaving} onChange={(event) => updateOrderStatus(selectedOrder.id, event.target.value)} className="mt-2 w-full rounded-2xl border border-obsidian/15 bg-white px-4 py-3 font-semibold outline-none focus:border-gold">{orderStatuses.map((status) => <option key={status} value={status}>{status}</option>)}</select></div>
                 <div><p className="text-xs font-bold uppercase tracking-[0.22em] text-obsidian/50">Date</p><p className="mt-1 font-semibold">{new Date(selectedOrder.createdAt).toLocaleString()}</p></div>
                 <div><p className="text-xs font-bold uppercase tracking-[0.22em] text-obsidian/50">Items</p><div className="mt-3 divide-y divide-obsidian/10 rounded-2xl border border-obsidian/10">{selectedOrder.items.map((item) => <div key={`${selectedOrder.id}-${item.name}-${item.size}`} className="flex justify-between gap-4 p-4 text-sm"><div><p className="font-bold">{item.name}</p><p className="text-obsidian/55">Size {item.size} · Qty {item.quantity}</p></div><p className="font-bold text-gold">{formatPrice(item.price * item.quantity)}</p></div>)}</div></div>
@@ -776,10 +793,10 @@ export default function AdminProducts({ initialProducts, initialOrders = [], ini
           <form onSubmit={submitCoupon} className="rounded-[2rem] bg-ivory p-6 text-obsidian shadow-2xl">
             <div className="mb-6 flex items-center justify-between"><h2 className="font-display text-4xl">{editingCouponId ? 'Edit Coupon' : 'Add Coupon'}</h2>{editingCouponId && <button type="button" onClick={resetCouponForm} className="rounded-full bg-obsidian p-2 text-ivory"><X size={18} /></button>}</div>
             <div className="space-y-4">
-              <input value={couponForm.code} onChange={(event) => updateCouponField('code', event.target.value)} required placeholder="Coupon Code (e.g., SUMMER20)" className="w-full rounded-2xl border border-obsidian/15 px-4 py-3 outline-none focus:border-gold uppercase" />
-              <input value={couponForm.discountPercent} onChange={(event) => updateCouponField('discountPercent', event.target.value)} required type="number" min="1" max="100" placeholder="Discount Percentage (e.g., 20)" className="w-full rounded-2xl border border-obsidian/15 px-4 py-3 outline-none focus:border-gold" />
-              <input value={couponForm.maxUses} onChange={(event) => updateCouponField('maxUses', event.target.value)} type="number" min="0" placeholder="Max Uses (0 for unlimited)" className="w-full rounded-2xl border border-obsidian/15 px-4 py-3 outline-none focus:border-gold" />
-              <input value={couponForm.expiresAt} onChange={(event) => updateCouponField('expiresAt', event.target.value)} type="date" placeholder="Expiration Date (optional)" className="w-full rounded-2xl border border-obsidian/15 px-4 py-3 outline-none focus:border-gold" />
+              <input value={couponForm.code} onChange={(event) => updateCouponField('code', event.target.value)} required placeholder="Coupon Code (e.g., SUMMER20)" className="w-full rounded-2xl border border-obsidian/15 bg-white px-4 py-3 text-obsidian outline-none focus:border-gold uppercase" />
+              <input value={couponForm.discountPercent} onChange={(event) => updateCouponField('discountPercent', event.target.value)} required type="number" min="1" max="100" placeholder="Discount Percentage (e.g., 20)" className="w-full rounded-2xl border border-obsidian/15 bg-white px-4 py-3 text-obsidian outline-none focus:border-gold" />
+              <input value={couponForm.maxUses} onChange={(event) => updateCouponField('maxUses', event.target.value)} type="number" min="0" placeholder="Max Uses (0 for unlimited)" className="w-full rounded-2xl border border-obsidian/15 bg-white px-4 py-3 text-obsidian outline-none focus:border-gold" />
+              <input value={couponForm.expiresAt} onChange={(event) => updateCouponField('expiresAt', event.target.value)} type="date" placeholder="Expiration Date (optional)" className="w-full rounded-2xl border border-obsidian/15 bg-white px-4 py-3 text-obsidian outline-none focus:border-gold" />
               <label className="flex items-center gap-3 text-sm font-bold uppercase tracking-[0.2em]"><input type="checkbox" checked={couponForm.isActive} onChange={(event) => updateCouponField('isActive', event.target.checked)} /> Active</label>
               <button disabled={saving} className="flex w-full items-center justify-center gap-2 rounded-full bg-obsidian px-6 py-4 text-sm font-bold uppercase tracking-[0.25em] text-ivory transition hover:bg-gold hover:text-obsidian disabled:opacity-60">{editingCouponId ? <Save size={18} /> : <Plus size={18} />}{saving ? 'Saving...' : editingCouponId ? 'Save Changes' : 'Add Coupon'}</button>
               {message && <p className="text-center text-sm font-bold text-gold">{message}</p>}
@@ -798,8 +815,8 @@ export default function AdminProducts({ initialProducts, initialOrders = [], ini
           <form onSubmit={submitGlobalDiscount} className="rounded-[2rem] bg-ivory p-6 text-obsidian shadow-2xl">
             <div className="mb-6"><h2 className="font-display text-4xl">Global Discount</h2><p className="mt-2 text-sm text-obsidian/60">Sabhi products par overall discount set karein.</p></div>
             <div className="space-y-4">
-              <input value={globalDiscountForm.discountPercent} onChange={(event) => updateGlobalDiscountField('discountPercent', event.target.value)} required type="number" min="1" max="100" placeholder="Discount Percentage (e.g., 20)" className="w-full rounded-2xl border border-obsidian/15 px-4 py-3 outline-none focus:border-gold" />
-              <input value={globalDiscountForm.expiresAt} onChange={(event) => updateGlobalDiscountField('expiresAt', event.target.value)} type="date" placeholder="Expiration Date (optional)" className="w-full rounded-2xl border border-obsidian/15 px-4 py-3 outline-none focus:border-gold" />
+              <input value={globalDiscountForm.discountPercent} onChange={(event) => updateGlobalDiscountField('discountPercent', event.target.value)} required type="number" min="1" max="100" placeholder="Discount Percentage (e.g., 20)" className="w-full rounded-2xl border border-obsidian/15 bg-white px-4 py-3 text-obsidian outline-none focus:border-gold" />
+              <input value={globalDiscountForm.expiresAt} onChange={(event) => updateGlobalDiscountField('expiresAt', event.target.value)} type="date" placeholder="Expiration Date (optional)" className="w-full rounded-2xl border border-obsidian/15 bg-white px-4 py-3 text-obsidian outline-none focus:border-gold" />
               <label className="flex items-center gap-3 text-sm font-bold uppercase tracking-[0.2em]"><input type="checkbox" checked={globalDiscountForm.isActive} onChange={(event) => updateGlobalDiscountField('isActive', event.target.checked)} /> Active</label>
               <button disabled={saving} className="flex w-full items-center justify-center gap-2 rounded-full bg-obsidian px-6 py-4 text-sm font-bold uppercase tracking-[0.25em] text-ivory transition hover:bg-gold hover:text-obsidian disabled:opacity-60">{saving ? 'Saving...' : 'Save Global Discount'}</button>
               {message && <p className="text-center text-sm font-bold text-gold">{message}</p>}

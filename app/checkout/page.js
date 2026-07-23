@@ -22,6 +22,10 @@ export default function CheckoutPage() {
     postalCode: ''
   });
   const [waistSizes, setWaistSizes] = useState({});
+  const [customMeasurements, setCustomMeasurements] = useState({
+    waist: '',
+    length: ''
+  });
   const [currentUser, setCurrentUser] = useState(null);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [couponCode, setCouponCode] = useState('');
@@ -117,7 +121,8 @@ export default function CheckoutPage() {
             phone: formData.phone,
             address: formData.address,
             city: formData.city,
-            postalCode: formData.postalCode
+            postalCode: formData.postalCode,
+            customMeasurements: customMeasurements
           }
         })
       });
@@ -294,6 +299,33 @@ export default function CheckoutPage() {
                   </div>
                 </div>
               </div>
+
+              {/* Custom Measurements Section */}
+              <div className="rounded-[2rem] bg-surface p-7">
+                <h2 className="font-display text-3xl mb-6">Custom Measurements (Optional)</h2>
+                <p className="text-sm text-ivory/60 mb-4">Provide your custom measurements for a perfect fit</p>
+                <div className="grid gap-4 md:grid-cols-2">
+                  <div>
+                    <label className="mb-2 block text-sm font-bold uppercase tracking-[0.22em] text-ivory/70">Waist (inches)</label>
+                    <input
+                      value={customMeasurements.waist}
+                      onChange={(e) => setCustomMeasurements(prev => ({ ...prev, waist: e.target.value }))}
+                      placeholder="e.g., 32"
+                      className="w-full rounded-2xl border border-ivory/10 bg-ivory px-4 py-3 text-obsidian placeholder:text-obsidian/45 outline-none transition focus:border-gold focus:ring-2 focus:ring-gold/30"
+                    />
+                  </div>
+                  <div>
+                    <label className="mb-2 block text-sm font-bold uppercase tracking-[0.22em] text-ivory/70">Length (inches)</label>
+                    <input
+                      value={customMeasurements.length}
+                      onChange={(e) => setCustomMeasurements(prev => ({ ...prev, length: e.target.value }))}
+                      placeholder="e.g., 40"
+                      className="w-full rounded-2xl border border-ivory/10 bg-ivory px-4 py-3 text-obsidian placeholder:text-obsidian/45 outline-none transition focus:border-gold focus:ring-2 focus:ring-gold/30"
+                    />
+                  </div>
+                </div>
+              </div>
+
               {message && <p className="rounded-2xl bg-red-500/10 px-4 py-3 text-center text-sm font-bold text-red-200">{message}</p>}
               <button disabled={loading} onClick={handleProceedToConfirmation} className="w-full rounded-full bg-gold px-6 py-4 text-sm font-bold uppercase tracking-[0.25em] text-obsidian transition hover:bg-ivory disabled:opacity-60">
                 {loading ? 'Processing...' : 'Proceed to Confirmation'}
