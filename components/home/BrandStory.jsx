@@ -48,7 +48,7 @@ export default function BrandStory() {
 </div>
         <div className="relative lg:border-l lg:border-gold/50 lg:pl-12">
           <p className="text-sm font-bold uppercase tracking-[0.3em] text-gold">Our Essence</p>
-          <h2 className="mt-4 font-display text-black text-6xl leading-none">Born from Tradition. Designed for Today.</h2>
+          <h2 className="mt-4 font-display text-black text-3xl md:text-6xl leading-none">Born from Tradition. Designed for Today.</h2>
           <p className="mt-6 leading-8 text-black">MAKHSOOS was created for man who seek clothing with presence: pieces that honor Pakistani craft while feeling unmistakably modern.</p>
           <p className="mt-4 leading-8 text-black">Every silhouette is considered, every fabric selected with care, and every detail refined until it feels worthy of your most memorable days.</p>
           <div className="mt-10 grid grid-cols-3 gap-5">{stats.map((stat) => <div key={stat.label}><p className="font-display text-4xl text-gold"><Counter value={stat.value} /></p><p className="mt-2 text-xs uppercase tracking-[0.2em] text-muted">{stat.label}</p></div>)}</div>

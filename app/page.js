@@ -34,7 +34,7 @@ export default async function Home() {
       <LookbookStrip items={lookbookItems} />
       <Testimonials />
       <TikTokFeed />
-      <Newsletter />
+      {/* <Newsletter /> */}
       <Footer />
     </>
   );

@@ -31,7 +31,7 @@ export default function MyOrdersPage() {
     return (
       <>
         <Navbar />
-        <main className="min-h-screen bg-obsidian pt-28 text-ivory">
+        <main className="min-h-screen bg-ivory pt-28 text-obsidian">
           <section className="luxury-container py-16">
             <p>Loading...</p>
           </section>
@@ -44,7 +44,7 @@ export default function MyOrdersPage() {
   return (
     <>
       <Navbar />
-      <main className="min-h-screen bg-obsidian pt-28 text-ivory">
+      <main className="min-h-screen bg-ivory pt-28 text-obsidian">
         <section className="luxury-container py-16">
           <div className="mb-10">
             <p className="text-sm font-bold uppercase tracking-[0.35em] text-gold">Your Orders</p>
@@ -52,12 +52,12 @@ export default function MyOrdersPage() {
           </div>
 
           {orders.length === 0 ? (
-            <div className="rounded-[2rem] bg-surface p-12 text-center">
-              <Package size={64} className="mx-auto mb-6 text-ivory/30" />
-              <p className="text-xl text-ivory/70 mb-6">You haven&apos;t placed any orders yet.</p>
+            <div className="rounded-[2rem] bg-white p-12 text-center shadow-lg border border-gold/20">
+              <Package size={64} className="mx-auto mb-6 text-obsidian/30" />
+              <p className="text-xl text-obsidian/70 mb-6">You haven&apos;t placed any orders yet.</p>
               <a
                 href="/shop"
-                className="inline-block rounded-full bg-gold px-8 py-4 text-sm font-bold uppercase tracking-[0.25em] text-obsidian transition hover:bg-ivory"
+                className="inline-block rounded-full bg-gold px-8 py-4 text-sm font-bold uppercase tracking-[0.25em] text-white transition hover:bg-obsidian"
               >
                 Start Shopping
               </a>
@@ -65,13 +65,13 @@ export default function MyOrdersPage() {
           ) : (
             <div className="space-y-6">
               {orders.map((order, index) => (
-                <div key={order.id || index} className="rounded-[2rem] bg-surface p-6 md:p-8">
+                <div key={order.id || index} className="rounded-[2rem] bg-white p-6 md:p-8 shadow-lg border border-gold/20">
                   {/* Order Header */}
-                  <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-ivory/10 pb-6 mb-6">
+                  <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-obsidian/10 pb-6 mb-6">
                     <div className="flex items-center gap-3">
-                      <Package size={24} className="text-gold" />
+                      <div className="rounded-full bg-gradient-to-br from-gold to-amber-600 p-3 text-white shadow-lg"><Package size={24} /></div>
                       <div>
-                        <p className="text-xs font-bold uppercase tracking-[0.22em] text-ivory/60">Order Number</p>
+                        <p className="text-xs font-bold uppercase tracking-[0.22em] text-obsidian/60">Order Number</p>
                         <p className="mt-1 font-display text-2xl text-gold">{order.id}</p>
                       </div>
                     </div>
@@ -80,7 +80,7 @@ export default function MyOrdersPage() {
                         {order.status}
                       </div>
                       <div className="text-right">
-                        <p className="text-xs font-bold uppercase tracking-[0.22em] text-ivory/60">Total</p>
+                        <p className="text-xs font-bold uppercase tracking-[0.22em] text-obsidian/60">Total</p>
                         <p className="mt-1 font-display text-xl text-gold">{formatPrice(order.total)}</p>
                       </div>
                     </div>
@@ -94,10 +94,10 @@ export default function MyOrdersPage() {
                     </h3>
                     <div className="space-y-3">
                       {order.items?.map((item, itemIndex) => (
-                        <div key={itemIndex} className="flex justify-between gap-4 pb-3 border-b border-ivory/10 last:border-0">
+                        <div key={itemIndex} className="flex justify-between gap-4 pb-3 border-b border-obsidian/10 last:border-0">
                           <div className="flex-1">
                             <h4 className="font-semibold text-lg">{item.name}</h4>
-                            <p className="text-sm text-ivory/60 mt-1">
+                            <p className="text-sm text-obsidian/60 mt-1">
                               Size: {item.size} · Qty: {item.quantity}
                               {item.waistSize && ` · Waist: ${item.waistSize}`}
                             </p>
@@ -110,68 +110,68 @@ export default function MyOrdersPage() {
 
                   {/* Order Details */}
                   <div className="grid gap-4 md:grid-cols-2">
-                    <div className="bg-ivory/5 rounded-2xl p-5">
+                    <div className="bg-ivory/50 rounded-2xl p-5 border border-obsidian/10">
                       <h3 className="font-bold text-gold mb-4 flex items-center gap-2">
                         <MapPin size={18} />
                         Shipping Information
                       </h3>
                       <div className="space-y-3 text-sm">
                         <div className="flex items-start gap-3">
-                          <User size={16} className="text-ivory/60 mt-0.5" />
+                          <User size={16} className="text-obsidian/60 mt-0.5" />
                           <div>
-                            <p className="text-ivory/60 text-xs uppercase tracking-wider">Name</p>
+                            <p className="text-obsidian/60 text-xs uppercase tracking-wider">Name</p>
                             <p className="font-semibold">{order.shippingAddress?.name}</p>
                           </div>
                         </div>
                         <div className="flex items-start gap-3">
-                          <Mail size={16} className="text-ivory/60 mt-0.5" />
+                          <Mail size={16} className="text-obsidian/60 mt-0.5" />
                           <div>
-                            <p className="text-ivory/60 text-xs uppercase tracking-wider">Email</p>
+                            <p className="text-obsidian/60 text-xs uppercase tracking-wider">Email</p>
                             <p className="font-semibold">{order.shippingAddress?.email}</p>
                           </div>
                         </div>
                         <div className="flex items-start gap-3">
-                          <Phone size={16} className="text-ivory/60 mt-0.5" />
+                          <Phone size={16} className="text-obsidian/60 mt-0.5" />
                           <div>
-                            <p className="text-ivory/60 text-xs uppercase tracking-wider">Phone</p>
+                            <p className="text-obsidian/60 text-xs uppercase tracking-wider">Phone</p>
                             <p className="font-semibold">{order.shippingAddress?.phone}</p>
                           </div>
                         </div>
                         <div className="flex items-start gap-3">
-                          <MapPin size={16} className="text-ivory/60 mt-0.5" />
+                          <MapPin size={16} className="text-obsidian/60 mt-0.5" />
                           <div>
-                            <p className="text-ivory/60 text-xs uppercase tracking-wider">Address</p>
+                            <p className="text-obsidian/60 text-xs uppercase tracking-wider">Address</p>
                             <p className="font-semibold">{order.shippingAddress?.address}, {order.shippingAddress?.city}</p>
                           </div>
                         </div>
                       </div>
                     </div>
-                    <div className="bg-ivory/5 rounded-2xl p-5">
+                    <div className="bg-ivory/50 rounded-2xl p-5 border border-obsidian/10">
                       <h3 className="font-bold text-gold mb-4 flex items-center gap-2">
                         <Calendar size={18} />
                         Order Details
                       </h3>
                       <div className="space-y-3 text-sm">
                         <div className="flex items-start gap-3">
-                          <Calendar size={16} className="text-ivory/60 mt-0.5" />
+                          <Calendar size={16} className="text-obsidian/60 mt-0.5" />
                           <div>
-                            <p className="text-ivory/60 text-xs uppercase tracking-wider">Order Date</p>
+                            <p className="text-obsidian/60 text-xs uppercase tracking-wider">Order Date</p>
                             <p className="font-semibold">{new Date(order.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
                           </div>
                         </div>
                         {order.discount > 0 && (
-                          <div className="flex items-center justify-between py-2 border-b border-ivory/10">
-                            <span className="text-ivory/60">Discount</span>
-                            <span className="font-bold text-green-400">{formatPrice(order.discount)}</span>
+                          <div className="flex items-center justify-between py-2 border-b border-obsidian/10">
+                            <span className="text-obsidian/60">Discount</span>
+                            <span className="font-bold text-green-600">{formatPrice(order.discount)}</span>
                           </div>
                         )}
                         {order.couponCode && (
-                          <div className="flex items-center justify-between py-2 border-b border-ivory/10">
-                            <span className="text-ivory/60">Coupon Code</span>
+                          <div className="flex items-center justify-between py-2 border-b border-obsidian/10">
+                            <span className="text-obsidian/60">Coupon Code</span>
                             <span className="font-bold text-gold">{order.couponCode}</span>
                           </div>
                         )}
-                        <div className="flex items-center justify-between py-2 bg-ivory/10 rounded-lg px-3 mt-2">
+                        <div className="flex items-center justify-between py-2 bg-gold/10 rounded-lg px-3 mt-2">
                           <span className="font-bold">Total Paid</span>
                           <span className="font-bold text-gold text-lg">{formatPrice(order.total)}</span>
                         </div>

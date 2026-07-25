@@ -38,16 +38,16 @@ export default function HeroBanner() {
 
   return (
     <section onMouseEnter={() => { paused.current = true; }} onMouseLeave={() => { paused.current = false; }} className="relative h-screen overflow-hidden bg-ivory">
-      {/* Mobile Background Video */}
+      {/* Mobile & Laptop Background Video */}
       {heroVideo && (
-        <div className="absolute inset-0 z-0 md:hidden">
+        <div className="absolute inset-0 z-0 xl:hidden">
           <video
             src={heroVideo}
             autoPlay
             loop
             muted
             playsInline
-            className="h-full w-full object-cover md:opacity-50"
+            className="h-full w-full object-cover xl:opacity-50"
           />
           <div className="absolute inset-0 bg-black/50" />
         </div>
@@ -57,16 +57,16 @@ export default function HeroBanner() {
         <AnimatePresence mode="wait">
           <motion.div key={slide.headline} initial="hidden" animate="visible" exit="hidden" variants={{ visible: { transition: { staggerChildren: 0.16 } } }} className="max-w-3xl">
             <motion.p variants={{ hidden: { opacity: 0, y: 24 }, visible: { opacity: 1, y: 0 } }} className="mb-5 text-sm font-bold uppercase tracking-[0.35em] text-gold">MAKHSOOS Atelier</motion.p>
-            <motion.h1 variants={{ hidden: { opacity: 0, y: 34 }, visible: { opacity: 1, y: 0 } }} className="font-display text-6xl leading-[0.95] text-white md:text-black md:text-7xl  md:w-[45vw]">{slide.headline}</motion.h1>
-            <motion.p variants={{ hidden: { opacity: 0, y: 34 }, visible: { opacity: 1, y: 0 } }} className="mt-6 max-w-xl text-lg text-white md:text-black md:text-2xl">{slide.sub}</motion.p>
-            <motion.div variants={{ hidden: { opacity: 0, y: 34 }, visible: { opacity: 1, y: 0 } }} className="mt-10 flex flex-wrap gap-4"><Button href="/collections">{slide.cta}</Button><Button className='text-yellow-600 md:text-yellow-900  ' href="/lookbook" variant="outline">View Lookbook</Button></motion.div>
+            <motion.h1 variants={{ hidden: { opacity: 0, y: 34 }, visible: { opacity: 1, y: 0 } }} className="font-display text-6xl leading-[0.95] text-white xl:text-black xl:text-7xl xl:w-[45vw]">{slide.headline}</motion.h1>
+            <motion.p variants={{ hidden: { opacity: 0, y: 34 }, visible: { opacity: 1, y: 0 } }} className="mt-6 max-w-xl text-lg text-white xl:text-black xl:text-2xl">{slide.sub}</motion.p>
+            <motion.div variants={{ hidden: { opacity: 0, y: 34 }, visible: { opacity: 1, y: 0 } }} className="mt-10 flex flex-wrap gap-4"><Button href="/collections">{slide.cta}</Button><Button className='text-yellow-600 xl:text-yellow-900' href="/lookbook" variant="outline">View Lookbook</Button></motion.div>
           </motion.div>
         </AnimatePresence>
       </div>
       
-      {/* Desktop Right Side Video */}
+      {/* Computer Right Side Video */}
       {heroVideo && (
-        <div className="absolute right-0 top-0 hidden h-full w-1/2 md:block">
+        <div className="absolute right-0 top-0 hidden h-full w-1/2 xl:block">
           <video
             src={heroVideo}
             autoPlay

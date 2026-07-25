@@ -13,6 +13,7 @@ function formatDate(date) {
 
 export default async function ProfilePage() {
   const currentUser = await getCurrentUser();
+  // throw new Error("Testing custom error page!");
 
   if (!currentUser) {
     redirect('/login');
@@ -38,7 +39,7 @@ export default async function ProfilePage() {
   return (
     <>
       <Navbar />
-      <main className="min-h-screen bg-obsidian pt-28 text-ivory">
+      <main className="min-h-screen bg-ivory pt-28 text-obsidian">
         <section className="luxury-container py-16">
           <div className="mb-10">
             <p className="text-sm font-bold uppercase tracking-[0.35em] text-gold">My Account</p>
@@ -46,12 +47,12 @@ export default async function ProfilePage() {
           </div>
           <div className="grid gap-8 lg:grid-cols-[380px_1fr]">
             <aside className="space-y-6">
-              <div className="rounded-[2rem] bg-surface p-7">
-                <div className="flex h-20 w-20 items-center justify-center rounded-full bg-gold text-3xl font-bold text-obsidian">{currentUser.name.charAt(0).toUpperCase() || 'U'}</div>
+              <div className="rounded-[2rem] bg-white p-7 shadow-lg border border-gold/20">
+                <div className="flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-gold to-amber-600 text-3xl font-bold text-white shadow-xl">{currentUser.name.charAt(0).toUpperCase() || 'U'}</div>
                 <h2 className="mt-6 font-display text-4xl">{currentUser.name}</h2>
-                <p className="mt-1 text-ivory/60">{currentUser.user === 1 ? 'Admin Account' : 'Customer Account'}</p>
+                <p className="mt-1 text-obsidian/60">{currentUser.user === 1 ? 'Admin Account' : 'Customer Account'}</p>
               </div>
-              <div className="rounded-[2rem] bg-ivory p-7 text-obsidian">
+              <div className="rounded-[2rem] bg-white p-7 shadow-lg border border-gold/20">
                 <h3 className="font-display text-3xl">Account Information</h3>
                 <div className="mt-6 space-y-5">
                   <div className="flex gap-4"><User className="text-gold" size={22} /><div><p className="text-xs font-bold uppercase tracking-[0.22em] text-obsidian/50">Name</p><p className="font-semibold">{currentUser.name}</p></div></div>
@@ -61,28 +62,28 @@ export default async function ProfilePage() {
                 </div>
               </div>
             </aside>
-            <section className="rounded-[2rem] bg-surface p-7">
-              <div className="flex items-center justify-between gap-4 border-b border-ivory/10 pb-6">
+            <section className="rounded-[2rem] bg-white p-7 shadow-lg border border-gold/20">
+              <div className="flex items-center justify-between gap-4 border-b border-obsidian/10 pb-6">
                 <div>
                   <p className="text-sm font-bold uppercase tracking-[0.3em] text-gold">Purchases</p>
                   <h2 className="mt-2 font-display text-5xl">Order History</h2>
                 </div>
-                <div className="rounded-full bg-ivory/10 px-5 py-3 text-sm font-bold text-gold">{ordersWithProductIds.length} Orders</div>
+                <div className="rounded-full bg-gold/10 px-5 py-3 text-sm font-bold text-gold border border-gold/30">{ordersWithProductIds.length} Orders</div>
               </div>
               <div className="mt-8 space-y-5">
                 {ordersWithProductIds.map((order) => (
-                  <article key={order.id} className="rounded-[1.5rem] border border-ivory/10 bg-obsidian/60 p-6">
+                  <article key={order.id} className="rounded-[1.5rem] border border-obsidian/10 bg-ivory/50 p-6">
                     <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
-                      <div className="flex items-center gap-4"><div className="rounded-full bg-gold p-3 text-obsidian"><Package size={22} /></div><div><h3 className="font-display text-3xl">Order {order.id}</h3><p className="text-sm text-ivory/60">{formatDate(order.createdAt)}</p></div></div>
+                      <div className="flex items-center gap-4"><div className="rounded-full bg-gradient-to-br from-gold to-amber-600 p-3 text-white shadow-lg"><Package size={22} /></div><div><h3 className="font-display text-3xl">Order {order.id}</h3><p className="text-sm text-obsidian/60">{formatDate(order.createdAt)}</p></div></div>
                       <div className="text-left md:text-right"><p className="text-sm font-bold uppercase tracking-[0.2em] text-gold">{order.status}</p><p className="mt-1 text-xl font-bold">{formatPrice(order.total)}</p></div>
                     </div>
-                    <div className="mt-6 divide-y divide-ivory/10">
+                    <div className="mt-6 divide-y divide-obsidian/10">
                       {order.items.map((item) => (
                         <div key={`${order.id}-${item.name}-${item.size}`} className="flex items-center justify-between gap-4 py-3 text-sm">
-                          <div><p className="font-semibold">{item.name}</p><p className="text-ivory/50">Size {item.size} · Qty {item.quantity}</p></div>
+                          <div><p className="font-semibold">{item.name}</p><p className="text-obsidian/50">Size {item.size} · Qty {item.quantity}</p></div>
                           <div className="flex items-center gap-4">
                             {order.status?.toLowerCase() === 'delivered' && (
-                              <a href={item.productId ? `/products/${item.productId}` : '#'} className="flex items-center gap-2 rounded-full bg-gold px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-obsidian transition hover:bg-ivory hover:text-obsidian">
+                              <a href={item.productId ? `/products/${item.productId}` : '#'} className="flex items-center gap-2 rounded-full bg-gold px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-white transition hover:bg-obsidian hover:text-white">
                                 <Star size={14} fill="currentColor" />
                                 Review
                               </a>

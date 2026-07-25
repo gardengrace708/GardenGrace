@@ -10,7 +10,7 @@ export default function FeaturedCollections({ collections = [] }) {
   return (
     <section className="bg-obsidian py-24">
       <div className="luxury-container">
-        <div className="mb-14 flex items-center justify-center gap-6"><span className="h-px w-20 bg-gold/50" /><h2 className="text-center font-display text-6xl">The Collections</h2><span className="h-px w-20 bg-gold/50" /></div>
+        <div className="mb-14 flex items-center justify-center gap-6"><span className="h-px w-20 bg-gold/50" /><h2 className="text-center font-display text-3xl md:text-6xl">The Collections</h2><span className="h-px w-20 bg-gold/50" /></div>
         <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.25 }} variants={stagger} className="grid gap-6 md:grid-cols-2 md:grid-rows-2">
           {collections.map((collection, index) => (
             <motion.div key={collection.slug} variants={fadeUp} className={index === 0 ? 'md:row-span-2' : ''}>
