@@ -4,13 +4,16 @@ import { useEffect } from 'react';
 import Link from 'next/link';
 import { RefreshCw, ShoppingBag } from 'lucide-react';
 
-export default function Error({
-  error,
-  reset,
-}) {
+export default function Error({ error, reset }) {
   useEffect(() => {
     console.error(error);
   }, [error]);
+
+  // Hard reload function
+  const handleHardReload = () => {
+    reset();
+    window.location.reload();
+  };
 
   return (
     <div className="min-h-screen bg-obsidian flex items-center justify-center px-4">
@@ -39,7 +42,7 @@ export default function Error({
         {/* Action Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
           <button
-            onClick={() => reset()}
+            onClick={handleHardReload}
             className="flex items-center gap-2 rounded-full bg-gold px-8 py-4 text-sm font-bold uppercase tracking-[0.25em] text-obsidian transition hover:bg-ivory hover:text-obsidian"
           >
             <RefreshCw size={18} />
