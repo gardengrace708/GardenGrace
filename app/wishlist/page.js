@@ -16,12 +16,12 @@ export default function WishlistPage() {
     return (
       <>
         <Navbar />
-        <main className="min-h-screen bg-obsidian pt-28 text-ivory">
+        <main className="min-h-screen bg-pink-800 pt-28 text-ivory">
           <section className="luxury-container flex flex-col items-center justify-center py-16">
             <Heart size={64} className="mb-6 text-ivory/30" />
-            <h1 className="font-display text-5xl mb-4">Your wishlist is empty</h1>
+            <h1 className="font-display text-4xl text-pink-100 mb-4">Your wishlist is empty</h1>
             <p className="text-ivory/60 mb-8">Save your favorite items for later</p>
-            <Link href="/collections" className="rounded-full bg-gold px-8 py-4 text-sm font-bold uppercase tracking-[0.25em] text-obsidian transition hover:bg-ivory">
+            <Link href="/collections" className="rounded-full bg-pink-300 px-8 py-4 text-sm font-bold uppercase tracking-[0.25em] text-obsidian transition hover:bg-ivory">
               Explore Collections
             </Link>
           </section>
