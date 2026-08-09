@@ -48,12 +48,12 @@ export default function Error({ error, reset }) {
             <RefreshCw size={18} />
             Try Again
           </button>
-          <Link
+          {/* <Link
             href="/"
             className="rounded-full border border-gold/40 px-8 py-4 text-sm font-bold uppercase tracking-[0.25em] text-gold transition hover:bg-gold hover:text-obsidian"
           >
             Go to Home
-          </Link>
+          </Link> */}
         </div>
 
         {/* Decorative Elements */}
