@@ -88,6 +88,11 @@ export default function ProductDetail({ product, related }) {
     <main className="bg-ivory pt-32 text-obsidian">
       <section className="luxury-container grid gap-12 pb-20 lg:grid-cols-2">
         <div>
+          {product.video && (
+            <div className="mb-4 rounded-2xl overflow-hidden border border-obsidian/10">
+              <video src={product.video} controls className="w-full" style={{ maxHeight: '400px' }} />
+            </div>
+          )}
           <div className="relative aspect-[4/5] overflow-hidden bg-stone-900"><Image src={main} alt={product.name} fill priority sizes="50vw" className="object-cover" /></div>
           <div className="mt-4 grid grid-cols-4 gap-3">{product.images.map((image) => <button key={image} onClick={() => setMain(image)} className={`relative aspect-square overflow-hidden border ${main === image ? 'border-gold' : 'border-transparent'}`}><Image src={image} alt={product.name} fill sizes="120px" className="object-cover" /></button>)}</div>
         </div>

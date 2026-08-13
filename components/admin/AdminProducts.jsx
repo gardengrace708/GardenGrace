@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import Image from 'next/image';
-import { Edit3, Eye, ImagePlus, Package, Percent, Plus, Save, ShoppingBag, Tag, Trash2, Users, X } from 'lucide-react';
+import { Edit3, Eye, ImagePlus, Package, Percent, Plus, Save, ShoppingBag, Tag, Trash2, Users, X, Video } from 'lucide-react';
 import { formatPrice } from '@/lib/utils';
 
 const emptyForm = {
@@ -11,6 +11,7 @@ const emptyForm = {
   price: '',
   badge: 'NEW',
   images: '/images/man.jpg',
+  video: '',
   slug: '',
   quantity: 10,
   description: '',
@@ -333,6 +334,59 @@ export default function AdminProducts({ initialProducts, initialOrders = [], ini
     }
   }
 
+  async function uploadProductVideo(event) {
+    const file = event.target.files?.[0];
+
+    if (!file) return;
+
+    setUploading(true);
+    setMessage('');
+
+    try {
+      // Get upload parameters from our API
+      const paramsResponse = await fetch('/api/upload-video', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ filename: file.name })
+      });
+      const params = await paramsResponse.json();
+
+      if (!paramsResponse.ok) {
+        throw new Error(params.message || 'Failed to get upload parameters');
+      }
+
+      // Upload directly to Cloudinary to bypass Vercel limits
+      const uploadFormData = new FormData();
+      uploadFormData.append('file', file);
+      uploadFormData.append('api_key', params.apiKey);
+      uploadFormData.append('timestamp', String(params.timestamp));
+      uploadFormData.append('folder', params.folder);
+      uploadFormData.append('signature', params.signature);
+      uploadFormData.append('resource_type', params.resource_type);
+
+      const uploadResponse = await fetch(
+        `https://api.cloudinary.com/v1_1/${params.cloudName}/video/upload`,
+        {
+          method: 'POST',
+          body: uploadFormData
+        }
+      );
+      const uploadData = await uploadResponse.json();
+
+      if (!uploadResponse.ok) {
+        throw new Error(uploadData?.error?.message || 'Video upload failed');
+      }
+
+      updateField('video', uploadData.secure_url);
+      setMessage('Product video upload ho gayi');
+    } catch (error) {
+      setMessage(error.message);
+    } finally {
+      setUploading(false);
+      event.target.value = '';
+    }
+  }
+
   async function saveSiteContent(event) {
     event.preventDefault();
     setSaving(true);
@@ -615,6 +669,15 @@ export default function AdminProducts({ initialProducts, initialOrders = [], ini
                 </label>
                 <input value={form.images} onChange={(event) => updateField('images', event.target.value)} required placeholder="Image URLs comma separated" className="mt-3 w-full rounded-2xl border border-obsidian/15 bg-white px-4 py-3 text-obsidian outline-none focus:border-gold" />
                 {getImageList().length > 0 && <div className="mt-4 grid grid-cols-3 gap-3">{getImageList().map((image) => <div key={image} className="relative h-24 overflow-hidden rounded-2xl border border-obsidian/10 bg-white"><Image src={image} alt="Product preview" fill sizes="120px" className="object-cover" /><button type="button" onClick={() => removeImage(image)} className="absolute right-2 top-2 rounded-full bg-obsidian p-1 text-ivory"><X size={14} /></button></div>)}</div>}
+              </div>
+              <div className="rounded-2xl border border-obsidian/15 p-4">
+                <label className="flex cursor-pointer items-center justify-center gap-2 rounded-full bg-obsidian px-5 py-3 text-sm font-bold uppercase tracking-[0.2em] text-ivory transition hover:bg-gold hover:text-obsidian">
+                  <Video size={18} />
+                  {uploading ? 'Uploading...' : 'Upload Product Video'}
+                  <input type="file" accept="video/*" disabled={uploading} onChange={uploadProductVideo} className="hidden" />
+                </label>
+                <input value={form.video} onChange={(event) => updateField('video', event.target.value)} placeholder="Video URL (optional)" className="mt-3 w-full rounded-2xl border border-obsidian/15 bg-white px-4 py-3 text-obsidian outline-none focus:border-gold" />
+                {form.video && <div className="mt-4"><video src={form.video} controls className="w-full rounded-2xl border border-obsidian/10" style={{ maxHeight: '200px' }} /></div>}
               </div>
               <textarea value={form.description} onChange={(event) => updateField('description', event.target.value)} required placeholder="Description" rows={5} className="w-full rounded-2xl border border-obsidian/15 bg-white px-4 py-3 text-obsidian outline-none focus:border-gold" />
               <div>
