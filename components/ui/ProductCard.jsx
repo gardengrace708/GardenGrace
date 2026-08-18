@@ -19,7 +19,7 @@ function ImageLayer({ src, alt, className }) {
   );
 }
 
-export default function ProductCard({ product }) {
+export default function ProductCard({ product, className = '' }) {
   const cart = useCart();
   const wishlist = useWishlist();
   const wished = wishlist?.isWishlisted(product.id);
@@ -44,7 +44,7 @@ export default function ProductCard({ product }) {
   const averageRating = reviews.length > 0 ? (reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1) : null;
 
   return (
-    <motion.article whileHover={{ y: -4 }} className="group relative">
+    <motion.article whileHover={{ y: -4 }} className={`group relative ${className}`}>
       <NavLink href={`/products/${product.id}`} className="block">
         <div className="relative aspect-[3/4] overflow-hidden bg-gradient-to-br from-stone-800 to-stone-950">
           <ImageLayer src={product.images[0]} alt={product.name} className="opacity-100 transition duration-700 group-hover:opacity-0" />
@@ -61,7 +61,7 @@ export default function ProductCard({ product }) {
       <div className="mt-4 flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
         <div>
           <p className="text-[10px] sm:text-xs uppercase tracking-[0.18em] text-muted">{product.category}</p>
-          <h3 className="mt-1 text-black font-display text-base sm:text-xl lg:text-2xl  break-words">{product.name}</h3>
+          <h3 className="mt-1 font-display text-base sm:text-xl lg:text-2xl break-words text-current">{product.name}</h3>
           {averageRating && (
             <div className="mt-2 flex items-center gap-1">
               <div className="flex">

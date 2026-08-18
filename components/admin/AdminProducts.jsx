@@ -18,7 +18,8 @@ const emptyForm = {
   characteristics: '',
   colors: '',
   availableSizes: '',
-  allowCustomMeasurements: false
+  allowCustomMeasurements: false,
+  colorImages: '{}'
 };
 
 const emptyCollectionForm = {
@@ -690,6 +691,59 @@ export default function AdminProducts({ initialProducts, initialOrders = [], ini
                 <input value={form.colors} onChange={(event) => updateField('colors', event.target.value)} placeholder="Black, White, Red, Blue" className="w-full rounded-2xl border border-obsidian/15 bg-white px-4 py-3 text-obsidian outline-none focus:border-gold" />
                 <p className="mt-1 text-xs text-obsidian/60">Available colors for this product</p>
               </div>
+              {getImageList().length > 0 && (
+                <div className="rounded-2xl border border-obsidian/15 p-4">
+                  <label className="mb-3 block text-sm font-bold uppercase tracking-[0.2em]">Map Images to Colors</label>
+                  <p className="mb-4 text-xs text-obsidian/60">Assign specific images to each color. When user selects a color, only mapped images will show.</p>
+                  {(() => {
+                    const colorList = String(form.colors || '').split(',').map((c) => c.trim()).filter(Boolean);
+                    const imageList = getImageList();
+                    let colorImagesObj = {};
+                    try {
+                      colorImagesObj = JSON.parse(form.colorImages || '{}');
+                    } catch (e) {
+                      colorImagesObj = {};
+                    }
+
+                    const updateColorImages = (color, selectedImages) => {
+                      colorImagesObj[color] = selectedImages;
+                      updateField('colorImages', JSON.stringify(colorImagesObj));
+                    };
+
+                    if (colorList.length === 0) {
+                      return <p className="text-sm text-obsidian/60">Add colors first to map images</p>;
+                    }
+
+                    return colorList.map((color) => (
+                      <div key={color} className="mb-4 last:mb-0">
+                        <label className="mb-2 block text-sm font-semibold text-obsidian">{color}</label>
+                        <div className="grid grid-cols-4 gap-2">
+                          {imageList.map((image) => {
+                            const isSelected = (colorImagesObj[color] || []).includes(image);
+                            return (
+                              <div
+                                key={image}
+                                onClick={() => {
+                                  const currentImages = colorImagesObj[color] || [];
+                                  if (isSelected) {
+                                    updateColorImages(color, currentImages.filter((img) => img !== image));
+                                  } else {
+                                    updateColorImages(color, [...currentImages, image]);
+                                  }
+                                }}
+                                className={`relative aspect-square cursor-pointer overflow-hidden rounded-xl border-2 ${isSelected ? 'border-gold' : 'border-obsidian/20 hover:border-obsidian/40'}`}
+                              >
+                                <Image src={image} alt={color} fill sizes="80px" className="object-cover" />
+                                {isSelected && <div className="absolute inset-0 flex items-center justify-center bg-gold/20"><span className="rounded-full bg-gold px-2 py-1 text-xs font-bold text-obsidian">✓</span></div>}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    ));
+                  })()}
+                </div>
+              )}
               <div>
                 <label className="mb-2 block text-sm font-bold uppercase tracking-[0.2em]">Available Sizes (comma separated)</label>
                 <input value={form.availableSizes} onChange={(event) => updateField('availableSizes', event.target.value)} placeholder="XS, S, M, L, XL" className="w-full rounded-2xl border border-obsidian/15 bg-white px-4 py-3 text-obsidian outline-none focus:border-gold" />

@@ -23,6 +23,23 @@ export default function ProductDetail({ product, related }) {
   const [reviewMessage, setReviewMessage] = useState('');
   const [user, setUser] = useState(null);
 
+  // Get the main image for the selected color
+  const getMainImageForColor = (selectedColor) => {
+    if (product.colorImages && product.colorImages[selectedColor] && product.colorImages[selectedColor].length > 0) {
+      return product.colorImages[selectedColor][0];
+    }
+    // Fallback to first image if no mapping exists
+    return product.images[0];
+  };
+
+  // Update main image when color changes
+  useEffect(() => {
+    const mainImageForColor = getMainImageForColor(color);
+    if (mainImageForColor) {
+      setMain(mainImageForColor);
+    }
+  }, [color]);
+
   useEffect(() => {
     fetch('/api/global-discount/status')
       .then((res) => res.json())
@@ -231,7 +248,7 @@ export default function ProductDetail({ product, related }) {
         </div>
       </section>
 
-      <section className="bg-obsidian py-20 text-ivory"><div className="luxury-container"><h2 className="mb-10 font-display text-6xl">Related Pieces</h2><div className="grid grid-cols-2 gap-5 md:grid-cols-4">{related.map((item) => <ProductCard key={item.id} product={item} />)}</div></div></section>
+      <section className="bg-obsidian py-20 text-ivory"><div className="luxury-container"><h2 className="mb-10 font-display text-6xl">Related Pieces</h2><div className="grid grid-cols-2 gap-5 md:grid-cols-4">{related.map((item) => <ProductCard className="text-white" key={item.id} product={item} />)}</div></div></section>
     </main>
   );
 }
