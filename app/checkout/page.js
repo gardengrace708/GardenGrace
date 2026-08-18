@@ -334,27 +334,45 @@ export default function CheckoutPage() {
             <div className="rounded-[2rem] bg-surface p-7 h-fit">
               <h2 className="font-display text-3xl mb-6">Order Summary</h2>
               <div className="space-y-4">
-                {cart.items.map((item) => (
-                  <div key={item.key} className="flex justify-between gap-4 pb-4 border-b border-ivory/10">
-                    <div className="flex-1">
-                      <h3 className="font-semibold">{item.name}</h3>
-                      <p className="text-sm text-ivory/60">
-                        {item.color && `Color: ${item.color} · `}
-                        Size {item.size} · Qty {item.quantity}
-                      </p>
-                      {item.category && (item.category.toLowerCase().includes('pant') || item.category.toLowerCase().includes('trouser')) && (
-                        <input
-                          type="text"
-                          placeholder="Waist size (e.g., 32, 34)"
-                          className="mt-2 w-full rounded-lg border border-ivory/20 bg-ivory/10 px-3 py-2 text-sm text-ivory placeholder:text-ivory/40 outline-none focus:border-gold"
-                          value={waistSizes[item.key] || ''}
-                          onChange={(e) => setWaistSizes(prev => ({ ...prev, [item.key]: e.target.value }))}
-                        />
-                      )}
+                {cart.items.map((item) => {
+                  // Get the image for the selected color
+                  const getImageForColor = () => {
+                    if (item.colorImages && item.colorImages[item.color] && item.colorImages[item.color].length > 0) {
+                      return item.colorImages[item.color][0];
+                    }
+                    return item.images?.[0];
+                  };
+                  const displayImage = getImageForColor();
+
+                  return (
+                    <div key={item.key} className="flex justify-between gap-4 pb-4 border-b border-ivory/10">
+                      <div className="flex gap-4 flex-1">
+                        {displayImage && (
+                          <div className="h-16 w-16 flex-shrink-0 overflow-hidden rounded-xl bg-ivory/10">
+                            <img src={displayImage} alt={item.name} className="h-full w-full object-cover" />
+                          </div>
+                        )}
+                        <div className="flex-1">
+                          <h3 className="font-semibold">{item.name}</h3>
+                          <p className="text-sm text-ivory/60">
+                            {item.color && `Color: ${item.color} · `}
+                            Size {item.size} · Qty {item.quantity}
+                          </p>
+                          {item.category && (item.category.toLowerCase().includes('pant') || item.category.toLowerCase().includes('trouser')) && (
+                            <input
+                              type="text"
+                              placeholder="Waist size (e.g., 32, 34)"
+                              className="mt-2 w-full rounded-lg border border-ivory/20 bg-ivory/10 px-3 py-2 text-sm text-ivory placeholder:text-ivory/40 outline-none focus:border-gold"
+                              value={waistSizes[item.key] || ''}
+                              onChange={(e) => setWaistSizes(prev => ({ ...prev, [item.key]: e.target.value }))}
+                            />
+                          )}
+                        </div>
+                      </div>
+                      <p className="font-bold text-gold">{formatPrice(item.price * item.quantity)}</p>
                     </div>
-                    <p className="font-bold text-gold">{formatPrice(item.price * item.quantity)}</p>
-                  </div>
-                ))}
+                  );
+                })}
                 <div className="space-y-3 pt-4">
                   <div className="flex justify-between">
                     <span>Subtotal</span>

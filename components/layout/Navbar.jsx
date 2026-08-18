@@ -185,11 +185,21 @@ export default function Navbar() {
                   <>
                     <div className="flex-1 text-white  overflow-y-auto p-6">
                       <div className=" space-y-4">
-                        {cart.items.map((item) => (
+                        {cart.items.map((item) => {
+                          // Get the image for the selected color
+                          const getImageForColor = () => {
+                            if (item.colorImages && item.colorImages[item.color] && item.colorImages[item.color].length > 0) {
+                              return item.colorImages[item.color][0];
+                            }
+                            return item.images?.[0];
+                          };
+                          const displayImage = getImageForColor();
+
+                          return (
                           <div key={item.key} className="flex  gap-4 rounded-2xl border border-white/10 bg-black/70 backdrop-blur-md p-4">
-                            {item.images && item.images[0] && (
+                            {displayImage && (
                               <div className="h-20 w-20 flex-shrink-0 overflow-hidden rounded-xl bg-ivory/10">
-                                <img src={item.images[0]} alt={item.name} className="h-full w-full object-cover" />
+                                <img src={displayImage} alt={item.name} className="h-full w-full object-cover" />
                               </div>
                             )}
                             <div className="flex-1">
@@ -216,7 +226,8 @@ export default function Navbar() {
                               <button onClick={() => cart.removeFromCart(item.key)} className="p-1 transition hover:text-red-400"><Trash2 size={16} /></button>
                             </div>
                           </div>
-                        ))}
+                          );
+                        })}
                       </div>
                     </div>
                     <div className="border-t text-yellow-800 bg-black/80 border-ivory/10 p-6">
