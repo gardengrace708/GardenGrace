@@ -31,6 +31,7 @@ export async function PUT(request) {
     // Revalidate home page to reflect changes immediately
     revalidatePath('/');
     revalidatePath('/about');
+    revalidatePath('/admin');
 
     return NextResponse.json({ content });
   } catch (error) {

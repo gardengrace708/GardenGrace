@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import Image from 'next/image';
-import { Edit3, Eye, ImagePlus, Package, Percent, Plus, Save, ShoppingBag, Tag, Trash2, Users, X, Video } from 'lucide-react';
+import { Edit3, Eye, ImagePlus, Package, Percent, Plus, Save, ShoppingBag, Star, Tag, Trash2, Users, X, Video } from 'lucide-react';
 import { formatPrice } from '@/lib/utils';
 
 const emptyForm = {
@@ -60,12 +60,13 @@ function toForm(product) {
   };
 }
 
-export default function AdminProducts({ initialProducts, initialOrders = [], initialUsers = [], initialCollections = [], initialSiteContent = { aboutImage: '/images/about.jpg', heroVideo: '' }, initialLookbookItems = [], initialCoupons = [], initialGlobalDiscount = null }) {
+export default function AdminProducts({ initialProducts, initialOrders = [], initialUsers = [], initialCollections = [], initialSiteContent = { aboutImage: '/images/about.jpg', heroVideo: '', newArrivalsProductIds: [] }, initialLookbookItems = [], initialCoupons = [], initialGlobalDiscount = null }) {
   const [products, setProducts] = useState(initialProducts);
   const [orders, setOrders] = useState(initialOrders);
   const [collections, setCollections] = useState(initialCollections);
   const [lookbookItems, setLookbookItems] = useState(initialLookbookItems);
   const [siteContent, setSiteContent] = useState(initialSiteContent);
+  const [selectedNewArrivals, setSelectedNewArrivals] = useState(initialSiteContent?.newArrivalsProductIds || []);
   const [coupons, setCoupons] = useState(initialCoupons);
   const [globalDiscount, setGlobalDiscount] = useState(initialGlobalDiscount);
   const [form, setForm] = useState(emptyForm);
@@ -110,6 +111,42 @@ export default function AdminProducts({ initialProducts, initialOrders = [], ini
 
   function updateGlobalDiscountField(field, value) {
     setGlobalDiscountForm((current) => ({ ...current, [field]: value }));
+  }
+
+  function toggleNewArrival(productId) {
+    setSelectedNewArrivals((prev) => {
+      if (prev.includes(productId)) {
+        return prev.filter((id) => id !== productId);
+      } else {
+        return [...prev, productId];
+      }
+    });
+  }
+
+  async function saveNewArrivals() {
+    setSaving(true);
+    setMessage('');
+
+    try {
+      const nextContent = { ...siteContent, newArrivalsProductIds: selectedNewArrivals };
+      const response = await fetch('/api/site-content', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(nextContent)
+      });
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || 'New Arrivals save nahi hui');
+      }
+
+      setSiteContent(data.content);
+      setMessage('New Arrivals save ho gayi');
+    } catch (error) {
+      setMessage(error.message);
+    } finally {
+      setSaving(false);
+    }
   }
 
   function getImageList(value = form.images) {
@@ -644,6 +681,7 @@ export default function AdminProducts({ initialProducts, initialOrders = [], ini
             { id: 'products', label: 'Products', icon: Package },
             { id: 'collections', label: 'Collections', icon: ImagePlus },
             { id: 'lookbook', label: 'Lookbook', icon: Eye },
+            { id: 'newArrivals', label: 'New Arrivals', icon: Star },
             { id: 'content', label: 'About Page', icon: Edit3 },
             { id: 'orders', label: 'Orders', icon: ShoppingBag },
             { id: 'users', label: 'Users', icon: Users },
@@ -829,6 +867,59 @@ export default function AdminProducts({ initialProducts, initialOrders = [], ini
               <div className="min-w-[760px]">
                 <div className="sticky top-0 z-10 grid grid-cols-[90px_1.2fr_1fr_100px_140px] gap-4 border-b border-ivory/10 bg-surface px-6 py-4 text-xs font-bold uppercase tracking-[0.2em] text-muted"><span>Image</span><span>Title</span><span>Subtitle</span><span>Order</span><span>Actions</span></div>
                 <div className="divide-y divide-ivory/10">{lookbookItems.map((item) => <div key={item.id} className="grid grid-cols-[90px_1.2fr_1fr_100px_140px] items-center gap-4 px-6 py-4"><div className="relative h-16 w-16 overflow-hidden rounded-2xl bg-obsidian"><Image src={item.image} alt={item.title} fill sizes="64px" className="object-cover" /></div><p className="font-display text-2xl">{item.title}</p><span className="text-gold">{item.subtitle}</span><span className="text-ivory/75">{item.sortOrder}</span><div className="flex gap-2"><button onClick={() => { setEditingLookbookId(item.id); setLookbookForm({ ...item, sortOrder: String(item.sortOrder) }); }} className="rounded-full bg-ivory/10 p-3 transition hover:bg-gold hover:text-obsidian"><Edit3 size={16} /></button><button onClick={() => deleteLookbookItem(item.id)} className="rounded-full bg-ivory/10 p-3 transition hover:bg-red-500"><Trash2 size={16} /></button></div></div>)}</div>
+              </div>
+            </div>
+          </div>
+        </div>}
+        {activePanel === 'newArrivals' && <div className="grid gap-8 py-12 lg:grid-cols-[420px_minmax(0,1fr)]">
+          <div className="rounded-[2rem] bg-ivory p-6 text-obsidian shadow-2xl">
+            <div className="mb-6"><h2 className="font-display text-4xl">New Arrivals</h2><p className="mt-2 text-sm text-obsidian/60">Home page ke New Arrivals section me kon kon se products show hone hain, select karein.</p></div>
+            <div className="space-y-4">
+              <div className="rounded-2xl border border-obsidian/15 p-4">
+                <p className="mb-3 text-sm font-bold uppercase tracking-[0.2em] text-obsidian/60">Selected Products ({selectedNewArrivals.length})</p>
+                <div className="space-y-2 max-h-[400px] overflow-auto">
+                  {selectedNewArrivals.length === 0 ? (
+                    <p className="text-center text-sm text-obsidian/40">Koi product select nahi kiya gaya</p>
+                  ) : (
+                    selectedNewArrivals.map((productId) => {
+                      const product = products.find((p) => p.id === productId);
+                      return product ? (
+                        <div key={productId} className="flex items-center justify-between gap-3 rounded-xl bg-obsidian/5 p-3">
+                          <div className="flex items-center gap-3">
+                            <div className="relative h-12 w-12 overflow-hidden rounded-xl bg-obsidian">
+                              <Image src={product.images[0]} alt={product.name} fill sizes="48px" className="object-cover" />
+                            </div>
+                            <div>
+                              <p className="font-semibold">{product.name}</p>
+                              <p className="text-xs text-obsidian/60">{formatPrice(product.price)}</p>
+                            </div>
+                          </div>
+                          <button type="button" onClick={() => setSelectedNewArrivals((prev) => prev.filter((id) => id !== productId))} className="rounded-full bg-obsidian/10 p-2 transition hover:bg-red-500 hover:text-ivory">
+                            <X size={16} />
+                          </button>
+                        </div>
+                      ) : null;
+                    })
+                  )}
+                </div>
+              </div>
+              <button disabled={saving} onClick={saveNewArrivals} className="flex w-full items-center justify-center gap-2 rounded-full bg-obsidian px-6 py-4 text-sm font-bold uppercase tracking-[0.25em] text-ivory transition hover:bg-gold hover:text-obsidian disabled:opacity-60"><Save size={18} />{saving ? 'Saving...' : 'Save New Arrivals'}</button>
+              {message && <p className="text-center text-sm font-bold text-gold">{message}</p>}
+            </div>
+          </div>
+          <div className="min-w-0 overflow-hidden rounded-[2rem] bg-surface">
+            <div className="max-h-[720px] overflow-auto">
+              <div className="min-w-[900px]">
+                <div className="sticky top-0 z-10 grid grid-cols-[80px_1.5fr_1fr_100px_140px] gap-4 border-b border-ivory/10 bg-surface px-6 py-4 text-xs font-bold uppercase tracking-[0.2em] text-muted"><span>Image</span><span>Name</span><span>Category</span><span>Price</span><span>Action</span></div>
+                <div className="divide-y divide-ivory/10">{products.map((product) => <div key={product.id} className="grid grid-cols-[80px_1.5fr_1fr_100px_140px] items-center gap-4 px-6 py-4">
+                  <div className="relative h-16 w-16 overflow-hidden rounded-2xl bg-obsidian"><Image src={product.images[0]} alt={product.name} fill sizes="64px" className="object-cover" /></div>
+                  <p className="font-display text-xl">{product.name}</p>
+                  <span className="text-gold">{product.category}</span>
+                  <span className="text-ivory/75">{formatPrice(product.price)}</span>
+                  <button type="button" onClick={() => toggleNewArrival(product.id)} className={`rounded-full px-4 py-2 text-sm font-bold uppercase tracking-[0.15em] transition ${selectedNewArrivals.includes(product.id) ? 'bg-gold text-obsidian' : 'bg-ivory/10 text-ivory hover:bg-ivory/20'}`}>
+                    {selectedNewArrivals.includes(product.id) ? 'Remove' : 'Add'}
+                  </button>
+                </div>)}</div>
               </div>
             </div>
           </div>
