@@ -33,6 +33,7 @@ export default function CheckoutPage() {
   const [couponMessage, setCouponMessage] = useState('');
   const [discount, setDiscount] = useState(0);
   const [globalDiscount, setGlobalDiscount] = useState({ active: false, discountPercent: 0 });
+  const [phoneError, setPhoneError] = useState('');
 
   const total = cart.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const discountedTotal = total - discount;
@@ -85,10 +86,89 @@ export default function CheckoutPage() {
 
   function updateField(field, value) {
     setFormData((current) => ({ ...current, [field]: value }));
+
+    // Clear general message when user starts typing
+    setMessage('');
+
+    // Clear phone error when user starts typing phone number
+    if (field === 'phone') {
+      setPhoneError('');
+      // Real-time validation for phone number - only show country restriction error
+      if (value && value.trim() !== '') {
+        const cleanedPhone = value.replace(/[\s\-\(\)]/g, '');
+        // Check if it's clearly not a Pakistani number (doesn't start with 92 or 03)
+        if (!cleanedPhone.startsWith('92') && !cleanedPhone.startsWith('03') && cleanedPhone.length > 2) {
+          setPhoneError('Only in Pakistan available. Please enter a Pakistani phone number.');
+        }
+      }
+    }
+  }
+
+  function validatePakistaniPhone(phone) {
+    if (!phone || phone.trim() === '') {
+      return { valid: false, message: 'Phone number is required' };
+    }
+
+    // Remove all spaces, dashes, and special characters
+    const cleanedPhone = phone.replace(/[\s\-\(\)]/g, '');
+
+    // Check if it starts with 92 (Pakistan country code) or 03 (Pakistani mobile)
+    if (cleanedPhone.startsWith('92')) {
+      // Remove the 92 prefix and check the remaining number
+      const numberWithoutCode = cleanedPhone.substring(2);
+      // Should be 10 digits after removing 92 (e.g., 92 3XX XXXXXXX)
+      if (numberWithoutCode.length === 10 && numberWithoutCode.startsWith('3')) {
+        return { valid: true, message: '' };
+      }
+      return { valid: false, message: 'Invalid Pakistani phone number format. Expected: 92 3XX XXXXXXX' };
+    } else if (cleanedPhone.startsWith('03')) {
+      // Should be 11 digits (03XXXXXXXXX)
+      if (cleanedPhone.length === 11) {
+        return { valid: true, message: '' };
+      }
+      return { valid: false, message: 'Invalid Pakistani phone number format. Expected: 03XXXXXXXXX' };
+    } else {
+      // Not a Pakistani number
+      return { valid: false, message: 'Only in Pakistan available. Please enter a Pakistani phone number (03XXXXXXXXX or 92 3XX XXXXXXX).' };
+    }
   }
 
   function handleProceedToConfirmation(event) {
     event.preventDefault();
+
+    // Validate required fields
+    if (!formData.name || formData.name.trim() === '') {
+      setMessage('Name is required');
+      return;
+    }
+
+    if (!formData.email || formData.email.trim() === '') {
+      setMessage('Email is required');
+      return;
+    }
+
+    if (!formData.phone || formData.phone.trim() === '') {
+      setMessage('Phone number is required');
+      return;
+    }
+
+    if (!formData.address || formData.address.trim() === '') {
+      setMessage('Address is required');
+      return;
+    }
+
+    if (!formData.city || formData.city.trim() === '') {
+      setMessage('City is required');
+      return;
+    }
+
+    // Validate Pakistani phone number
+    const phoneValidation = validatePakistaniPhone(formData.phone);
+    if (!phoneValidation.valid) {
+      setPhoneError(phoneValidation.message);
+      setMessage(phoneValidation.message);
+      return;
+    }
 
     setShowConfirmation(true);
   }
@@ -261,9 +341,10 @@ export default function CheckoutPage() {
                       onChange={(e) => updateField('phone', e.target.value)}
                       required
                       type="tel"
-                      className="w-full rounded-2xl border border-ivory/10 bg-ivory px-4 py-3 text-obsidian placeholder:text-obsidian/45 outline-none transition focus:border-gold focus:ring-2 focus:ring-gold/30"
-                      placeholder="Enter your phone number"
+                      className={`w-full rounded-2xl border px-4 py-3 text-obsidian placeholder:text-obsidian/45 outline-none transition focus:ring-2 ${phoneError ? 'border-red-500 focus:border-red-500 focus:ring-red-500/30' : 'border-ivory/10 focus:border-gold focus:ring-gold/30'}`}
+                      placeholder="03XXXXXXXXX or 92 3XX XXXXXXX"
                     />
+                    {phoneError && <p className="mt-2 text-sm font-bold text-red-400">{phoneError}</p>}
                   </div>
                   <div>
                     <label className="mb-2 block text-sm font-bold uppercase tracking-[0.22em] text-ivory/70">Address</label>
