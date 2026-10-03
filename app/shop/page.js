@@ -11,7 +11,7 @@ export const metadata = {
   openGraph: {
     title: 'Shop All Products | MAKHSOOS',
     description: 'Browse our complete collection of premium men\'s clothing. Find kurtas, shalwar kameez, waistcoats, and traditional Pakistani wear.',
-    url: 'https://makhsoos.shop/shop',
+    url: 'https://makhsoos.online/shop',
   }
 };
 

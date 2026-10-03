@@ -12,8 +12,8 @@ export function OrganizationSchema() {
     '@context': 'https://schema.org',
     '@type': 'Organization',
     name: 'MAKHSOOS',
-    url: 'https://makhsoos.shop',
-    logo: 'https://makhsoos.shop/images/logo.png',
+    url: 'https://makhsoos.online',
+    logo: 'https://makhsoos.online/images/logo.png',
     description: 'MAKHSOOS - Luxury Pakistani clothing crafted for men who carry culture with confidence. Premium menswear including kurtas, shalwar kameez, and traditional wear.',
     address: {
       '@type': 'PostalAddress',
@@ -43,11 +43,11 @@ export function WebSiteSchema() {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
     name: 'MAKHSOOS',
-    url: 'https://makhsoos.shop',
+    url: 'https://makhsoos.online',
     description: 'Shop premium men\'s clothing at MAKHSOOS. Discover luxury Pakistani fashion including kurtas, shalwar kameez, waistcoats, and traditional wear.',
     potentialAction: {
       '@type': 'SearchAction',
-      target: 'https://makhsoos.shop/shop?q={search_term_string}',
+      target: 'https://makhsoos.online/shop?q={search_term_string}',
       'query-input': 'required name=search_term_string'
     }
   };
@@ -71,7 +71,7 @@ export function ProductSchema({ product }) {
     },
     offers: {
       '@type': 'Offer',
-      url: `https://makhsoos.shop/products/${product.id}`,
+      url: `https://makhsoos.online/products/${product.id}`,
       priceCurrency: 'PKR',
       price: product.price,
       availability: product.quantity > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
@@ -94,7 +94,7 @@ export function BreadcrumbSchema({ items }) {
       '@type': 'ListItem',
       position: index + 1,
       name: item.name,
-      item: `https://makhsoos.shop${item.url}`
+      item: `https://makhsoos.online${item.url}`
     }))
   };
 
