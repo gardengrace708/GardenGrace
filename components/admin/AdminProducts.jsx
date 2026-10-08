@@ -51,7 +51,7 @@ const emptyGlobalDiscountForm = {
   isActive: true
 };
 
-const orderStatuses = ['Processing', 'Confirmed', 'Shipped', 'Delivered', 'Cancelled'];
+const orderStatuses = ['Pending', 'Processing', 'Confirmed', 'Shipped', 'Delivered', 'Cancelled'];
 
 function toForm(product) {
   return {
@@ -661,6 +661,31 @@ export default function AdminProducts({ initialProducts, initialOrders = [], ini
     setOrderSaving(false);
   }
 
+  async function verifyPayment(orderId, verified) {
+    setOrderSaving(true);
+    setMessage('');
+
+    const response = await fetch(`/api/admin/orders/${orderId}/verify-payment`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ verified })
+    });
+    const data = await response.json();
+
+    if (!response.ok) {
+      setMessage(data.message || 'Payment verification nahi hui');
+      setOrderSaving(false);
+      return;
+    }
+
+    setOrders((current) => current.map((order) => order.id === orderId ? { ...order, status: data.order.status, paymentVerified: data.order.paymentVerified } : order));
+    if (selectedOrder?.id === orderId) {
+      setSelectedOrderId(null);
+    }
+    setMessage(verified ? 'Payment verified aur order confirm ho gaya' : 'Payment rejected');
+    setOrderSaving(false);
+  }
+
   return (
     <main className="min-h-screen bg-obsidian pt-28 text-ivory">
       <section className="luxury-container pb-16">
@@ -979,6 +1004,40 @@ export default function AdminProducts({ initialProducts, initialOrders = [], ini
                   <div><p className="text-xs font-bold uppercase tracking-[0.22em] text-obsidian/50">Custom Measurements</p><div className="mt-2 rounded-2xl bg-obsidian/5 p-4 text-sm"><p className="text-obsidian/60">Waist: {selectedOrder.shippingAddress.customMeasurements.waist || 'Not provided'}</p><p className="text-obsidian/60">Length: {selectedOrder.shippingAddress.customMeasurements.length || 'Not provided'}</p></div></div>
                 )}
                 <div><p className="text-xs font-bold uppercase tracking-[0.22em] text-obsidian/50">Status Change</p><select value={selectedOrder.status} disabled={orderSaving} onChange={(event) => updateOrderStatus(selectedOrder.id, event.target.value)} className="mt-2 w-full rounded-2xl border border-obsidian/15 bg-white px-4 py-3 font-semibold outline-none focus:border-gold">{orderStatuses.map((status) => <option key={status} value={status}>{status}</option>)}</select></div>
+                
+                {/* Payment Proof Section for Pending Orders */}
+                {selectedOrder.status === 'Pending' && (
+                  <div>
+                    <p className="text-xs font-bold uppercase tracking-[0.22em] text-obsidian/50 mb-3">Payment Proof</p>
+                    {selectedOrder.paymentProof ? (
+                      <div className="space-y-3">
+                        <div className="relative h-48 w-full overflow-hidden rounded-2xl border border-obsidian/10 bg-obsidian/5">
+                          <img src={selectedOrder.paymentProof} alt="Payment proof" className="h-full w-full object-contain" />
+                        </div>
+                        <div className="flex gap-2">
+                          <button
+                            onClick={() => verifyPayment(selectedOrder.id, true)}
+                            disabled={orderSaving}
+                            className="flex-1 rounded-full bg-green-500 px-4 py-3 text-sm font-bold uppercase tracking-[0.2em] text-white transition hover:bg-green-600 disabled:opacity-60"
+                          >
+                            Verify & Confirm
+                          </button>
+                          <button
+                            onClick={() => verifyPayment(selectedOrder.id, false)}
+                            disabled={orderSaving}
+                            className="flex-1 rounded-full bg-red-500 px-4 py-3 text-sm font-bold uppercase tracking-[0.2em] text-white transition hover:bg-red-600 disabled:opacity-60"
+                          >
+                            Reject
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="rounded-2xl bg-orange-50 p-4 border border-orange-200">
+                        <p className="text-sm text-orange-700">No payment proof uploaded yet. Customer needs to upload payment proof.</p>
+                      </div>
+                    )}
+                  </div>
+                )}
                 <div><p className="text-xs font-bold uppercase tracking-[0.22em] text-obsidian/50">Date</p><p className="mt-1 font-semibold">{new Date(selectedOrder.createdAt).toLocaleString()}</p></div>
                 <div><p className="text-xs font-bold uppercase tracking-[0.22em] text-obsidian/50">Items</p><div className="mt-3 divide-y divide-obsidian/10 rounded-2xl border border-obsidian/10">{selectedOrder.items.map((item) => <div key={`${selectedOrder.id}-${item.name}-${item.size}`} className="flex justify-between gap-4 p-4 text-sm"><div><p className="font-bold">{item.name}</p><p className="text-obsidian/55">Size {item.size} · Qty {item.quantity}</p></div><p className="font-bold text-gold">{formatPrice(item.price * item.quantity)}</p></div>)}</div></div>
                 <div className="flex items-center justify-between rounded-2xl bg-obsidian px-5 py-4 text-ivory"><span className="text-sm font-bold uppercase tracking-[0.2em] text-ivory/60">Total</span><span className="text-xl font-bold text-gold">{formatPrice(selectedOrder.total)}</span></div>

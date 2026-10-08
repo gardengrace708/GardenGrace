@@ -50,7 +50,9 @@ export async function POST(request) {
       discount,
       couponCode,
       shippingAddress,
-      status: 'Processing',
+      status: 'Pending',
+      paymentProof: null,
+      advancePayment: 300,
       createdAt: new Date()
     };
 
@@ -82,6 +84,8 @@ export async function POST(request) {
         total: Number(order.total),
         discount: Number(order.discount || 0),
         couponCode: order.couponCode || null,
+        paymentProof: order.paymentProof,
+        advancePayment: order.advancePayment,
         createdAt: order.createdAt.toISOString(),
         items: order.items,
         shippingAddress: order.shippingAddress

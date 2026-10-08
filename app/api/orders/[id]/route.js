@@ -4,7 +4,7 @@ import { getCurrentUser } from '@/lib/auth';
 import { getDb } from '@/lib/mongodb';
 import { sendOrderStatusUpdateEmail } from '@/lib/email';
 
-const allowedStatuses = ['Processing', 'Confirmed', 'Shipped', 'Delivered', 'Cancelled'];
+const allowedStatuses = ['Pending', 'Processing', 'Confirmed', 'Shipped', 'Delivered', 'Cancelled'];
 
 function buildOrderQuery(id) {
   if (ObjectId.isValid(id)) {
@@ -20,6 +20,9 @@ function normalizeUpdatedOrder(order) {
     userId: order.userId,
     status: order.status || 'Processing',
     total: Number(order.total || 0),
+    paymentProof: order.paymentProof || null,
+    paymentVerified: order.paymentVerified || false,
+    justConfirmed: order.justConfirmed || false,
     createdAt: order.createdAt ? new Date(order.createdAt).toISOString() : new Date().toISOString(),
     items: Array.isArray(order.items) ? order.items.map((item) => ({
       name: item.name || '',
@@ -74,9 +77,18 @@ export async function PUT(request, { params }) {
   }
 
   // Get user email and send status update email
-  const user = await db.collection('users').findOne({ _id: result.userId });
-  if (user && user.email) {
-    await sendOrderStatusUpdateEmail(user.email, result.orderNumber, status);
+  // For logged-in users, get from users collection
+  // For guest users, get from shippingAddress
+  let userEmail = null;
+  if (result.userId) {
+    const user = await db.collection('users').findOne({ _id: result.userId });
+    userEmail = user?.email;
+  } else if (result.shippingAddress?.email) {
+    userEmail = result.shippingAddress.email;
+  }
+
+  if (userEmail) {
+    await sendOrderStatusUpdateEmail(userEmail, result.orderNumber, status);
   }
 
   return NextResponse.json({ order: normalizeUpdatedOrder(result) });

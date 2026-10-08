@@ -6,11 +6,13 @@ import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { formatPrice } from '@/lib/utils';
 import { showOrderNotification } from '@/lib/notifications';
+import { Copy } from 'lucide-react';
 
 function OrderSuccessContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [orderData, setOrderData] = useState(null);
+  const [copiedNumber, setCopiedNumber] = useState(false);
 
   useEffect(() => {
     const orderNumber = searchParams.get('order');
@@ -29,6 +31,23 @@ function OrderSuccessContent() {
       router.push('/');
     }
   }, [searchParams, router]);
+
+  function copyPhoneNumber(number) {
+    navigator.clipboard.writeText(number).then(() => {
+      setCopiedNumber(true);
+      setTimeout(() => setCopiedNumber(false), 2000);
+    }).catch(() => {
+      // Fallback for older browsers
+      const textArea = document.createElement('textarea');
+      textArea.value = number;
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textArea);
+      setCopiedNumber(true);
+      setTimeout(() => setCopiedNumber(false), 2000);
+    });
+  }
 
   if (!orderData) {
     return null;
@@ -76,7 +95,19 @@ function OrderSuccessContent() {
               <div className="space-y-2 text-sm text-ivory/60">
                 <p>• You can track your order using the order number and your email</p>
                 <p>• Order confirmation has been sent to your email</p>
-                <p>• Cash on Delivery (COD) payment will be collected upon delivery</p>
+                <p>• Your order is currently <span className="text-orange-400 font-bold">Pending</span></p>
+                <p>• Please pay <span className="text-gold font-bold">Rs. 300</span> advance to confirm your order</p>
+                <div className="flex items-center gap-2">
+                  <p>• JazzCash / EasyPaisa: <span className="text-gold font-bold">0328-0362181</span></p>
+                  <button
+                    onClick={() => copyPhoneNumber('03280362181')}
+                    className="flex items-center gap-1 bg-gold/20 hover:bg-gold/30 px-2 py-1 rounded transition"
+                  >
+                    <Copy size={14} />
+                    {copiedNumber ? <span className="text-xs font-semibold">Copied!</span> : <span className="text-xs font-semibold">Copy</span>}
+                  </button>
+                </div>
+                <p>• Upload payment proof in My Orders section after payment</p>
               </div>
             </div>
 
