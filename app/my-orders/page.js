@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { formatPrice } from '@/lib/utils';
-import { Package, Calendar, MapPin, Phone, Mail, User, Upload, CheckCircle, XCircle, AlertCircle, Copy } from 'lucide-react';
+import { Package, Calendar, MapPin, Phone, Mail, User, Upload, CheckCircle, XCircle, AlertCircle, Copy, X } from 'lucide-react';
 
 export default function MyOrdersPage() {
   const [orders, setOrders] = useState([]);
