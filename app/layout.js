@@ -9,7 +9,10 @@ const body = DM_Sans({ subsets: ['latin'], weight: ['400', '500', '700'], variab
 
 export const metadata = {
   title: 'MAKHSOOS | Luxury Pakistani Clothing',
-  description: 'A world-class luxury ecommerce experience for Pakistani fashion.'
+  description: 'A world-class luxury ecommerce experience for Pakistani fashion.',
+  icons: {
+    icon: '/images/logo.png',
+  }
 };
 
 export default function RootLayout({ children }) {
