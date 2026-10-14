@@ -23,6 +23,14 @@ export default async function AdminPage() {
 
   const [products, orders, users, collections, siteContent, lookbookItems, coupons, globalDiscount] = await Promise.all([getProducts(), getOrders(), getUsers(), getCollections(), getSiteContent(), getLookbookItems(), getCoupons(), getGlobalDiscount()]);
 
+  // Ensure heroType has a default value
+  if (!siteContent.heroType) {
+    siteContent.heroType = 'video';
+  }
+  if (!siteContent.heroImage) {
+    siteContent.heroImage = '';
+  }
+
   return (
     <>
       <Navbar />

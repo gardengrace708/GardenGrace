@@ -46,6 +46,17 @@ export async function POST(request) {
       );
     }
 
+    // Check file size (Cloudinary free plan limit is 10MB)
+    const fileSizeInBytes = file.size;
+    const fileSizeInMB = fileSizeInBytes / (1024 * 1024);
+
+    if (fileSizeInMB > 10) {
+      return NextResponse.json(
+        { message: `File size too large (${fileSizeInMB.toFixed(2)}MB). Cloudinary free plan allows maximum 10MB. Please compress the image before uploading.` },
+        { status: 400 }
+      );
+    }
+
     const timestamp = Math.round(Date.now() / 1000);
     const folder = 'makhsoos/products';
 
@@ -61,6 +72,8 @@ export async function POST(request) {
     uploadFormData.append('timestamp', String(timestamp));
     uploadFormData.append('folder', folder);
     uploadFormData.append('signature', signature);
+    uploadFormData.append('quality', 'auto'); // Auto-optimize image quality
+    uploadFormData.append('fetch_format', 'auto'); // Auto-convert to optimal format
 
     const uploadResponse = await fetch(
       `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,

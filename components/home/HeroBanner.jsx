@@ -14,6 +14,8 @@ const slides = [
 export default function HeroBanner() {
   const [index, setIndex] = useState(0);
   const [heroVideo, setHeroVideo] = useState('');
+  const [heroImage, setHeroImage] = useState('');
+  const [heroType, setHeroType] = useState('video');
   const paused = useRef(false);
 
   useEffect(() => {
@@ -27,8 +29,14 @@ export default function HeroBanner() {
     fetch('/api/site-content')
       .then(res => res.json())
       .then(data => {
+        if (data.content?.heroType) {
+          setHeroType(data.content.heroType);
+        }
         if (data.content?.heroVideo) {
           setHeroVideo(data.content.heroVideo);
+        }
+        if (data.content?.heroImage) {
+          setHeroImage(data.content.heroImage);
         }
       })
       .catch(console.error);
@@ -38,8 +46,8 @@ export default function HeroBanner() {
 
   return (
     <section onMouseEnter={() => { paused.current = true; }} onMouseLeave={() => { paused.current = false; }} className="relative h-screen overflow-hidden bg-ivory">
-      {/* Mobile & Laptop Background Video */}
-      {heroVideo && (
+      {/* Mobile & Laptop Background Media */}
+      {heroType === 'video' && heroVideo && (
         <div className="absolute inset-0 z-0 xl:hidden">
           <video
             src={heroVideo}
@@ -48,6 +56,17 @@ export default function HeroBanner() {
             muted
             playsInline
             className="h-full w-full object-cover xl:opacity-50"
+          />
+          <div className="absolute inset-0 bg-black/50" />
+        </div>
+      )}
+      {heroType === 'image' && heroImage && (
+        <div className="absolute inset-0 z-0 xl:hidden">
+          <Image
+            src={heroImage}
+            alt="Hero"
+            fill
+            className="object-cover xl:opacity-50"
           />
           <div className="absolute inset-0 bg-black/50" />
         </div>
@@ -64,8 +83,8 @@ export default function HeroBanner() {
         </AnimatePresence>
       </div>
       
-      {/* Computer Right Side Video */}
-      {heroVideo && (
+      {/* Computer Right Side Media */}
+      {heroType === 'video' && heroVideo && (
         <div className="absolute right-0 top-0 hidden h-full w-1/2 xl:block">
           <video
             src={heroVideo}
@@ -74,6 +93,16 @@ export default function HeroBanner() {
             muted
             playsInline
             className="h-full w-full object-cover"
+          />
+        </div>
+      )}
+      {heroType === 'image' && heroImage && (
+        <div className="absolute right-0 top-0 hidden h-full w-1/2 xl:block">
+          <Image
+            src={heroImage}
+            alt="Hero"
+            fill
+            className="object-cover"
           />
         </div>
       )}

@@ -37,7 +37,7 @@ export default function BrandStory() {
   return (
     <section className="bg-ivory w-[100vw] py-24">
       <div className="luxury-container grid items-center gap-12 lg:grid-cols-[3fr_2fr]">
-       <div className="relative min-h-[620px] overflow-hidden bg-surface">
+       <div className="relative min-h-[320px] md:min-h-[620px] overflow-hidden bg-surface">
   <Image 
     src="/images/brandstory.png" 
     alt="MAKHSOOS atelier" 

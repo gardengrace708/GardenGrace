@@ -60,13 +60,14 @@ function toForm(product) {
   };
 }
 
-export default function AdminProducts({ initialProducts, initialOrders = [], initialUsers = [], initialCollections = [], initialSiteContent = { aboutImage: '/images/about.jpg', heroVideo: '', newArrivalsProductIds: [] }, initialLookbookItems = [], initialCoupons = [], initialGlobalDiscount = null }) {
+export default function AdminProducts({ initialProducts, initialOrders = [], initialUsers = [], initialCollections = [], initialSiteContent = { aboutImage: '/images/about.jpg', heroVideo: '', heroImage: '', heroType: 'video', newArrivalsProductIds: [] }, initialLookbookItems = [], initialCoupons = [], initialGlobalDiscount = null }) {
   const [products, setProducts] = useState(initialProducts);
   const [orders, setOrders] = useState(initialOrders);
   const [collections, setCollections] = useState(initialCollections);
   const [lookbookItems, setLookbookItems] = useState(initialLookbookItems);
   const [siteContent, setSiteContent] = useState(initialSiteContent);
   const [selectedNewArrivals, setSelectedNewArrivals] = useState(initialSiteContent?.newArrivalsProductIds || []);
+  const [heroType, setHeroType] = useState(initialSiteContent?.heroType || 'video');
   const [coupons, setCoupons] = useState(initialCoupons);
   const [globalDiscount, setGlobalDiscount] = useState(initialGlobalDiscount);
   const [form, setForm] = useState(emptyForm);
@@ -364,6 +365,50 @@ export default function AdminProducts({ initialProducts, initialOrders = [], ini
 
       setSiteContent(saveData.content);
       setMessage('Hero video upload aur save ho gayi');
+    } catch (error) {
+      setMessage(error.message);
+    } finally {
+      setUploading(false);
+      event.target.value = '';
+    }
+  }
+
+  async function uploadHeroImage(event) {
+    const file = event.target.files?.[0];
+
+    if (!file) return;
+
+    setUploading(true);
+    setMessage('');
+
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData
+      });
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Image upload nahi hui');
+      }
+
+      const nextContent = { ...siteContent, heroImage: data.url };
+      const saveResponse = await fetch('/api/site-content', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(nextContent)
+      });
+      const saveData = await saveResponse.json();
+
+      if (!saveResponse.ok) {
+        throw new Error(saveData.message || 'Hero image save nahi hui');
+      }
+
+      setSiteContent(saveData.content);
+      setMessage('Hero image upload aur save ho gayi');
     } catch (error) {
       setMessage(error.message);
     } finally {
@@ -951,17 +996,54 @@ export default function AdminProducts({ initialProducts, initialOrders = [], ini
         </div>}
         {activePanel === 'content' && <div className="grid gap-8 py-12 lg:grid-cols-[420px_minmax(0,1fr)]">
           <form onSubmit={saveSiteContent} className="rounded-[2rem] bg-ivory p-6 text-obsidian shadow-2xl">
-            <div className="mb-6"><h2 className="font-display text-4xl">Hero Section Video</h2><p className="mt-2 text-sm text-obsidian/60">Hero section ke liye video upload ya URL se edit karein.</p></div>
+            <div className="mb-6"><h2 className="font-display text-4xl">Hero Section</h2><p className="mt-2 text-sm text-obsidian/60">Hero section ke liye video ya image select karein.</p></div>
             <div className="space-y-4">
-              <label className="flex cursor-pointer items-center justify-center gap-2 rounded-full bg-obsidian px-5 py-3 text-sm font-bold uppercase tracking-[0.2em] text-ivory transition hover:bg-gold hover:text-obsidian">
-                <ImagePlus size={18} />
-                {uploading ? 'Uploading...' : 'Upload Hero Video'}
-                <input type="file" accept="video/*" disabled={uploading} onChange={uploadHeroVideo} className="hidden" />
-              </label>
-              <input value={siteContent.heroVideo} onChange={(event) => updateSiteContentField('heroVideo', event.target.value)} placeholder="Hero video URL" className="w-full rounded-2xl border border-obsidian/15 bg-white px-4 py-3 text-obsidian outline-none focus:border-gold" />
-              {siteContent.heroVideo && <div className="relative aspect-video overflow-hidden rounded-2xl border border-obsidian/10 bg-obsidian">
-                <video src={siteContent.heroVideo} controls className="h-full w-full object-cover" />
-              </div>}
+              <div>
+                <label className="mb-3 block text-sm font-bold uppercase tracking-[0.22em] text-obsidian/70">Hero Type</label>
+                <div className="flex gap-3">
+                  <button
+                    type="button"
+                    onClick={() => { setHeroType('video'); updateSiteContentField('heroType', 'video'); }}
+                    className={`flex-1 rounded-full px-4 py-3 text-sm font-bold uppercase tracking-[0.2em] transition ${heroType === 'video' ? 'bg-gold text-obsidian' : 'bg-ivory/10 text-obsidian hover:bg-ivory/20'}`}
+                  >
+                    Video
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => { setHeroType('image'); updateSiteContentField('heroType', 'image'); }}
+                    className={`flex-1 rounded-full px-4 py-3 text-sm font-bold uppercase tracking-[0.2em] transition ${heroType === 'image' ? 'bg-gold text-obsidian' : 'bg-ivory/10 text-obsidian hover:bg-ivory/20'}`}
+                  >
+                    Image
+                  </button>
+                </div>
+              </div>
+
+              {heroType === 'video' ? (
+                <>
+                  <label className="flex cursor-pointer items-center justify-center gap-2 rounded-full bg-obsidian px-5 py-3 text-sm font-bold uppercase tracking-[0.2em] text-ivory transition hover:bg-gold hover:text-obsidian">
+                    <Video size={18} />
+                    {uploading ? 'Uploading...' : 'Upload Hero Video'}
+                    <input type="file" accept="video/*" disabled={uploading} onChange={uploadHeroVideo} className="hidden" />
+                  </label>
+                  <input value={siteContent.heroVideo} onChange={(event) => updateSiteContentField('heroVideo', event.target.value)} placeholder="Hero video URL" className="w-full rounded-2xl border border-obsidian/15 bg-white px-4 py-3 text-obsidian outline-none focus:border-gold" />
+                  {siteContent.heroVideo && <div className="relative aspect-video overflow-hidden rounded-2xl border border-obsidian/10 bg-obsidian">
+                    <video src={siteContent.heroVideo} controls className="h-full w-full object-cover" />
+                  </div>}
+                </>
+              ) : (
+                <>
+                  <label className="flex cursor-pointer items-center justify-center gap-2 rounded-full bg-obsidian px-5 py-3 text-sm font-bold uppercase tracking-[0.2em] text-ivory transition hover:bg-gold hover:text-obsidian">
+                    <ImagePlus size={18} />
+                    {uploading ? 'Uploading...' : 'Upload Hero Image'}
+                    <input type="file" accept="image/*" disabled={uploading} onChange={uploadHeroImage} className="hidden" />
+                  </label>
+                  <input value={siteContent.heroImage} onChange={(event) => updateSiteContentField('heroImage', event.target.value)} placeholder="Hero image URL" className="w-full rounded-2xl border border-obsidian/15 bg-white px-4 py-3 text-obsidian outline-none focus:border-gold" />
+                  {siteContent.heroImage && <div className="relative aspect-video overflow-hidden rounded-2xl border border-obsidian/10 bg-obsidian">
+                    <Image src={siteContent.heroImage} alt="Hero preview" fill sizes="420px" className="object-cover" />
+                  </div>}
+                </>
+              )}
+
               <div className="border-t border-obsidian/10 pt-6">
                 <h3 className="mb-4 font-display text-2xl">About Page Image</h3>
                 <label className="flex cursor-pointer items-center justify-center gap-2 rounded-full bg-obsidian px-5 py-3 text-sm font-bold uppercase tracking-[0.2em] text-ivory transition hover:bg-gold hover:text-obsidian">
@@ -976,8 +1058,20 @@ export default function AdminProducts({ initialProducts, initialOrders = [], ini
             </div>
           </form>
           <div className="rounded-[2rem] bg-surface p-6">
-            <p className="mb-4 text-xs font-bold uppercase tracking-[0.25em] text-muted">Current About Preview</p>
-            <div className="relative aspect-[4/5] overflow-hidden rounded-[2rem] bg-obsidian"><Image src={siteContent.aboutImage} alt="About page preview" fill sizes="50vw" className="object-cover" /></div>
+            <p className="mb-4 text-xs font-bold uppercase tracking-[0.25em] text-muted">Current Hero Preview</p>
+            <div className="relative aspect-video overflow-hidden rounded-[2rem] bg-obsidian">
+              {heroType === 'video' && siteContent.heroVideo ? (
+                <video src={siteContent.heroVideo} controls className="h-full w-full object-cover" />
+              ) : heroType === 'image' && siteContent.heroImage ? (
+                <Image src={siteContent.heroImage} alt="Hero preview" fill sizes="50vw" className="object-cover" />
+              ) : (
+                <div className="flex items-center justify-center h-full text-ivory/50">No content set</div>
+              )}
+            </div>
+            <div className="mt-6">
+              <p className="mb-4 text-xs font-bold uppercase tracking-[0.25em] text-muted">Current About Preview</p>
+              <div className="relative aspect-[4/5] overflow-hidden rounded-[2rem] bg-obsidian"><Image src={siteContent.aboutImage} alt="About page preview" fill sizes="50vw" className="object-cover" /></div>
+            </div>
           </div>
         </div>}
         {activePanel === 'orders' && <div className="grid gap-8 py-12 xl:grid-cols-[minmax(0,1fr)_420px]">

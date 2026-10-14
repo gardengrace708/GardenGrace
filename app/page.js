@@ -33,7 +33,7 @@ export default async function Home() {
       <BrandStory />
       <LookbookStrip items={lookbookItems} />
       <Testimonials />
-      <TikTokFeed />
+      {/* <TikTokFeed /> */}
       {/* <Newsletter /> */}
       <Footer />
     </>
