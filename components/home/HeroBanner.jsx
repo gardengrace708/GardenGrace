@@ -6,9 +6,9 @@ import { AnimatePresence, motion } from 'framer-motion';
 import Button from '@/components/ui/Button';
 
 const slides = [
-  { image: '/images/hero-1.jpg', headline: 'Crafted for the Extraordinary', sub: 'Premium Furniture — New Collection 2026', cta: 'Explore Collection' },
-  { image: '/images/hero-2.jpg', headline: 'Where Comfort Meets Style', sub: 'Handcrafted furniture. Timeless design.', cta: 'Shop Now' },
-  { image: '/images/hero-3.jpg', headline: 'خاص لوگوں کے لیے خاص فرنیچر', sub: 'Because you deserve to feel GardenGrace', cta: 'View Catalog' }
+  { headline: 'Luxury Redefined', sub: 'Experience the art of fine furniture', cta: 'Shop Collection' },
+  { headline: 'Timeless Elegance', sub: 'Crafted for those who appreciate excellence', cta: 'Discover More' },
+  { headline: 'Exquisite Design', sub: 'Where luxury meets comfort', cta: 'Explore Now' }
 ];
 
 export default function HeroBanner() {
@@ -21,7 +21,7 @@ export default function HeroBanner() {
   useEffect(() => {
     const timer = setInterval(() => {
       if (!paused.current) setIndex((current) => (current + 1) % slides.length);
-    }, 5000);
+    }, 6000);
     return () => clearInterval(timer);
   }, []);
 
@@ -45,71 +45,140 @@ export default function HeroBanner() {
   const slide = slides[index];
 
   return (
-    <section onMouseEnter={() => { paused.current = true; }} onMouseLeave={() => { paused.current = false; }} className="relative h-screen overflow-hidden bg-ivory">
-      {/* Mobile & Laptop Background Media */}
+    <section 
+      onMouseEnter={() => { paused.current = true; }} 
+      onMouseLeave={() => { paused.current = false; }} 
+      className="relative h-screen overflow-hidden bg-[#2C1810]"
+    >
+      {/* Background Media */}
       {heroType === 'video' && heroVideo && (
-        <div className="absolute inset-0 z-0 xl:hidden">
+        <div className="absolute inset-0 z-0">
           <video
             src={heroVideo}
             autoPlay
             loop
             muted
             playsInline
-            className="h-full w-full object-cover xl:opacity-50"
+            className="h-full w-full object-cover opacity-70"
           />
-          <div className="absolute inset-0 bg-black/50" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#2C1810]/80 via-[#3D2817]/60 to-[#2C1810]/90" />
         </div>
       )}
       {heroType === 'image' && heroImage && (
-        <div className="absolute inset-0 z-0 xl:hidden">
+        <div className="absolute inset-0 z-0">
           <Image
             src={heroImage}
             alt="Hero"
             fill
-            className="object-cover xl:opacity-50"
+            className="object-cover opacity-70"
           />
-          <div className="absolute inset-0 bg-black/50" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#2C1810]/80 via-[#3D2817]/60 to-[#2C1810]/90" />
         </div>
       )}
       
-      <div className="luxury-container relative z-10 flex h-full items-center pt-20">
+      {/* Default wood gradient if no media */}
+      {!heroVideo && !heroImage && (
+        <div className="absolute inset-0 z-0 bg-gradient-to-br from-[#2C1810] via-[#3D2817] to-[#1A0F0A]" />
+      )}
+
+      {/* Centered Content */}
+      <div className="relative z-10 flex h-full items-center justify-center px-4">
         <AnimatePresence mode="wait">
-          <motion.div key={slide.headline} initial="hidden" animate="visible" exit="hidden" variants={{ visible: { transition: { staggerChildren: 0.16 } } }} className="max-w-3xl">
-            <motion.p variants={{ hidden: { opacity: 0, y: 24 }, visible: { opacity: 1, y: 0 } }} className="mb-5 text-sm font-bold uppercase tracking-[0.35em] text-wood">GardenGrace Atelier</motion.p>
-            <motion.h1 variants={{ hidden: { opacity: 0, y: 34 }, visible: { opacity: 1, y: 0 } }} className="font-display text-6xl leading-[0.95] text-white xl:text-black xl:text-7xl xl:w-[45vw]">{slide.headline}</motion.h1>
-            <motion.p variants={{ hidden: { opacity: 0, y: 34 }, visible: { opacity: 1, y: 0 } }} className="mt-6 max-w-xl text-lg text-white xl:text-black xl:text-2xl">{slide.sub}</motion.p>
-            <motion.div variants={{ hidden: { opacity: 0, y: 34 }, visible: { opacity: 1, y: 0 } }} className="mt-10 flex flex-wrap gap-4"><Button href="/collections">{slide.cta}</Button><Button className='text-yellow-600 xl:text-yellow-900' href="/lookbook" variant="outline">View Lookbook</Button></motion.div>
+          <motion.div 
+            key={slide.headline} 
+            initial="hidden" 
+            animate="visible" 
+            exit="hidden" 
+            variants={{ 
+              visible: { transition: { staggerChildren: 0.15 } } 
+            }} 
+            className="text-center max-w-4xl"
+          >
+            <motion.p 
+              variants={{ 
+                hidden: { opacity: 0, y: 30 }, 
+                visible: { opacity: 1, y: 0, transition: { duration: 0.6 } } 
+              }} 
+              className="mb-4 text-sm font-bold uppercase tracking-[0.4em] text-[#D4A574]"
+            >
+              Garden Grace
+            </motion.p>
+            
+            <motion.h1 
+              variants={{ 
+                hidden: { opacity: 0, y: 40, scale: 0.95 }, 
+                visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.7, ease: "easeOut" } } 
+              }} 
+              className="mb-6 font-sans text-5xl font-bold text-[#F5E6D3] md:text-7xl lg:text-8xl tracking-tight"
+            >
+              {slide.headline}
+            </motion.h1>
+            
+            <motion.p 
+              variants={{ 
+                hidden: { opacity: 0, y: 30 }, 
+                visible: { opacity: 1, y: 0, transition: { duration: 0.6 } } 
+              }} 
+              className="mb-10 text-lg md:text-xl text-[#E8D5C4] font-light tracking-wide"
+            >
+              {slide.sub}
+            </motion.p>
+            
+            <motion.div 
+              variants={{ 
+                hidden: { opacity: 0, y: 30 }, 
+                visible: { opacity: 1, y: 0, transition: { duration: 0.6 } } 
+              }} 
+              className="flex flex-col sm:flex-row gap-4 justify-center"
+            >
+              <Button 
+                href="/collections" 
+                className="bg-[#D4A574] hover:bg-[#C49464] text-[#1A0F0A] font-bold px-8 py-4 text-lg border-2 border-[#D4A574]"
+              >
+                {slide.cta}
+              </Button>
+              <Button 
+                href="/lookbook" 
+                variant="outline"
+                className="border-2 border-[#F5E6D3] text-[#F5E6D3] hover:bg-[#F5E6D3] hover:text-[#1A0F0A] font-bold px-8 py-4 text-lg"
+              >
+                View Lookbook
+              </Button>
+            </motion.div>
           </motion.div>
         </AnimatePresence>
       </div>
       
-      {/* Computer Right Side Media */}
-      {heroType === 'video' && heroVideo && (
-        <div className="absolute right-0 top-0 hidden h-full w-1/2 xl:block">
-          <video
-            src={heroVideo}
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="h-full w-full object-cover"
+      {/* Slide Indicators */}
+      <div className="absolute bottom-10 left-1/2 z-20 flex -translate-x-1/2 gap-3">
+        {slides.map((item, itemIndex) => (
+          <button 
+            key={item.headline} 
+            onClick={() => setIndex(itemIndex)} 
+            className={`h-1 w-12 rounded-full transition-all duration-300 ${
+              index === itemIndex ? 'bg-[#D4A574] w-16' : 'bg-[#F5E6D3]/30 hover:bg-[#F5E6D3]/50'
+            }`}
           />
-        </div>
-      )}
-      {heroType === 'image' && heroImage && (
-        <div className="absolute right-0 top-0 hidden h-full w-1/2 xl:block">
-          <Image
-            src={heroImage}
-            alt="Hero"
-            fill
-            className="object-cover"
-          />
-        </div>
-      )}
-      
-      <div className="absolute bottom-8 left-1/2 z-20 flex -translate-x-1/2 gap-3">
-        {slides.map((item, itemIndex) => <button key={item.headline} onClick={() => setIndex(itemIndex)} className="relative h-1 w-16 overflow-hidden rounded-full bg-black/25">{index === itemIndex && <motion.span layoutId="heroIndicator" className="absolute inset-0 bg-wood" />}</button>)}
+        ))}
       </div>
+
+      {/* Arrow Navigation */}
+      <button
+        onClick={() => setIndex((current) => (current - 1 + slides.length) % slides.length)}
+        className="hidden md:block absolute left-4 top-1/2 z-20 -translate-y-1/2 p-3 text-[#F5E6D3]/50 hover:text-[#D4A574] transition-colors"
+      >
+        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+        </svg>
+      </button>
+      <button
+        onClick={() => setIndex((current) => (current + 1) % slides.length)}
+        className="hidden md:block absolute right-4 top-1/2 z-20 -translate-y-1/2 p-3 text-[#F5E6D3]/50 hover:text-[#D4A574] transition-colors"
+      >
+        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+        </svg>
+      </button>
     </section>
   );
 }

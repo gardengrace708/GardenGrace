@@ -38,12 +38,12 @@ export default function BrandStory() {
     <section className="bg-ivory w-[100vw] py-24">
       <div className="luxury-container grid items-center gap-12 lg:grid-cols-[3fr_2fr]">
        <div className="relative min-h-[320px] md:min-h-[620px] overflow-hidden bg-surface">
-  <Image 
-    src="/images/brandstory.png" 
-    alt="GardenGrace atelier" 
-    fill 
-    sizes="(max-width: 768px) 100vw, 60vw" 
-    className="object-cover object-left md:object-center" 
+  <Image
+    src="/images/brandstory.jpg"
+    alt="GardenGrace atelier"
+    fill
+    sizes="(max-width: 768px) 100vw, 60vw"
+    className="object-cover object-center"
   />
 </div>
         <div className="relative lg:border-l lg:border-wood/50 lg:pl-12">

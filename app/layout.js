@@ -13,10 +13,10 @@ export const metadata = {
   description: 'A world-class luxury ecommerce experience for premium furniture and home decor.',
   icons: {
     icon: [
-      { url: '/images/logo.png', sizes: '192x192', type: 'image/png' },
+      { url: '/images/logo.jpg', sizes: '192x192', type: 'image/png' },
     ],
-    shortcut: '/images/logo.png',
-    apple: '/images/logo.png',
+    shortcut: '/images/logo.jpg',
+    apple: '/images/logo.jpg',
   },
 };
 

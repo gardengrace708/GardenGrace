@@ -13,7 +13,7 @@ export function OrganizationSchema() {
     '@type': 'Organization',
     name: 'GardenGrace',
     url: 'https://GardenGrace.pk',
-    logo: 'https://GardenGrace.pk/images/logo.png',
+    logo: 'https://GardenGrace.pk/images/logo.jpg',
     description: 'GardenGrace - Premium Pakistani furniture crafted for those who value quality and style. Premium furniture including sofas, beds, dining tables, and home decor.',
     address: {
       '@type': 'PostalAddress',
