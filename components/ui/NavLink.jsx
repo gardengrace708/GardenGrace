@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useNavigation } from '@/components/providers/NavigationProvider';
+import { safeNavigate } from '@/lib/errorHandler';
 
 export default function NavLink({ href, children, onClick, ...props }) {
   const router = useRouter();
@@ -10,13 +11,13 @@ export default function NavLink({ href, children, onClick, ...props }) {
 
   const handleClick = (e) => {
     if (onClick) onClick(e);
-    
+
     // Trigger navigation animation
     triggerNavigation();
-    
+
     // Navigate after a small delay to let animation start
     setTimeout(() => {
-      router.push(href);
+      safeNavigate(router, href, 10000); // 10 second timeout
     }, 300);
   };
 

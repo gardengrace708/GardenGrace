@@ -8,6 +8,7 @@ import VirtualTryOn from '@/components/ui/VirtualTryOn';
 import { formatPrice } from '@/lib/utils';
 import { useCart } from '@/components/providers/CartProvider';
 import { Star } from 'lucide-react';
+import { handleFormError, getLastError } from '@/lib/errorHandler';
 
 const sizes = ['XS', 'S', 'M', 'L', 'XL'];
 
@@ -22,6 +23,14 @@ export default function ProductDetail({ product, related }) {
   const [showReviewForm, setShowReviewForm] = useState(false);
   const [reviewMessage, setReviewMessage] = useState('');
   const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    // Check for previous form error
+    const lastError = getLastError();
+    if (lastError) {
+      setReviewMessage(lastError);
+    }
+  }, []);
 
   // Get the main image for the selected color
   const getMainImageForColor = (selectedColor) => {
@@ -97,7 +106,7 @@ export default function ProductDetail({ product, related }) {
       setShowReviewForm(false);
       setReviewMessage('Review submitted successfully!');
     } catch (error) {
-      setReviewMessage('Review submission failed');
+      handleFormError(error, 'Review submission failed. Please try again.');
     }
   }
 

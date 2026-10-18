@@ -7,6 +7,7 @@ import Footer from '@/components/layout/Footer';
 import { formatPrice } from '@/lib/utils';
 import { showOrderNotification } from '@/lib/notifications';
 import { Copy } from 'lucide-react';
+import { safeNavigate } from '@/lib/errorHandler';
 
 function OrderSuccessContent() {
   const router = useRouter();
@@ -28,7 +29,7 @@ function OrderSuccessContent() {
       // Show notification to user
       showOrderNotification(orderNumber, formatPrice(Number(total)));
     } else {
-      router.push('/');
+      safeNavigate(router, '/', 10000);
     }
   }, [searchParams, router]);
 
@@ -85,7 +86,7 @@ function OrderSuccessContent() {
                 <h3 className="font-bold text-wood mb-2">Track Your Order</h3>
                 <p className="text-ivory/80 mb-4">Save your order number to track your order status anytime.</p>
                 <button
-                  onClick={() => router.push(`/track-order?order=${orderData.orderNumber}&email=${orderData.email}`)}
+                  onClick={() => safeNavigate(router, `/track-order?order=${orderData.orderNumber}&email=${orderData.email}`, 10000)}
                   className="w-full rounded-full bg-wood px-6 py-4 text-sm font-bold uppercase tracking-[0.25em] text-obsidian transition hover:bg-ivory"
                 >
                   Track Order
@@ -112,7 +113,7 @@ function OrderSuccessContent() {
             </div>
 
             <button
-              onClick={() => router.push('/')}
+              onClick={() => safeNavigate(router, '/', 10000)}
               className="rounded-full border border-wood/40 px-8 py-4 text-sm font-bold uppercase tracking-[0.25em] text-wood transition hover:bg-wood/10"
             >
               Continue Shopping

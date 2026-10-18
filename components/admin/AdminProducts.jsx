@@ -1,9 +1,10 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import Image from 'next/image';
 import { Edit3, Eye, ImagePlus, Package, Percent, Plus, Save, ShoppingBag, Star, Tag, Trash2, Users, X, Video } from 'lucide-react';
 import { formatPrice } from '@/lib/utils';
+import { handleFormError, getLastError } from '@/lib/errorHandler';
 
 const emptyForm = {
   name: '',
@@ -85,6 +86,14 @@ export default function AdminProducts({ initialProducts, initialOrders = [], ini
   const [orderSaving, setOrderSaving] = useState(false);
   const [message, setMessage] = useState('');
   const [activePanel, setActivePanel] = useState('products');
+
+  useEffect(() => {
+    // Check for previous form error
+    const lastError = getLastError();
+    if (lastError) {
+      setMessage(lastError);
+    }
+  }, []);
 
   const totalValue = useMemo(() => products.reduce((sum, product) => sum + Number(product.price || 0), 0), [products]);
   const categories = useMemo(() => [...new Set(products.map((product) => product.category).filter(Boolean))].sort(), [products]);
@@ -522,25 +531,29 @@ export default function AdminProducts({ initialProducts, initialOrders = [], ini
     setSaving(true);
     setMessage('');
 
-    const url = editingLookbookId ? `/api/lookbook/${editingLookbookId}` : '/api/lookbook';
-    const method = editingLookbookId ? 'PUT' : 'POST';
-    const response = await fetch(url, {
-      method,
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(lookbookForm)
-    });
-    const data = await response.json();
+    try {
+      const url = editingLookbookId ? `/api/lookbook/${editingLookbookId}` : '/api/lookbook';
+      const method = editingLookbookId ? 'PUT' : 'POST';
+      const response = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(lookbookForm)
+      });
+      const data = await response.json();
 
-    if (!response.ok) {
-      setMessage(data.message || 'Lookbook item save nahi hua');
+      if (!response.ok) {
+        setMessage(data.message || 'Lookbook item save nahi hua');
+        setSaving(false);
+        return;
+      }
+
+      setLookbookItems((current) => editingLookbookId ? current.map((item) => item.id === editingLookbookId ? data.item : item).sort((a, b) => a.sortOrder - b.sortOrder) : [...current, data.item].sort((a, b) => a.sortOrder - b.sortOrder));
+      resetLookbookForm();
+      setMessage('Lookbook item save ho gaya');
       setSaving(false);
-      return;
+    } catch (error) {
+      handleFormError(error, 'Lookbook item save failed. Please try again.');
     }
-
-    setLookbookItems((current) => editingLookbookId ? current.map((item) => item.id === editingLookbookId ? data.item : item).sort((a, b) => a.sortOrder - b.sortOrder) : [...current, data.item].sort((a, b) => a.sortOrder - b.sortOrder));
-    resetLookbookForm();
-    setMessage('Lookbook item save ho gaya');
-    setSaving(false);
   }
 
   async function deleteLookbookItem(id) {
@@ -558,25 +571,29 @@ export default function AdminProducts({ initialProducts, initialOrders = [], ini
     setSaving(true);
     setMessage('');
 
-    const url = editingCouponId ? `/api/coupons/${editingCouponId}` : '/api/coupons';
-    const method = editingCouponId ? 'PUT' : 'POST';
-    const response = await fetch(url, {
-      method,
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(couponForm)
-    });
-    const data = await response.json();
+    try {
+      const url = editingCouponId ? `/api/coupons/${editingCouponId}` : '/api/coupons';
+      const method = editingCouponId ? 'PUT' : 'POST';
+      const response = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(couponForm)
+      });
+      const data = await response.json();
 
-    if (!response.ok) {
-      setMessage(data.message || 'Coupon save nahi hua');
+      if (!response.ok) {
+        setMessage(data.message || 'Coupon save nahi hua');
+        setSaving(false);
+        return;
+      }
+
+      setCoupons((current) => editingCouponId ? current.map((item) => item.id === editingCouponId ? data.coupon : item) : [...current, data.coupon]);
+      resetCouponForm();
+      setMessage('Coupon save ho gaya');
       setSaving(false);
-      return;
+    } catch (error) {
+      handleFormError(error, 'Coupon save failed. Please try again.');
     }
-
-    setCoupons((current) => editingCouponId ? current.map((item) => item.id === editingCouponId ? data.coupon : item) : [...current, data.coupon]);
-    resetCouponForm();
-    setMessage('Coupon save ho gaya');
-    setSaving(false);
   }
 
   async function deleteCoupon(id) {
@@ -594,22 +611,26 @@ export default function AdminProducts({ initialProducts, initialOrders = [], ini
     setSaving(true);
     setMessage('');
 
-    const response = await fetch('/api/global-discount', {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(globalDiscountForm)
-    });
-    const data = await response.json();
+    try {
+      const response = await fetch('/api/global-discount', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(globalDiscountForm)
+      });
+      const data = await response.json();
 
-    if (!response.ok) {
-      setMessage(data.message || 'Global discount save nahi hui');
+      if (!response.ok) {
+        setMessage(data.message || 'Global discount save nahi hui');
+        setSaving(false);
+        return;
+      }
+
+      setGlobalDiscount(data.discount);
+      setMessage('Global discount save ho gaya');
       setSaving(false);
-      return;
+    } catch (error) {
+      handleFormError(error, 'Global discount save failed. Please try again.');
     }
-
-    setGlobalDiscount(data.discount);
-    setMessage('Global discount save ho gaya');
-    setSaving(false);
   }
 
   async function submitCollection(event) {
@@ -617,25 +638,29 @@ export default function AdminProducts({ initialProducts, initialOrders = [], ini
     setSaving(true);
     setMessage('');
 
-    const url = editingCollectionId ? `/api/collections/${editingCollectionId}` : '/api/collections';
-    const method = editingCollectionId ? 'PUT' : 'POST';
-    const response = await fetch(url, {
-      method,
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(collectionForm)
-    });
-    const data = await response.json();
+    try {
+      const url = editingCollectionId ? `/api/collections/${editingCollectionId}` : '/api/collections';
+      const method = editingCollectionId ? 'PUT' : 'POST';
+      const response = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(collectionForm)
+      });
+      const data = await response.json();
 
-    if (!response.ok) {
-      setMessage(data.message || 'Collection save nahi hui');
+      if (!response.ok) {
+        setMessage(data.message || 'Collection save nahi hui');
+        setSaving(false);
+        return;
+      }
+
+      setCollections((current) => editingCollectionId ? current.map((item) => item.id === editingCollectionId ? data.collection : item) : [...current, data.collection]);
+      resetCollectionForm();
+      setMessage('Collection save ho gayi');
       setSaving(false);
-      return;
+    } catch (error) {
+      handleFormError(error, 'Collection save failed. Please try again.');
     }
-
-    setCollections((current) => editingCollectionId ? current.map((item) => item.id === editingCollectionId ? data.collection : item) : [...current, data.collection]);
-    resetCollectionForm();
-    setMessage('Collection save ho gayi');
-    setSaving(false);
   }
 
   async function deleteCollection(id) {
@@ -653,25 +678,29 @@ export default function AdminProducts({ initialProducts, initialOrders = [], ini
     setSaving(true);
     setMessage('');
 
-    const url = editingId ? `/api/products/${editingId}` : '/api/products';
-    const method = editingId ? 'PUT' : 'POST';
-    const response = await fetch(url, {
-      method,
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(form)
-    });
-    const data = await response.json();
+    try {
+      const url = editingId ? `/api/products/${editingId}` : '/api/products';
+      const method = editingId ? 'PUT' : 'POST';
+      const response = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form)
+      });
+      const data = await response.json();
 
-    if (!response.ok) {
-      setMessage(data.message || 'Product save nahi hua');
+      if (!response.ok) {
+        setMessage(data.message || 'Product save nahi hua');
+        setSaving(false);
+        return;
+      }
+
+      setProducts((current) => editingId ? current.map((item) => item.id === editingId ? data.product : item) : [...current, data.product]);
+      resetForm();
+      setMessage('Product save ho gaya');
       setSaving(false);
-      return;
+    } catch (error) {
+      handleFormError(error, 'Product save failed. Please try again.');
     }
-
-    setProducts((current) => editingId ? current.map((item) => item.id === editingId ? data.product : item) : [...current, data.product]);
-    resetForm();
-    setMessage('Product save ho gaya');
-    setSaving(false);
   }
 
   async function deleteProduct(id) {

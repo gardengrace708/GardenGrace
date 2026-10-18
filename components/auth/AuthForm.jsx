@@ -1,7 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { handleFormError, getLastError, safeNavigate } from '@/lib/errorHandler';
 
 export default function AuthForm({ mode }) {
   const router = useRouter();
@@ -9,6 +10,14 @@ export default function AuthForm({ mode }) {
   const [form, setForm] = useState({ name: '', email: '', password: '' });
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    // Check for previous form error
+    const lastError = getLastError();
+    if (lastError) {
+      setMessage(lastError);
+    }
+  }, []);
 
   function updateField(field, value) {
     setForm((current) => ({ ...current, [field]: value }));
@@ -19,21 +28,25 @@ export default function AuthForm({ mode }) {
     setLoading(true);
     setMessage('');
 
-    const response = await fetch(`/api/auth/${mode}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(form)
-    });
-    const data = await response.json();
+    try {
+      const response = await fetch(`/api/auth/${mode}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form)
+      });
+      const data = await response.json();
 
-    if (!response.ok) {
-      setMessage(data.message || 'Authentication failed');
-      setLoading(false);
-      return;
+      if (!response.ok) {
+        setMessage(data.message || 'Authentication failed');
+        setLoading(false);
+        return;
+      }
+
+      safeNavigate(router, data.user?.user === 1 ? '/admin' : '/', 10000);
+      router.refresh();
+    } catch (error) {
+      handleFormError(error, `Authentication failed. Please try again.`);
     }
-
-    router.push(data.user?.user === 1 ? '/admin' : '/');
-    router.refresh();
   }
 
   return (

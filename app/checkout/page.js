@@ -7,6 +7,7 @@ import Footer from '@/components/layout/Footer';
 import { useCart } from '@/components/providers/CartProvider';
 import { formatPrice } from '@/lib/utils';
 import NavLink from '@/components/ui/NavLink';
+import { handleFormError, getLastError, safeNavigate } from '@/lib/errorHandler';
 
 export default function CheckoutPage() {
   const router = useRouter();
@@ -39,6 +40,12 @@ export default function CheckoutPage() {
   const discountedTotal = total - discount;
 
   useEffect(() => {
+    // Check for previous form error
+    const lastError = getLastError();
+    if (lastError) {
+      setMessage(lastError);
+    }
+
     fetch('/api/auth/me')
       .then((res) => res.json())
       .then((data) => {
@@ -227,10 +234,9 @@ export default function CheckoutPage() {
       }
 
       cart.clearCart();
-      router.push('/my-orders');
+      safeNavigate(router, '/my-orders', 10000);
     } catch (error) {
-      setMessage('An error occurred. Please try again.');
-      setLoading(false);
+      handleFormError(error, 'An error occurred while placing your order. Please try again.');
     }
   }
 
