@@ -45,7 +45,7 @@ export default function NotificationPermission() {
 
   return (
     <div className="fixed bottom-4 right-4 z-50 max-w-sm">
-      <div className="bg-surface border border-gold/30 rounded-2xl p-6 shadow-2xl">
+      <div className="bg-surface border border-wood/30 rounded-2xl p-6 shadow-2xl">
         <button
           onClick={handleDismiss}
           className="absolute top-4 right-4 text-ivory/60 hover:text-ivory transition"
@@ -53,7 +53,7 @@ export default function NotificationPermission() {
           <X size={20} />
         </button>
         <div className="pr-8">
-          <h3 className="font-display text-xl text-gold mb-2">Enable Notifications</h3>
+          <h3 className="font-display text-xl text-wood mb-2">Enable Notifications</h3>
           <p className="text-sm text-ivory/80 mb-4">
             Get notified about your order status and updates. We&apos;ll also send you important updates about your orders.
           </p>
@@ -61,13 +61,13 @@ export default function NotificationPermission() {
             <button
               onClick={handleEnable}
               disabled={loading}
-              className="flex-1 rounded-full bg-gold px-4 py-2 text-sm font-bold uppercase tracking-[0.2em] text-obsidian transition hover:bg-ivory disabled:opacity-60"
+              className="flex-1 rounded-full bg-wood px-4 py-2 text-sm font-bold uppercase tracking-[0.2em] text-obsidian transition hover:bg-ivory disabled:opacity-60"
             >
               {loading ? 'Enabling...' : 'Enable'}
             </button>
             <button
               onClick={handleDismiss}
-              className="rounded-full border border-gold/40 px-4 py-2 text-sm font-bold uppercase tracking-[0.2em] text-gold transition hover:bg-gold/10"
+              className="rounded-full border border-wood/40 px-4 py-2 text-sm font-bold uppercase tracking-[0.2em] text-wood transition hover:bg-wood/10"
             >
               Later
             </button>

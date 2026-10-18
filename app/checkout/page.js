@@ -74,7 +74,7 @@ export default function CheckoutPage() {
         <main className="min-h-screen bg-obsidian pt-28 text-ivory">
           <section className="luxury-container flex flex-col items-center justify-center py-16">
             <h1 className="font-display text-5xl">Your cart is empty</h1>
-            <NavLink href="/collections" className="mt-6 rounded-full bg-gold px-8 py-4 text-sm font-bold uppercase tracking-[0.25em] text-obsidian transition hover:bg-ivory">
+            <NavLink href="/collections" className="mt-6 rounded-full bg-wood px-8 py-4 text-sm font-bold uppercase tracking-[0.25em] text-obsidian transition hover:bg-ivory">
               Continue Shopping
             </NavLink>
           </section>
@@ -218,9 +218,9 @@ export default function CheckoutPage() {
       // Save order to localStorage for guest users
       if (!currentUser) {
         try {
-          const savedOrders = JSON.parse(localStorage.getItem('makhsoos_orders') || '[]');
+          const savedOrders = JSON.parse(localStorage.getItem('GardenGrace_orders') || '[]');
           savedOrders.push(data.order);
-          localStorage.setItem('makhsoos_orders', JSON.stringify(savedOrders));
+          localStorage.setItem('GardenGrace_orders', JSON.stringify(savedOrders));
         } catch (e) {
           console.error('Failed to save order to localStorage:', e);
         }
@@ -305,7 +305,7 @@ export default function CheckoutPage() {
       <main className="min-h-screen bg-obsidian pt-28 text-ivory">
         <section className="luxury-container py-16">
           <div className="mb-10">
-            <p className="text-sm font-bold uppercase tracking-[0.35em] text-gold">Checkout</p>
+            <p className="text-sm font-bold uppercase tracking-[0.35em] text-wood">Checkout</p>
             <h1 className="mt-3 font-display text-7xl">Complete Your Order</h1>
           </div>
           <div className="grid gap-8 lg:grid-cols-[1fr_400px]">
@@ -319,7 +319,7 @@ export default function CheckoutPage() {
                       value={formData.name}
                       onChange={(e) => updateField('name', e.target.value)}
                       required
-                      className="w-full rounded-2xl border border-ivory/10 bg-ivory px-4 py-3 text-obsidian placeholder:text-obsidian/45 outline-none transition focus:border-gold focus:ring-2 focus:ring-gold/30"
+                      className="w-full rounded-2xl border border-ivory/10 bg-ivory px-4 py-3 text-obsidian placeholder:text-obsidian/45 outline-none transition focus:border-wood focus:ring-2 focus:ring-wood/30"
                       placeholder="Enter your full name"
                     />
                   </div>
@@ -330,7 +330,7 @@ export default function CheckoutPage() {
                       onChange={(e) => updateField('email', e.target.value)}
                       required
                       type="email"
-                      className="w-full rounded-2xl border border-ivory/10 bg-ivory px-4 py-3 text-obsidian placeholder:text-obsidian/45 outline-none transition focus:border-gold focus:ring-2 focus:ring-gold/30"
+                      className="w-full rounded-2xl border border-ivory/10 bg-ivory px-4 py-3 text-obsidian placeholder:text-obsidian/45 outline-none transition focus:border-wood focus:ring-2 focus:ring-wood/30"
                       placeholder="Enter your email"
                     />
                   </div>
@@ -341,7 +341,7 @@ export default function CheckoutPage() {
                       onChange={(e) => updateField('phone', e.target.value)}
                       required
                       type="tel"
-                      className={`w-full rounded-2xl border px-4 py-3 text-obsidian placeholder:text-obsidian/45 outline-none transition focus:ring-2 ${phoneError ? 'border-red-500 focus:border-red-500 focus:ring-red-500/30' : 'border-ivory/10 focus:border-gold focus:ring-gold/30'}`}
+                      className={`w-full rounded-2xl border px-4 py-3 text-obsidian placeholder:text-obsidian/45 outline-none transition focus:ring-2 ${phoneError ? 'border-red-500 focus:border-red-500 focus:ring-red-500/30' : 'border-ivory/10 focus:border-wood focus:ring-wood/30'}`}
                       placeholder="03XXXXXXXXX or 92 3XX XXXXXXX"
                     />
                     {phoneError && <p className="mt-2 text-sm font-bold text-red-400">{phoneError}</p>}
@@ -352,7 +352,7 @@ export default function CheckoutPage() {
                       value={formData.address}
                       onChange={(e) => updateField('address', e.target.value)}
                       required
-                      className="w-full rounded-2xl border border-ivory/10 bg-ivory px-4 py-3 text-obsidian placeholder:text-obsidian/45 outline-none transition focus:border-gold focus:ring-2 focus:ring-gold/30"
+                      className="w-full rounded-2xl border border-ivory/10 bg-ivory px-4 py-3 text-obsidian placeholder:text-obsidian/45 outline-none transition focus:border-wood focus:ring-2 focus:ring-wood/30"
                       placeholder="Enter your address"
                     />
                   </div>
@@ -363,7 +363,7 @@ export default function CheckoutPage() {
                         value={formData.city}
                         onChange={(e) => updateField('city', e.target.value)}
                         required
-                        className="w-full rounded-2xl border border-ivory/10 bg-ivory px-4 py-3 text-obsidian placeholder:text-obsidian/45 outline-none transition focus:border-gold focus:ring-2 focus:ring-gold/30"
+                        className="w-full rounded-2xl border border-ivory/10 bg-ivory px-4 py-3 text-obsidian placeholder:text-obsidian/45 outline-none transition focus:border-wood focus:ring-2 focus:ring-wood/30"
                         placeholder="City"
                       />
                     </div>
@@ -373,7 +373,7 @@ export default function CheckoutPage() {
                         value={formData.postalCode}
                         onChange={(e) => updateField('postalCode', e.target.value)}
                         required
-                        className="w-full rounded-2xl border border-ivory/10 bg-ivory px-4 py-3 text-obsidian placeholder:text-obsidian/45 outline-none transition focus:border-gold focus:ring-2 focus:ring-gold/30"
+                        className="w-full rounded-2xl border border-ivory/10 bg-ivory px-4 py-3 text-obsidian placeholder:text-obsidian/45 outline-none transition focus:border-wood focus:ring-2 focus:ring-wood/30"
                         placeholder="Postal code"
                       />
                     </div>
@@ -392,7 +392,7 @@ export default function CheckoutPage() {
                       value={customMeasurements.waist}
                       onChange={(e) => setCustomMeasurements(prev => ({ ...prev, waist: e.target.value }))}
                       placeholder="e.g., 32"
-                      className="w-full rounded-2xl border border-ivory/10 bg-ivory px-4 py-3 text-obsidian placeholder:text-obsidian/45 outline-none transition focus:border-gold focus:ring-2 focus:ring-gold/30"
+                      className="w-full rounded-2xl border border-ivory/10 bg-ivory px-4 py-3 text-obsidian placeholder:text-obsidian/45 outline-none transition focus:border-wood focus:ring-2 focus:ring-wood/30"
                     />
                   </div>
                   <div>
@@ -401,14 +401,14 @@ export default function CheckoutPage() {
                       value={customMeasurements.length}
                       onChange={(e) => setCustomMeasurements(prev => ({ ...prev, length: e.target.value }))}
                       placeholder="e.g., 40"
-                      className="w-full rounded-2xl border border-ivory/10 bg-ivory px-4 py-3 text-obsidian placeholder:text-obsidian/45 outline-none transition focus:border-gold focus:ring-2 focus:ring-gold/30"
+                      className="w-full rounded-2xl border border-ivory/10 bg-ivory px-4 py-3 text-obsidian placeholder:text-obsidian/45 outline-none transition focus:border-wood focus:ring-2 focus:ring-wood/30"
                     />
                   </div>
                 </div>
               </div>
 
               {message && <p className="rounded-2xl bg-red-500/10 px-4 py-3 text-center text-sm font-bold text-red-200">{message}</p>}
-              <button disabled={loading} onClick={handleProceedToConfirmation} className="w-full rounded-full bg-gold px-6 py-4 text-sm font-bold uppercase tracking-[0.25em] text-obsidian transition hover:bg-ivory disabled:opacity-60">
+              <button disabled={loading} onClick={handleProceedToConfirmation} className="w-full rounded-full bg-wood px-6 py-4 text-sm font-bold uppercase tracking-[0.25em] text-obsidian transition hover:bg-ivory disabled:opacity-60">
                 {loading ? 'Processing...' : 'Proceed to Confirmation'}
               </button>
             </form>
@@ -443,14 +443,14 @@ export default function CheckoutPage() {
                             <input
                               type="text"
                               placeholder="Waist size (e.g., 32, 34)"
-                              className="mt-2 w-full rounded-lg border border-ivory/20 bg-ivory/10 px-3 py-2 text-sm text-ivory placeholder:text-ivory/40 outline-none focus:border-gold"
+                              className="mt-2 w-full rounded-lg border border-ivory/20 bg-ivory/10 px-3 py-2 text-sm text-ivory placeholder:text-ivory/40 outline-none focus:border-wood"
                               value={waistSizes[item.key] || ''}
                               onChange={(e) => setWaistSizes(prev => ({ ...prev, [item.key]: e.target.value }))}
                             />
                           )}
                         </div>
                       </div>
-                      <p className="font-bold text-gold">{formatPrice(item.price * item.quantity)}</p>
+                      <p className="font-bold text-wood">{formatPrice(item.price * item.quantity)}</p>
                     </div>
                   );
                 })}
@@ -473,7 +473,7 @@ export default function CheckoutPage() {
                   )}
                   <div className="flex justify-between pt-3 text-lg font-bold border-t border-ivory/10">
                     <span>Total</span>
-                    <span className="text-gold">{formatPrice(discountedTotal)}</span>
+                    <span className="text-wood">{formatPrice(discountedTotal)}</span>
                   </div>
                 </div>
                 <div className="pt-4 border-t border-ivory/10">
@@ -484,13 +484,13 @@ export default function CheckoutPage() {
                       onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
                       placeholder="Enter coupon code"
                       disabled={!!appliedCoupon}
-                      className="flex-1 rounded-2xl border border-ivory/10 bg-ivory px-4 py-3 text-obsidian placeholder:text-obsidian/45 outline-none transition focus:border-gold focus:ring-2 focus:ring-gold/30 disabled:opacity-60"
+                      className="flex-1 rounded-2xl border border-ivory/10 bg-ivory px-4 py-3 text-obsidian placeholder:text-obsidian/45 outline-none transition focus:border-wood focus:ring-2 focus:ring-wood/30 disabled:opacity-60"
                     />
                     {!appliedCoupon ? (
                       <button
                         type="button"
                         onClick={applyCoupon}
-                        className="rounded-full bg-gold px-6 py-3 text-sm font-bold uppercase tracking-[0.25em] text-obsidian transition hover:bg-ivory"
+                        className="rounded-full bg-wood px-6 py-3 text-sm font-bold uppercase tracking-[0.25em] text-obsidian transition hover:bg-ivory"
                       >
                         Apply
                       </button>
@@ -498,7 +498,7 @@ export default function CheckoutPage() {
                       <button
                         type="button"
                         onClick={removeCoupon}
-                        className="rounded-full border border-gold/40 px-6 py-3 text-sm font-bold uppercase tracking-[0.25em] text-gold transition hover:bg-gold/10"
+                        className="rounded-full border border-wood/40 px-6 py-3 text-sm font-bold uppercase tracking-[0.25em] text-wood transition hover:bg-wood/10"
                       >
                         Remove
                       </button>
@@ -518,12 +518,12 @@ export default function CheckoutPage() {
       
       {showConfirmation && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
-          <div className="bg-surface rounded-[2rem] p-8 max-w-lg w-full max-h-[90vh] overflow-y-auto border border-gold/30">
-            <h2 className="font-display text-4xl mb-6 text-gold">Confirm Your Order</h2>
+          <div className="bg-surface rounded-[2rem] p-8 max-w-lg w-full max-h-[90vh] overflow-y-auto border border-wood/30">
+            <h2 className="font-display text-4xl mb-6 text-wood">Confirm Your Order</h2>
             
             <div className="space-y-4 mb-6">
               <div className="rounded-2xl bg-ivory/5 p-4">
-                <h3 className="font-bold text-gold mb-2">Shipping Information</h3>
+                <h3 className="font-bold text-wood mb-2">Shipping Information</h3>
                 <p className="text-ivory/80"><span className="text-ivory/60">Name:</span> {formData.name}</p>
                 <p className="text-ivory/80"><span className="text-ivory/60">Email:</span> {formData.email}</p>
                 <p className="text-ivory/80"><span className="text-ivory/60">Phone:</span> {formData.phone}</p>
@@ -531,16 +531,16 @@ export default function CheckoutPage() {
               </div>
               
               <div className="rounded-2xl bg-ivory/5 p-4">
-                <h3 className="font-bold text-gold mb-2">Order Items</h3>
+                <h3 className="font-bold text-wood mb-2">Order Items</h3>
                 {cart.items.map((item) => (
                   <div key={item.key} className="flex justify-between py-2 border-b border-ivory/10 last:border-0">
                     <span className="text-ivory/80">{item.name} (Size: {item.size}, Qty: {item.quantity})</span>
-                    <span className="text-gold">{formatPrice(item.price * item.quantity)}</span>
+                    <span className="text-wood">{formatPrice(item.price * item.quantity)}</span>
                   </div>
                 ))}
                 <div className="flex justify-between pt-3 font-bold text-lg">
                   <span>Subtotal</span>
-                  <span className="text-gold">{formatPrice(total)}</span>
+                  <span className="text-wood">{formatPrice(total)}</span>
                 </div>
                 {globalDiscount.active && (
                   <div className="flex justify-between text-green-400">
@@ -556,7 +556,7 @@ export default function CheckoutPage() {
                 )}
                 <div className="flex justify-between pt-3 font-bold text-xl border-t border-ivory/10">
                   <span>Total</span>
-                  <span className="text-gold">{formatPrice(discountedTotal)}</span>
+                  <span className="text-wood">{formatPrice(discountedTotal)}</span>
                 </div>
               </div>
             </div>
@@ -567,14 +567,14 @@ export default function CheckoutPage() {
               <button 
                 onClick={handleCancelConfirmation}
                 disabled={loading}
-                className="flex-1 rounded-full border border-gold/40 px-6 py-3 text-sm font-bold uppercase tracking-[0.25em] text-gold transition hover:bg-gold/10 disabled:opacity-60"
+                className="flex-1 rounded-full border border-wood/40 px-6 py-3 text-sm font-bold uppercase tracking-[0.25em] text-wood transition hover:bg-wood/10 disabled:opacity-60"
               >
                 Cancel
               </button>
               <button 
                 onClick={confirmOrder}
                 disabled={loading}
-                className="flex-1 rounded-full bg-gold px-6 py-3 text-sm font-bold uppercase tracking-[0.25em] text-obsidian transition hover:bg-ivory disabled:opacity-60"
+                className="flex-1 rounded-full bg-wood px-6 py-3 text-sm font-bold uppercase tracking-[0.25em] text-obsidian transition hover:bg-ivory disabled:opacity-60"
               >
                 {loading ? 'Processing...' : 'Confirm Order'}
               </button>

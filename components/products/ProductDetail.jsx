@@ -111,19 +111,19 @@ export default function ProductDetail({ product, related }) {
             </div>
           )}
           <div className="relative aspect-[4/5] overflow-hidden bg-stone-900"><Image src={main} alt={product.name} fill priority sizes="50vw" className="object-cover" /></div>
-          <div className="mt-4 grid grid-cols-4 gap-3">{product.images.map((image) => <button key={image} onClick={() => setMain(image)} className={`relative aspect-square overflow-hidden border ${main === image ? 'border-gold' : 'border-transparent'}`}><Image src={image} alt={product.name} fill sizes="120px" className="object-cover" /></button>)}</div>
+          <div className="mt-4 grid grid-cols-4 gap-3">{product.images.map((image) => <button key={image} onClick={() => setMain(image)} className={`relative aspect-square overflow-hidden border ${main === image ? 'border-wood' : 'border-transparent'}`}><Image src={image} alt={product.name} fill sizes="120px" className="object-cover" /></button>)}</div>
         </div>
         <div className="lg:sticky lg:top-28 lg:self-start">
-          <p className="text-sm font-bold uppercase tracking-[0.3em] text-gold">{product.category}</p>
+          <p className="text-sm font-bold uppercase tracking-[0.3em] text-wood">{product.category}</p>
           <h1 className="mt-3 font-display text-2xl md:text-5xl leading-none">{product.name}</h1>
           {averageRating && (
             <div className="mt-3 flex items-center gap-2">
               <div className="flex">
                 {[1, 2, 3, 4, 5].map((star) => (
-                  <Star key={star} size={16} fill={star <= Math.round(averageRating) ? 'currentColor' : 'none'} className={star <= Math.round(averageRating) ? 'text-gold' : 'text-gold/30'} />
+                  <Star key={star} size={16} fill={star <= Math.round(averageRating) ? 'currentColor' : 'none'} className={star <= Math.round(averageRating) ? 'text-wood' : 'text-wood/30'} />
                 ))}
               </div>
-              <span className="text-lg font-semibold text-gold">{averageRating}</span>
+              <span className="text-lg font-semibold text-wood">{averageRating}</span>
               <span className="text-sm text-obsidian/60">({reviews.length} reviews)</span>
             </div>
           )}
@@ -133,7 +133,7 @@ export default function ProductDetail({ product, related }) {
               <p className="text-lg text-obsidian/50 line-through">{formatPrice(product.price)}</p>
             </div>
           ) : (
-            <p className="mt-5 text-2xl font-bold text-gold">{formatPrice(product.price)}</p>
+            <p className="mt-5 text-2xl font-bold text-wood">{formatPrice(product.price)}</p>
           )}
           <p className="mt-8 max-w-xl leading-8 text-obsidian/70">{product.description}</p>
           {product.colors && product.colors.length > 0 && (
@@ -141,7 +141,7 @@ export default function ProductDetail({ product, related }) {
               <p className="mb-3 text-sm font-bold uppercase tracking-[0.22em]">Select Color</p>
               <div className="flex flex-wrap gap-3">
                 {product.colors.map((item) => (
-                  <button key={item} onClick={() => setColor(item)} className={`px-4 py-2 rounded-full border text-sm font-bold ${color === item ? 'border-gold bg-gold text-obsidian' : 'border-obsidian/20'}`}>
+                  <button key={item} onClick={() => setColor(item)} className={`px-4 py-2 rounded-full border text-sm font-bold ${color === item ? 'border-wood bg-wood text-obsidian' : 'border-obsidian/20'}`}>
                     {item}
                   </button>
                 ))}
@@ -152,7 +152,7 @@ export default function ProductDetail({ product, related }) {
             <p className="mb-3 text-sm font-bold uppercase tracking-[0.22em]">Select Size</p>
             <div className="flex gap-3">
               {(product.availableSizes && product.availableSizes.length > 0 ? product.availableSizes : sizes).map((item) => (
-                <button key={item} onClick={() => setSize(item)} className={`h-12 w-12 rounded-full border text-sm font-bold ${size === item ? 'border-gold bg-gold text-obsidian' : 'border-obsidian/20'}`}>
+                <button key={item} onClick={() => setSize(item)} className={`h-12 w-12 rounded-full border text-sm font-bold ${size === item ? 'border-wood bg-wood text-obsidian' : 'border-obsidian/20'}`}>
                   {item}
                 </button>
               ))}
@@ -180,7 +180,7 @@ export default function ProductDetail({ product, related }) {
         <div className="flex items-center justify-between">
           <h2 className="font-display text-2xl md:text-6xl">Reviews</h2>
           {user && (
-            <button onClick={() => setShowReviewForm(!showReviewForm)} className="rounded-full bg-gold px-6 py-3 text-sm font-bold uppercase tracking-[0.2em] text-obsidian transition hover:bg-obsidian hover:text-ivory">
+            <button onClick={() => setShowReviewForm(!showReviewForm)} className="rounded-full bg-wood px-6 py-3 text-sm font-bold uppercase tracking-[0.2em] text-obsidian transition hover:bg-obsidian hover:text-ivory">
               {showReviewForm ? 'Cancel' : 'Write a Review'}
             </button>
           )}
@@ -198,7 +198,7 @@ export default function ProductDetail({ product, related }) {
                     onClick={() => setReviewForm({ ...reviewForm, rating: star })}
                     className="transition hover:scale-110"
                   >
-                    <Star size={32} fill={star <= reviewForm.rating ? 'currentColor' : 'none'} className={star <= reviewForm.rating ? 'text-gold' : 'text-gold/30'} />
+                    <Star size={32} fill={star <= reviewForm.rating ? 'currentColor' : 'none'} className={star <= reviewForm.rating ? 'text-wood' : 'text-wood/30'} />
                   </button>
                 ))}
               </div>
@@ -210,10 +210,10 @@ export default function ProductDetail({ product, related }) {
                 onChange={(e) => setReviewForm({ ...reviewForm, comment: e.target.value })}
                 placeholder="Share your experience with this product..."
                 rows={4}
-                className="w-full rounded-2xl border border-obsidian/15 px-4 py-3 outline-none focus:border-gold"
+                className="w-full rounded-2xl border border-obsidian/15 px-4 py-3 outline-none focus:border-wood"
               />
             </div>
-            <button type="submit" className="rounded-full bg-gold px-8 py-3 text-sm font-bold uppercase tracking-[0.2em] text-obsidian transition hover:bg-obsidian hover:text-ivory">
+            <button type="submit" className="rounded-full bg-wood px-8 py-3 text-sm font-bold uppercase tracking-[0.2em] text-obsidian transition hover:bg-obsidian hover:text-ivory">
               Submit Review
             </button>
             {reviewMessage && (
@@ -224,7 +224,7 @@ export default function ProductDetail({ product, related }) {
           </form>
         )}
 
-        <div className="mt-12 max-h-[400px] overflow-y-auto space-y-4 rounded-3xl border border-obsidian/10 bg-surface p-6 scrollbar-thin bg-white/30  scrollbar-thumb-gold/20 scrollbar-track-transparent">
+        <div className="mt-12 max-h-[400px] overflow-y-auto space-y-4 rounded-3xl border border-obsidian/10 bg-surface p-6 scrollbar-thin bg-white/30  scrollbar-thumb-wood/20 scrollbar-track-transparent">
           {reviews.length === 0 ? (
             <p className="text-center text-obsidian/60">No reviews yet. Be the first to review!</p>
           ) : (
@@ -235,7 +235,7 @@ export default function ProductDetail({ product, related }) {
                     <p className="font-bold text-obsidian">{review.userName}</p>
                     <div className="mt-1 flex">
                       {[1, 2, 3, 4, 5].map((star) => (
-                        <Star key={star} size={14} fill={star <= review.rating ? 'currentColor' : 'none'} className={star <= review.rating ? 'text-gold' : 'text-gold/30'} />
+                        <Star key={star} size={14} fill={star <= review.rating ? 'currentColor' : 'none'} className={star <= review.rating ? 'text-wood' : 'text-wood/30'} />
                       ))}
                     </div>
                   </div>

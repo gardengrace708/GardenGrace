@@ -56,7 +56,7 @@ export default function OfferPopup({ globalDiscount }) {
                   className="h-40 w-40 object-contain"
                   onError={(e) => {
                     e.target.style.display = 'none';
-                    e.target.parentElement.innerHTML = '<Gift size={64} className="text-gold" />';
+                    e.target.parentElement.innerHTML = '<Gift size={64} className="text-wood" />';
                   }}
                 />
               </div>
@@ -64,7 +64,7 @@ export default function OfferPopup({ globalDiscount }) {
               {/* Offer Content */}
               <div className="p-6 text-center">
                 <div className="mb-4">
-                  <span className="inline-block rounded-full bg-gold/20 px-4 py-1 text-sm font-bold uppercase tracking-wider text-gold">
+                  <span className="inline-block rounded-full bg-wood/20 px-4 py-1 text-sm font-bold uppercase tracking-wider text-wood">
                     Special Offer
                   </span>
                 </div>
@@ -86,7 +86,7 @@ export default function OfferPopup({ globalDiscount }) {
 
                 <button
                   onClick={() => setIsOpen(false)}
-                  className="w-full rounded-full bg-gold px-6 py-3 text-sm font-bold uppercase tracking-wider text-obsidian transition hover:bg-yellow-400"
+                  className="w-full rounded-full bg-wood px-6 py-3 text-sm font-bold uppercase tracking-wider text-obsidian transition hover:bg-yellow-400"
                 >
                   Start Shopping
                 </button>

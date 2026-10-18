@@ -11,7 +11,7 @@ export function CartProvider({ children }) {
   const { showToast } = useToast();
 
   useEffect(() => {
-    const savedCart = localStorage.getItem('makhsoos_cart');
+    const savedCart = localStorage.getItem('GardenGrace_cart');
     if (savedCart) {
       try {
         setItems(JSON.parse(savedCart));
@@ -24,7 +24,7 @@ export function CartProvider({ children }) {
 
   useEffect(() => {
     if (isLoaded) {
-      localStorage.setItem('makhsoos_cart', JSON.stringify(items));
+      localStorage.setItem('GardenGrace_cart', JSON.stringify(items));
     }
   }, [items, isLoaded]);
 

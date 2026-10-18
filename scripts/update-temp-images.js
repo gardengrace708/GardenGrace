@@ -14,7 +14,7 @@ const products = [
 async function main() {
   const client = new MongoClient(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017');
   await client.connect();
-  const db = client.db(process.env.MONGODB_DB || 'makhsoos');
+  const db = client.db(process.env.MONGODB_DB || 'GardenGrace');
 
   for (const product of products) {
     await db.collection('products').updateOne({ id: product.id }, { $set: { images: product.images } });

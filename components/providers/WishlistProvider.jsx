@@ -9,7 +9,7 @@ export function WishlistProvider({ children }) {
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    const savedWishlist = localStorage.getItem('makhsoos_wishlist');
+    const savedWishlist = localStorage.getItem('GardenGrace_wishlist');
     if (savedWishlist) {
       try {
         setItems(JSON.parse(savedWishlist));
@@ -22,7 +22,7 @@ export function WishlistProvider({ children }) {
 
   useEffect(() => {
     if (isLoaded) {
-      localStorage.setItem('makhsoos_wishlist', JSON.stringify(items));
+      localStorage.setItem('GardenGrace_wishlist', JSON.stringify(items));
     }
   }, [items, isLoaded]);
 

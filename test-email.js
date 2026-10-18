@@ -21,13 +21,13 @@ async function testEmail() {
       },
       body: JSON.stringify({
         sender: {
-          name: 'MAKHSOOS Test',
-          email: 'makhsoos708@gmail.com'
+          name: 'GardenGrace Test',
+          email: 'GardenGrace708@gmail.com'
         },
         to: [{
-          email: 'makhsoos708@gmail.com'
+          email: 'GardenGrace708@gmail.com'
         }],
-        subject: 'Test Email from MAKHSOOS',
+        subject: 'Test Email from GardenGrace',
         htmlContent: '<div><h1>Test Email</h1><p>If you receive this, email configuration is working!</p></div>'
       })
     });

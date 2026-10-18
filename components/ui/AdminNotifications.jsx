@@ -80,8 +80,8 @@ export default function AdminNotifications() {
         onClick={toggleNotifications}
         className={`rounded-full px-4 py-2 text-sm font-bold uppercase tracking-[0.2em] transition ${
           enabled
-            ? 'bg-gold text-obsidian'
-            : 'bg-surface border border-gold/40 text-gold'
+            ? 'bg-wood text-obsidian'
+            : 'bg-surface border border-wood/40 text-wood'
         }`}
         title={enabled ? 'Disable admin notifications' : 'Enable admin notifications'}
       >

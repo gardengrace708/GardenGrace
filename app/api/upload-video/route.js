@@ -33,7 +33,7 @@ export async function POST(request) {
     const { filename } = body;
 
     const timestamp = Math.round(Date.now() / 1000);
-    const folder = 'makhsoos/hero';
+    const folder = 'GardenGrace/hero';
 
     const signature = signCloudinaryParams(
       { folder, timestamp },

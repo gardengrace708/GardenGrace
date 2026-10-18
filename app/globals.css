@@ -36,8 +36,8 @@ body::before {
 }
 
 ::selection {
-  background: #C9A84C;
-  color: #0A0A0A;
+  background: #8B5A2B;
+  color: #FFFFFF;
 }
 
 ::-webkit-scrollbar {
@@ -50,7 +50,7 @@ body::before {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #C9A84C;
+  background: #8B5A2B;
   border-radius: 999px;
 }
 
@@ -69,5 +69,5 @@ body::before {
 }
 
 .gold-line {
-  background: linear-gradient(90deg, transparent, #C9A84C, transparent);
+  background: linear-gradient(90deg, transparent, #8B5A2B, transparent);
 }

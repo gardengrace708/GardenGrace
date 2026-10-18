@@ -22,7 +22,7 @@ export default async function Home() {
       <Navbar />
        <div className="bg-obsidian text-ivory py-3 text-center">
         <p className="text-sm font-semibold tracking-wider uppercase">
-          From this shop you will get classic and premium outfits at affordable prices
+          From this shop you will get classic and premium furniture at affordable prices
         </p>
       </div>
 

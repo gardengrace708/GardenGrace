@@ -73,7 +73,7 @@ function OrderSuccessContent() {
               <div className="flex justify-between items-center border-b border-ivory/10 pb-6 mb-6">
                 <div>
                   <p className="text-sm font-bold uppercase tracking-[0.22em] text-ivory/60">Order Number</p>
-                  <p className="mt-2 font-display text-4xl text-gold">{orderData.orderNumber}</p>
+                  <p className="mt-2 font-display text-4xl text-wood">{orderData.orderNumber}</p>
                 </div>
                 <div className="text-right">
                   <p className="text-sm font-bold uppercase tracking-[0.22em] text-ivory/60">Total Amount</p>
@@ -82,11 +82,11 @@ function OrderSuccessContent() {
               </div>
 
               <div className="bg-ivory/5 rounded-2xl p-6 mb-6">
-                <h3 className="font-bold text-gold mb-2">Track Your Order</h3>
+                <h3 className="font-bold text-wood mb-2">Track Your Order</h3>
                 <p className="text-ivory/80 mb-4">Save your order number to track your order status anytime.</p>
                 <button
                   onClick={() => router.push(`/track-order?order=${orderData.orderNumber}&email=${orderData.email}`)}
-                  className="w-full rounded-full bg-gold px-6 py-4 text-sm font-bold uppercase tracking-[0.25em] text-obsidian transition hover:bg-ivory"
+                  className="w-full rounded-full bg-wood px-6 py-4 text-sm font-bold uppercase tracking-[0.25em] text-obsidian transition hover:bg-ivory"
                 >
                   Track Order
                 </button>
@@ -96,12 +96,12 @@ function OrderSuccessContent() {
                 <p>• You can track your order using the order number and your email</p>
                 <p>• Order confirmation has been sent to your email</p>
                 <p>• Your order is currently <span className="text-orange-400 font-bold">Pending</span></p>
-                <p>• Please pay <span className="text-gold font-bold">Rs. 300</span> advance to confirm your order</p>
+                <p>• Please pay <span className="text-wood font-bold">Rs. 300</span> advance to confirm your order</p>
                 <div className="flex items-center gap-2">
-                  <p>• JazzCash / EasyPaisa: <span className="text-gold font-bold">0328-0362181</span></p>
+                  <p>• JazzCash / EasyPaisa: <span className="text-wood font-bold">0328-0362181</span></p>
                   <button
                     onClick={() => copyPhoneNumber('03280362181')}
-                    className="flex items-center gap-1 bg-gold/20 hover:bg-gold/30 px-2 py-1 rounded transition"
+                    className="flex items-center gap-1 bg-wood/20 hover:bg-wood/30 px-2 py-1 rounded transition"
                   >
                     <Copy size={14} />
                     {copiedNumber ? <span className="text-xs font-semibold">Copied!</span> : <span className="text-xs font-semibold">Copy</span>}
@@ -113,7 +113,7 @@ function OrderSuccessContent() {
 
             <button
               onClick={() => router.push('/')}
-              className="rounded-full border border-gold/40 px-8 py-4 text-sm font-bold uppercase tracking-[0.25em] text-gold transition hover:bg-gold/10"
+              className="rounded-full border border-wood/40 px-8 py-4 text-sm font-bold uppercase tracking-[0.25em] text-wood transition hover:bg-wood/10"
             >
               Continue Shopping
             </button>

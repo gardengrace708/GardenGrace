@@ -1,6 +1,6 @@
 export default function Badge({ children }) {
   const tone = {
-    NEW: 'bg-gold text-obsidian',
+    NEW: 'bg-wood text-obsidian',
     BESTSELLER: 'bg-ivory text-obsidian',
     LIMITED: 'bg-red-700 text-white',
     TRENDING: 'bg-orange-500 text-white',

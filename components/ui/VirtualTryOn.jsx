@@ -86,7 +86,7 @@ export default function VirtualTryOn({ productImage, productName }) {
     <>
       {/* <button
         onClick={() => setIsOpen(true)}
-        className="flex items-center gap-2 rounded-full border border-gold/40 px-6 py-3 text-sm font-bold uppercase tracking-[0.25em] text-gold transition hover:bg-gold hover:text-obsidian"
+        className="flex items-center gap-2 rounded-full border border-wood/40 px-6 py-3 text-sm font-bold uppercase tracking-[0.25em] text-wood transition hover:bg-wood hover:text-obsidian"
       >
         <Sparkles size={18} />
         Try it onYourself
@@ -110,7 +110,7 @@ export default function VirtualTryOn({ productImage, productName }) {
             >
               <button
                 onClick={() => setIsOpen(false)}
-                className="absolute right-4 top-4 rounded-full bg-obsidian/10 p-2 transition hover:bg-gold hover:text-obsidian"
+                className="absolute right-4 top-4 rounded-full bg-obsidian/10 p-2 transition hover:bg-wood hover:text-obsidian"
               >
                 <X size={20} />
               </button>
@@ -124,16 +124,16 @@ export default function VirtualTryOn({ productImage, productName }) {
                     <div className="grid grid-cols-2 gap-3">
                       <button
                         onClick={() => fileInputRef.current?.click()}
-                        className="flex flex-col items-center gap-2 rounded-2xl border-2 border-dashed border-gold/40 p-6 transition hover:border-gold hover:bg-gold/5"
+                        className="flex flex-col items-center gap-2 rounded-2xl border-2 border-dashed border-wood/40 p-6 transition hover:border-wood hover:bg-wood/5"
                       >
-                        <Upload size={28} className="text-gold" />
+                        <Upload size={28} className="text-wood" />
                         <span className="text-xs font-bold uppercase tracking-wider text-obsidian">Upload Photo</span>
                       </button>
                       <button
                         onClick={handleCameraCapture}
-                        className="flex flex-col items-center gap-2 rounded-2xl border-2 border-dashed border-gold/40 p-6 transition hover:border-gold hover:bg-gold/5"
+                        className="flex flex-col items-center gap-2 rounded-2xl border-2 border-dashed border-wood/40 p-6 transition hover:border-wood hover:bg-wood/5"
                       >
-                        <Camera size={28} className="text-gold" />
+                        <Camera size={28} className="text-wood" />
                         <span className="text-xs font-bold uppercase tracking-wider text-obsidian">Take Photo</span>
                       </button>
                     </div>
@@ -151,7 +151,7 @@ export default function VirtualTryOn({ productImage, productName }) {
                       <button
                         onClick={handleTryOn}
                         disabled={loading}
-                        className="w-full rounded-full bg-gold px-6 py-3.5 text-xs font-bold uppercase tracking-[0.25em] text-obsidian transition hover:bg-obsidian hover:text-ivory disabled:opacity-50"
+                        className="w-full rounded-full bg-wood px-6 py-3.5 text-xs font-bold uppercase tracking-[0.25em] text-obsidian transition hover:bg-obsidian hover:text-ivory disabled:opacity-50"
                       >
                         {loading ? (
                           <span className="flex items-center justify-center gap-2">
@@ -185,13 +185,13 @@ export default function VirtualTryOn({ productImage, productName }) {
                   <div className="flex gap-3">
                     <button
                       onClick={reset}
-                      className="flex-1 rounded-full border border-gold/40 px-4 py-3 text-xs font-bold uppercase tracking-[0.15em] text-gold transition hover:bg-gold/10"
+                      className="flex-1 rounded-full border border-wood/40 px-4 py-3 text-xs font-bold uppercase tracking-[0.15em] text-wood transition hover:bg-wood/10"
                     >
                       Try Again
                     </button>
                     <button
                       onClick={() => setIsOpen(false)}
-                      className="flex-1 rounded-full bg-gold px-4 py-3 text-xs font-bold uppercase tracking-[0.15em] text-obsidian transition hover:bg-obsidian hover:text-ivory"
+                      className="flex-1 rounded-full bg-wood px-4 py-3 text-xs font-bold uppercase tracking-[0.15em] text-obsidian transition hover:bg-obsidian hover:text-ivory"
                     >
                       Done
                     </button>

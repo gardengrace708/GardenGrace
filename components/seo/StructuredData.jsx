@@ -11,10 +11,10 @@ export function OrganizationSchema() {
   const schema = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
-    name: 'MAKHSOOS',
-    url: 'https://makhsoos.online',
-    logo: 'https://makhsoos.online/images/logo.png',
-    description: 'MAKHSOOS - Luxury Pakistani clothing crafted for men who carry culture with confidence. Premium menswear including kurtas, shalwar kameez, and traditional wear.',
+    name: 'GardenGrace',
+    url: 'https://GardenGrace.pk',
+    logo: 'https://GardenGrace.pk/images/logo.png',
+    description: 'GardenGrace - Premium Pakistani furniture crafted for those who value quality and style. Premium furniture including sofas, beds, dining tables, and home decor.',
     address: {
       '@type': 'PostalAddress',
       streetAddress: 'Faisalabad',
@@ -25,13 +25,13 @@ export function OrganizationSchema() {
       '@type': 'ContactPoint',
       telephone: '+92-328-0362181',
       contactType: 'customer service',
-      email: 'makhsoos708@gmail.com',
+      email: 'GardenGrace708@gmail.com',
       areaServed: 'PK',
       availableLanguage: 'English, Urdu'
     },
     sameAs: [
-      'https://www.tiktok.com/@makhsoos_men',
-      'https://www.instagram.com/makhsoos_men'
+      'https://www.tiktok.com/@GardenGrace_men',
+      'https://www.instagram.com/GardenGrace_men'
     ]
   };
 
@@ -42,12 +42,12 @@ export function WebSiteSchema() {
   const schema = {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
-    name: 'MAKHSOOS',
-    url: 'https://makhsoos.online',
-    description: 'Shop premium men\'s clothing at MAKHSOOS. Discover luxury Pakistani fashion including kurtas, shalwar kameez, waistcoats, and traditional wear.',
+    name: 'GardenGrace',
+    url: 'https://GardenGrace.pk',
+    description: 'Shop premium furniture at GardenGrace. Discover luxury Pakistani furniture including sofas, beds, dining tables, and home decor.',
     potentialAction: {
       '@type': 'SearchAction',
-      target: 'https://makhsoos.online/shop?q={search_term_string}',
+      target: 'https://GardenGrace.pk/shop?q={search_term_string}',
       'query-input': 'required name=search_term_string'
     }
   };
@@ -67,20 +67,20 @@ export function ProductSchema({ product }) {
     sku: product.id?.toString(),
     brand: {
       '@type': 'Brand',
-      name: 'MAKHSOOS'
+      name: 'GardenGrace'
     },
     offers: {
       '@type': 'Offer',
-      url: `https://makhsoos.online/products/${product.id}`,
+      url: `https://GardenGrace.pk/products/${product.id}`,
       priceCurrency: 'PKR',
       price: product.price,
       availability: product.quantity > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
       seller: {
         '@type': 'Organization',
-        name: 'MAKHSOOS'
+        name: 'GardenGrace'
       }
     },
-    category: product.category || 'Men\'s Clothing'
+    category: product.category || 'Furniture'
   };
 
   return <StructuredData data={schema} />;
@@ -94,7 +94,7 @@ export function BreadcrumbSchema({ items }) {
       '@type': 'ListItem',
       position: index + 1,
       name: item.name,
-      item: `https://makhsoos.online${item.url}`
+      item: `https://GardenGrace.pk${item.url}`
     }))
   };
 

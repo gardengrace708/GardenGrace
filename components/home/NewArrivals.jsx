@@ -15,8 +15,8 @@ export default async function NewArrivals() {
     <section className="bg-ivory py-24 text-obsidian">
       <div className="luxury-container">
         <div className="mb-12 flex items-end justify-between gap-6">
-          <div><p className="text-sm font-bold uppercase tracking-[0.3em] text-gold">Freshly Arrived</p><h2 className="mt-2 font-display text-3xl md:text-6xl">New Arrivals</h2></div>
-          <NavLink href="/shop" className="text-sm font-bold uppercase tracking-[0.25em] text-obsidian underline decoration-gold underline-offset-8">View All</NavLink>
+          <div><p className="text-sm font-bold uppercase tracking-[0.3em] text-wood">Freshly Arrived</p><h2 className="mt-2 font-display text-3xl md:text-6xl">New Arrivals</h2></div>
+          <NavLink href="/shop" className="text-sm font-bold uppercase tracking-[0.25em] text-obsidian underline decoration-wood underline-offset-8">View All</NavLink>
         </div>
         <div className="grid grid-cols-2 gap-5 md:grid-cols-3 lg:grid-cols-4">{newArrivalsProducts.map((product) => <ProductCard key={product.id} product={product} />)}</div>
       </div>

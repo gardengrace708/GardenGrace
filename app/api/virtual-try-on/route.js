@@ -26,7 +26,7 @@ export async function POST(request) {
       body: JSON.stringify({
         version: "black-forest-labs/flux-schnell",
         input: {
-          prompt: `A person wearing ${productName || 'elegant clothing'}, photorealistic, high quality, fashion photography, full body shot`,
+          prompt: `A person with ${productName || 'elegant product'}, photorealistic, high quality, product photography, full body shot`,
           image: userImage,
           num_inference_steps: 28,
           guidance_scale: 3.5

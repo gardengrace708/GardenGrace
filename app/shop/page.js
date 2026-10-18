@@ -6,12 +6,12 @@ import { Metadata } from 'next';
 
 export const metadata = {
   title: 'Shop All Products',
-  description: 'Browse our complete collection of premium men\'s clothing. Find kurtas, shalwar kameez, waistcoats, and traditional Pakistani wear at MAKHSOOS.',
-  keywords: ['men\'s clothing shop', 'buy kurta online', 'shalwar kameez for men', 'waistcoat online shopping', 'Pakistani menswear store'],
+  description: 'Browse our complete collection of premium furniture. Find sofas, beds, dining tables, and home decor at GardenGrace.',
+  keywords: ['furniture shop', 'buy sofa online', 'bedroom furniture', 'dining table', 'home furniture store'],
   openGraph: {
-    title: 'Shop All Products | MAKHSOOS',
-    description: 'Browse our complete collection of premium men\'s clothing. Find kurtas, shalwar kameez, waistcoats, and traditional Pakistani wear.',
-    url: 'https://makhsoos.online/shop',
+    title: 'Shop All Products | GardenGrace',
+    description: 'Browse our complete collection of premium furniture. Find sofas, beds, dining tables, and home decor.',
+    url: 'https://GardenGrace.pk/shop',
   }
 };
 

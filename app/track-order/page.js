@@ -46,7 +46,7 @@ export default function TrackOrderPage() {
       <main className="min-h-screen bg-obsidian pt-28 text-ivory">
         <section className="luxury-container py-16">
           <div className="mb-10">
-            <p className="text-sm font-bold uppercase tracking-[0.35em] text-gold">Track Your Order</p>
+            <p className="text-sm font-bold uppercase tracking-[0.35em] text-wood">Track Your Order</p>
             <h1 className="mt-3 font-display text-7xl">Order Status</h1>
           </div>
 
@@ -58,7 +58,7 @@ export default function TrackOrderPage() {
                   value={orderNumber}
                   onChange={(e) => setOrderNumber(e.target.value.toUpperCase())}
                   required
-                  className="w-full rounded-2xl border border-ivory/10 bg-ivory px-4 py-3 text-obsidian placeholder:text-obsidian/45 outline-none transition focus:border-gold focus:ring-2 focus:ring-gold/30"
+                  className="w-full rounded-2xl border border-ivory/10 bg-ivory px-4 py-3 text-obsidian placeholder:text-obsidian/45 outline-none transition focus:border-wood focus:ring-2 focus:ring-wood/30"
                   placeholder="Enter your order number (e.g., MK-123456)"
                 />
               </div>
@@ -69,7 +69,7 @@ export default function TrackOrderPage() {
                   onChange={(e) => setEmail(e.target.value)}
                   required
                   type="email"
-                  className="w-full rounded-2xl border border-ivory/10 bg-ivory px-4 py-3 text-obsidian placeholder:text-obsidian/45 outline-none transition focus:border-gold focus:ring-2 focus:ring-gold/30"
+                  className="w-full rounded-2xl border border-ivory/10 bg-ivory px-4 py-3 text-obsidian placeholder:text-obsidian/45 outline-none transition focus:border-wood focus:ring-2 focus:ring-wood/30"
                   placeholder="Enter your email"
                 />
               </div>
@@ -77,7 +77,7 @@ export default function TrackOrderPage() {
               <button
                 disabled={loading}
                 type="submit"
-                className="w-full rounded-full bg-gold px-6 py-4 text-sm font-bold uppercase tracking-[0.25em] text-obsidian transition hover:bg-ivory disabled:opacity-60"
+                className="w-full rounded-full bg-wood px-6 py-4 text-sm font-bold uppercase tracking-[0.25em] text-obsidian transition hover:bg-ivory disabled:opacity-60"
               >
                 {loading ? 'Searching...' : 'Track Order'}
               </button>
@@ -86,7 +86,7 @@ export default function TrackOrderPage() {
             <div className="max-w-2xl">
               <button
                 onClick={() => { setOrder(null); setOrderNumber(''); setEmail(''); setMessage(''); }}
-                className="mb-6 text-sm font-bold uppercase tracking-[0.25em] text-gold hover:text-ivory transition"
+                className="mb-6 text-sm font-bold uppercase tracking-[0.25em] text-wood hover:text-ivory transition"
               >
                 ← Track Another Order
               </button>
@@ -95,7 +95,7 @@ export default function TrackOrderPage() {
                 <div className="flex justify-between items-start border-b border-ivory/10 pb-6">
                   <div>
                     <p className="text-sm font-bold uppercase tracking-[0.22em] text-ivory/60">Order Number</p>
-                    <p className="mt-2 font-display text-3xl text-gold">{order.id}</p>
+                    <p className="mt-2 font-display text-3xl text-wood">{order.id}</p>
                   </div>
                   <div className="text-right">
                     <p className="text-sm font-bold uppercase tracking-[0.22em] text-ivory/60">Status</p>
@@ -114,7 +114,7 @@ export default function TrackOrderPage() {
                             Size: {item.size} · Qty: {item.quantity}
                           </p>
                         </div>
-                        <p className="font-bold text-gold">{formatPrice(item.price * item.quantity)}</p>
+                        <p className="font-bold text-wood">{formatPrice(item.price * item.quantity)}</p>
                       </div>
                     ))}
                   </div>
@@ -133,7 +133,7 @@ export default function TrackOrderPage() {
                   )}
                   <div className="flex justify-between pt-3 text-lg font-bold border-t border-ivory/10">
                     <span>Total</span>
-                    <span className="text-gold">{formatPrice(order.total)}</span>
+                    <span className="text-wood">{formatPrice(order.total)}</span>
                   </div>
                 </div>
 

@@ -64,12 +64,12 @@ export default function Navbar() {
   return (
     <header className="fixed inset-x-0 top-0 z-50 w-[100vw] bg-ivory text-black shadow-2xl transition duration-500">
       <nav className="luxury-container flex h-20 items-center justify-between">
-        <NavLink href="/" className="font-display text-2xl sm:text-3xl tracking-[0.28em] ">MAKHSOOS </NavLink>
+        <NavLink href="/" className="font-display text-2xl sm:text-3xl tracking-[0.28em] ">GardenGrace </NavLink>
         <motion.div initial="hidden" animate="visible" variants={{ visible: { transition: { staggerChildren: 0.08 } } }} className="hidden items-center gap-9 md:flex">
           {navLinks.map((link) => (
             <motion.div variants={{ hidden: { opacity: 0, y: -8 }, visible: { opacity: 1, y: 0 } }} key={link.href} onMouseEnter={() => setHovered(link.href)} onMouseLeave={() => setHovered(null)} className="relative">
               <NavLink href={link.href} className="text-sm uppercase tracking-[0.24em] text-black transition">{link.label}</NavLink>
-              {hovered === link.href && <motion.span layoutId="navUnderline" className="absolute -bottom-2 left-0 h-px w-full bg-gold" />}
+              {hovered === link.href && <motion.span layoutId="navUnderline" className="absolute -bottom-2 left-0 h-px w-full bg-wood" />}
             </motion.div>
           ))}
         </motion.div>
@@ -81,26 +81,26 @@ export default function Navbar() {
                   initial={{ width: 0, opacity: 0 }} 
                   animate={{ width: 200, opacity: 1 }} 
                   exit={{ width: 0, opacity: 0 }} 
-                  className="rounded-full border border-gold/40 bg-obsidian/80 px-4 py-2 text-sm outline-none focus:border-gold text-white"
+                  className="rounded-full border border-wood/40 bg-obsidian/80 px-4 py-2 text-sm outline-none focus:border-wood text-white"
                   placeholder="Search products..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
                 {searchResults.length > 0 && (
-                  <div className="absolute top-full left-0 right-0 mt-2 bg-obsidian/95 backdrop-blur-xl border border-gold/30 rounded-2xl shadow-2xl overflow-hidden z-50">
+                  <div className="absolute top-full left-0 right-0 mt-2 bg-obsidian/95 backdrop-blur-xl border border-wood/30 rounded-2xl shadow-2xl overflow-hidden z-50">
                     {searchResults.map((product) => (
                       <Link 
                         key={product.id} 
                         href={`/products/${product.id}`}
                         onClick={() => { setSearchOpen(false); setSearchQuery(''); setSearchResults([]); }}
-                        className="flex items-center gap-3 p-3 hover:bg-gold/10 transition border-b border-white/5 last:border-0"
+                        className="flex items-center gap-3 p-3 hover:bg-wood/10 transition border-b border-white/5 last:border-0"
                       >
                         <div className="h-12 w-12 rounded-lg overflow-hidden bg-white/10">
                           <img src={product.images[0]} alt={product.name} className="h-full w-full object-cover" />
                         </div>
                         <div className="flex-1">
                           <p className="text-sm font-semibold text-ivory">{product.name}</p>
-                          <p className="text-xs text-gold">{formatPrice(product.price)}</p>
+                          <p className="text-xs text-wood">{formatPrice(product.price)}</p>
                         </div>
                       </Link>
                     ))}
@@ -109,11 +109,11 @@ export default function Navbar() {
               </div>
             )}
           </AnimatePresence>
-          <button onClick={() => setSearchOpen(!searchOpen)} className="hidden p-2 transition hover:text-gold md:block" aria-label="Search"><Search size={20} /></button>
-          <NavLink href="/wishlist" className="relative hidden p-2 transition hover:text-gold md:block" aria-label="Wishlist"><Heart size={20} /><span className="absolute -right-1 -top-1 text-xs ">{wishlist?.count || 0}</span></NavLink>
-          <NavLink href="/my-orders" className="hidden p-2 transition hover:text-gold md:block" aria-label="My Orders"><Package size={20} /></NavLink>
-          <button onClick={() => setCartOpen(true)} className="relative p-2 transition hover:text-gold" aria-label="Cart"><ShoppingBag size={20} /><span className="absolute -right-1 -top-1 text-xs ">{cart?.count || 0}</span></button>
-          {currentUser ? <><NavLink href="/profile" className="hidden p-2 transition hover:text-gold md:block" aria-label="Profile"><User size={20} /></NavLink><button onClick={logout} className="hidden p-2 transition hover:text-gold md:block" aria-label="Logout"><LogOut size={20} /></button></> : <NavLink href="/login" className="hidden p-2 transition hover:text-gold md:block" aria-label="Login"><User size={20} /></NavLink>}
+          <button onClick={() => setSearchOpen(!searchOpen)} className="hidden p-2 transition hover:text-wood md:block" aria-label="Search"><Search size={20} /></button>
+          <NavLink href="/wishlist" className="relative hidden p-2 transition hover:text-wood md:block" aria-label="Wishlist"><Heart size={20} /><span className="absolute -right-1 -top-1 text-xs ">{wishlist?.count || 0}</span></NavLink>
+          <NavLink href="/my-orders" className="hidden p-2 transition hover:text-wood md:block" aria-label="My Orders"><Package size={20} /></NavLink>
+          <button onClick={() => setCartOpen(true)} className="relative p-2 transition hover:text-wood" aria-label="Cart"><ShoppingBag size={20} /><span className="absolute -right-1 -top-1 text-xs ">{cart?.count || 0}</span></button>
+          {currentUser ? <><NavLink href="/profile" className="hidden p-2 transition hover:text-wood md:block" aria-label="Profile"><User size={20} /></NavLink><button onClick={logout} className="hidden p-2 transition hover:text-wood md:block" aria-label="Logout"><LogOut size={20} /></button></> : <NavLink href="/login" className="hidden p-2 transition hover:text-wood md:block" aria-label="Login"><User size={20} /></NavLink>}
           <button onClick={() => setMenuOpen(true)} className="p-2 md:hidden" aria-label="Open menu"><Menu /></button>
         </div>
       </nav>
@@ -125,26 +125,26 @@ export default function Navbar() {
               {navLinks.map((link) => <motion.div key={link.href} variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0 } }}><NavLink onClick={() => setMenuOpen(false)} href={link.href} className="font-display text-5xl">{link.label}</NavLink></motion.div>)}
               <motion.div variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0 } }} className="w-full max-w-md px-4">
                 <input 
-                  className="w-full rounded-full border border-gold/40 bg-obsidian/80 px-6 py-3 text-sm outline-none focus:border-gold text-white"
+                  className="w-full rounded-full border border-wood/40 bg-obsidian/80 px-6 py-3 text-sm outline-none focus:border-wood text-white"
                   placeholder="Search products..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
                 {searchResults.length > 0 && (
-                  <div className="mt-4 bg-obsidian/95 backdrop-blur-xl border border-gold/30 rounded-2xl shadow-2xl overflow-hidden max-h-64 overflow-y-auto">
+                  <div className="mt-4 bg-obsidian/95 backdrop-blur-xl border border-wood/30 rounded-2xl shadow-2xl overflow-hidden max-h-64 overflow-y-auto">
                     {searchResults.map((product) => (
                       <NavLink 
                         key={product.id} 
                         href={`/products/${product.id}`}
                         onClick={() => { setMenuOpen(false); setSearchQuery(''); setSearchResults([]); }}
-                        className="flex items-center gap-3 p-3 hover:bg-gold/10 transition border-b border-white/5 last:border-0"
+                        className="flex items-center gap-3 p-3 hover:bg-wood/10 transition border-b border-white/5 last:border-0"
                       >
                         <div className="h-12 w-12 rounded-lg overflow-hidden bg-white/10">
                           <img src={product.images[0]} alt={product.name} className="h-full w-full object-cover" />
                         </div>
                         <div className="flex-1">
                           <p className="text-sm font-semibold text-ivory">{product.name}</p>
-                          <p className="text-xs text-gold">{formatPrice(product.price)}</p>
+                          <p className="text-xs text-wood">{formatPrice(product.price)}</p>
                         </div>
                       </NavLink>
                     ))}
@@ -152,9 +152,9 @@ export default function Navbar() {
                 )}
               </motion.div>
               <motion.div variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0 } }} className="flex gap-6 pt-4">
-                <NavLink href="/wishlist" onClick={() => setMenuOpen(false)} className="relative p-3 rounded-full border border-ivory/20 transition hover:border-gold hover:text-gold"><Heart size={24} /><span className="absolute -right-1 -top-1 text-xs">{wishlist?.count || 0}</span></NavLink>
-                <NavLink href="/my-orders" onClick={() => setMenuOpen(false)} className="p-3 rounded-full border border-ivory/20 transition hover:border-gold hover:text-gold"><Package size={24} /></NavLink>
-                {currentUser ? <NavLink onClick={() => setMenuOpen(false)} href="/profile" className="p-3 rounded-full border border-ivory/20 transition hover:border-gold hover:text-gold"><User size={24} /></NavLink> : <NavLink onClick={() => setMenuOpen(false)} href="/login" className="p-3 rounded-full border border-ivory/20 transition hover:border-gold hover:text-gold"><User size={24} /></NavLink>}
+                <NavLink href="/wishlist" onClick={() => setMenuOpen(false)} className="relative p-3 rounded-full border border-ivory/20 transition hover:border-wood hover:text-wood"><Heart size={24} /><span className="absolute -right-1 -top-1 text-xs">{wishlist?.count || 0}</span></NavLink>
+                <NavLink href="/my-orders" onClick={() => setMenuOpen(false)} className="p-3 rounded-full border border-ivory/20 transition hover:border-wood hover:text-wood"><Package size={24} /></NavLink>
+                {currentUser ? <NavLink onClick={() => setMenuOpen(false)} href="/profile" className="p-3 rounded-full border border-ivory/20 transition hover:border-wood hover:text-wood"><User size={24} /></NavLink> : <NavLink onClick={() => setMenuOpen(false)} href="/login" className="p-3 rounded-full border border-ivory/20 transition hover:border-wood hover:text-wood"><User size={24} /></NavLink>}
               </motion.div>
             </motion.div>
           </motion.div>
@@ -171,13 +171,13 @@ export default function Navbar() {
                     <h2 className="font-display text-ivory text-3xl">Your Cart</h2>
                     <p className="text-sm text-ivory/60">{cart.items.length} {cart.items.length === 1 ? 'item' : 'items'}</p>
                   </div>
-                  <button onClick={() => setCartOpen(false)} className="p-2 transition hover:text-gold"><X className='text-ivory ' size={24} /></button>
+                  <button onClick={() => setCartOpen(false)} className="p-2 transition hover:text-wood"><X className='text-ivory ' size={24} /></button>
                 </div>
                 {cart.items.length === 0 ? (
                   <div className="flex flex-1 flex-col items-center justify-center p-8 text-center">
                     <ShoppingBag size={48} className="mb-4 text-ivory/30" />
                     <p className="text-ivory/60 mb-6">Your cart is empty</p>
-                    <NavLink href="/collections" onClick={() => setCartOpen(false)} className="rounded-full bg-gold px-6 py-3 text-sm font-bold uppercase tracking-[0.25em] text-obsidian transition hover:bg-ivory">
+                    <NavLink href="/collections" onClick={() => setCartOpen(false)} className="rounded-full bg-wood px-6 py-3 text-sm font-bold uppercase tracking-[0.25em] text-obsidian transition hover:bg-ivory">
                       Continue Shopping
                     </NavLink>
                   </div>
@@ -214,14 +214,14 @@ export default function Navbar() {
                                   <p className="text-xs text-ivory/50 line-through">{formatPrice(item.price)}</p>
                                 </div>
                               ) : (
-                                <p className="mt-1 font-bold text-gold">{formatPrice(item.price)}</p>
+                                <p className="mt-1 font-bold text-wood">{formatPrice(item.price)}</p>
                               )}
                             </div>
                             <div className="flex flex-col items-center justify-between gap-2">
                               <div className="flex items-center gap-2">
-                                <button onClick={() => cart.updateQuantity(item.key, item.quantity - 1)} className="flex h-8 w-8 items-center justify-center rounded-full border border-ivory/20 transition hover:border-gold hover:text-gold"><Minus size={16} /></button>
+                                <button onClick={() => cart.updateQuantity(item.key, item.quantity - 1)} className="flex h-8 w-8 items-center justify-center rounded-full border border-ivory/20 transition hover:border-wood hover:text-wood"><Minus size={16} /></button>
                                 <span className="w-8 text-center">{item.quantity}</span>
-                                <button onClick={() => cart.updateQuantity(item.key, item.quantity + 1)} className="flex h-8 w-8 items-center justify-center rounded-full border border-ivory/20 transition hover:border-gold hover:text-gold"><Plus size={16} /></button>
+                                <button onClick={() => cart.updateQuantity(item.key, item.quantity + 1)} className="flex h-8 w-8 items-center justify-center rounded-full border border-ivory/20 transition hover:border-wood hover:text-wood"><Plus size={16} /></button>
                               </div>
                               <button onClick={() => cart.removeFromCart(item.key)} className="p-1 transition hover:text-red-400"><Trash2 size={16} /></button>
                             </div>
@@ -247,17 +247,17 @@ export default function Navbar() {
                       </div>
                       <div className="mb-4 flex justify-between text-lg font-bold">
                         <span>Total</span>
-                        <span className="text-gold">{formatPrice(globalDiscount.active ? cart.items.reduce((sum, item) => sum + item.price * item.quantity, 0) * (1 - globalDiscount.discountPercent / 100) : cart.items.reduce((sum, item) => sum + item.price * item.quantity, 0))}</span>
+                        <span className="text-wood">{formatPrice(globalDiscount.active ? cart.items.reduce((sum, item) => sum + item.price * item.quantity, 0) * (1 - globalDiscount.discountPercent / 100) : cart.items.reduce((sum, item) => sum + item.price * item.quantity, 0))}</span>
                       </div>
                       <div className="mb-3 flex gap-2">
-                        <NavLink href="/collections" onClick={() => setCartOpen(false)} className="flex-1 rounded-full border border-gold/40 px-6 py-3 text-center text-sm font-bold uppercase tracking-[0.25em] text-gold transition hover:bg-gold/10">
+                        <NavLink href="/collections" onClick={() => setCartOpen(false)} className="flex-1 rounded-full border border-wood/40 px-6 py-3 text-center text-sm font-bold uppercase tracking-[0.25em] text-wood transition hover:bg-wood/10">
                           Continue Shopping
                         </NavLink>
                         <button onClick={() => cart.clearCart()} className="rounded-full border border-red-400/40 px-4 py-3 text-sm font-bold uppercase tracking-[0.25em] text-red-400 transition hover:bg-red-400/10">
                           Clear
                         </button>
                       </div>
-                      <NavLink href="/checkout" onClick={() => setCartOpen(false)} className="block w-full rounded-full bg-gold px-6 py-4 text-center text-sm font-bold uppercase tracking-[0.25em] text-obsidian transition hover:bg-ivory">
+                      <NavLink href="/checkout" onClick={() => setCartOpen(false)} className="block w-full rounded-full bg-wood px-6 py-4 text-center text-sm font-bold uppercase tracking-[0.25em] text-obsidian transition hover:bg-ivory">
                         Checkout
                       </NavLink>
                     </div>

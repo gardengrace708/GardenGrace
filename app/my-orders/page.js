@@ -28,7 +28,7 @@ export default function MyOrdersPage() {
           setOrders(ordersData.orders || []);
         } else {
           // Guest user: sync localStorage orders with database
-          const savedOrders = JSON.parse(localStorage.getItem('makhsoos_orders') || '[]');
+          const savedOrders = JSON.parse(localStorage.getItem('GardenGrace_orders') || '[]');
           
           // For each saved order, fetch latest status from database
           const syncedOrders = await Promise.all(
@@ -54,7 +54,7 @@ export default function MyOrdersPage() {
           setOrders(syncedOrders);
 
           // Check for newly confirmed orders (status changed to Processing from Pending)
-          const lastViewedStatuses = JSON.parse(localStorage.getItem('makhsoos_order_statuses') || '{}');
+          const lastViewedStatuses = JSON.parse(localStorage.getItem('GardenGrace_order_statuses') || '{}');
           const newlyConfirmedOrders = syncedOrders.filter(order => {
             const lastStatus = lastViewedStatuses[order.id];
             return order.status?.toLowerCase() === 'processing' && lastStatus?.toLowerCase() === 'pending';
@@ -71,7 +71,7 @@ export default function MyOrdersPage() {
               acc[order.id] = order.status;
               return acc;
             }, {});
-            localStorage.setItem('makhsoos_order_statuses', JSON.stringify(updatedStatuses));
+            localStorage.setItem('GardenGrace_order_statuses', JSON.stringify(updatedStatuses));
 
             setTimeout(() => setNotification(null), 5000);
           } else {
@@ -80,13 +80,13 @@ export default function MyOrdersPage() {
               acc[order.id] = order.status;
               return acc;
             }, {});
-            localStorage.setItem('makhsoos_order_statuses', JSON.stringify(updatedStatuses));
+            localStorage.setItem('GardenGrace_order_statuses', JSON.stringify(updatedStatuses));
           }
         }
       } catch (error) {
         console.error('Error fetching orders:', error);
         // Fallback to localStorage
-        const savedOrders = JSON.parse(localStorage.getItem('makhsoos_orders') || '[]');
+        const savedOrders = JSON.parse(localStorage.getItem('GardenGrace_orders') || '[]');
         setOrders(savedOrders);
       } finally {
         setLoading(false);
@@ -103,7 +103,7 @@ export default function MyOrdersPage() {
       case 'processing': return 'text-yellow-400 bg-yellow-400/10';
       case 'pending': return 'text-orange-400 bg-orange-400/10';
       case 'cancelled': return 'text-red-400 bg-red-400/10';
-      default: return 'text-gold bg-gold/10';
+      default: return 'text-wood bg-wood/10';
     }
   };
 
@@ -144,11 +144,11 @@ export default function MyOrdersPage() {
       ));
 
       // Also update localStorage
-      const savedOrders = JSON.parse(localStorage.getItem('makhsoos_orders') || '[]');
+      const savedOrders = JSON.parse(localStorage.getItem('GardenGrace_orders') || '[]');
       const updatedOrders = savedOrders.map(order => 
         order.id === orderId ? { ...order, paymentProof: uploadData.url } : order
       );
-      localStorage.setItem('makhsoos_orders', JSON.stringify(updatedOrders));
+      localStorage.setItem('GardenGrace_orders', JSON.stringify(updatedOrders));
 
       setUploadMessage('Payment proof uploaded successfully! Your advance payment will be reviewed and approved shortly.');
     } catch (error) {
@@ -195,19 +195,19 @@ export default function MyOrdersPage() {
       <main className="min-h-screen bg-ivory pt-28 text-obsidian">
         <section className="luxury-container py-16">
           <div className="mb-10">
-            <p className="text-sm font-bold uppercase tracking-[0.35em] text-gold">Your Orders</p>
+            <p className="text-sm font-bold uppercase tracking-[0.35em] text-wood">Your Orders</p>
             <h1 className="mt-3 font-display text-7xl">My Orders</h1>
           </div>
 
           
 
           {orders.length === 0 ? (
-            <div className="rounded-[2rem] bg-white p-12 text-center shadow-lg border border-gold/20">
+            <div className="rounded-[2rem] bg-white p-12 text-center shadow-lg border border-wood/20">
               <Package size={64} className="mx-auto mb-6 text-obsidian/30" />
               <p className="text-xl text-obsidian/70 mb-6">You haven&apos;t placed any orders yet.</p>
               <a
                 href="/shop"
-                className="inline-block rounded-full bg-gold px-8 py-4 text-sm font-bold uppercase tracking-[0.25em] text-white transition hover:bg-obsidian"
+                className="inline-block rounded-full bg-wood px-8 py-4 text-sm font-bold uppercase tracking-[0.25em] text-white transition hover:bg-obsidian"
               >
                 Start Shopping
               </a>
@@ -237,16 +237,16 @@ export default function MyOrdersPage() {
               )}
 
               {orders.map((order, index) => (
-                <div key={order.id || index} className="rounded-[2rem] bg-white p-6 md:p-8 shadow-lg border border-gold/20">
+                <div key={order.id || index} className="rounded-[2rem] bg-white p-6 md:p-8 shadow-lg border border-wood/20">
                   {/* Order Header */}
                   
                   <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-obsidian/10 pb-6 mb-6">
                     <div className="flex items-center gap-3">
-                      <div className="rounded-full bg-gradient-to-br from-gold to-amber-600 p-3 text-white shadow-lg"><Package size={24} /></div>
+                      <div className="rounded-full bg-gradient-to-br from-wood to-amber-600 p-3 text-white shadow-lg"><Package size={24} /></div>
                       <div>
                         
                         <p className="text-xs font-bold uppercase tracking-[0.22em] text-obsidian/60">Order Number</p>
-                        <p className="mt-1 font-display text-2xl text-gold">{order.id}</p>
+                        <p className="mt-1 font-display text-2xl text-wood">{order.id}</p>
                       </div>
                     </div>
                     
@@ -256,7 +256,7 @@ export default function MyOrdersPage() {
                       </div>
                       <div className="text-right">
                         <p className="text-xs font-bold uppercase tracking-[0.22em] text-obsidian/60">Total</p>
-                        <p className="mt-1 font-display text-xl text-gold">{formatPrice(order.total)}</p>
+                        <p className="mt-1 font-display text-xl text-wood">{formatPrice(order.total)}</p>
                       </div>
                     </div>
                   </div>
@@ -325,7 +325,7 @@ export default function MyOrdersPage() {
 
                   {/* Order Items */}
                   <div className="mt-5 mb-6">
-                    <h3 className="font-bold text-gold mb-4 flex items-center gap-2">
+                    <h3 className="font-bold text-wood mb-4 flex items-center gap-2">
                       <Package size={18} />
                       Order Items
                     </h3>
@@ -339,7 +339,7 @@ export default function MyOrdersPage() {
                               {item.waistSize && ` · Waist: ${item.waistSize}`}
                             </p>
                           </div>
-                          <p className="font-bold text-gold text-lg">{formatPrice(item.price * item.quantity)}</p>
+                          <p className="font-bold text-wood text-lg">{formatPrice(item.price * item.quantity)}</p>
                         </div>
                       ))}
                     </div>
@@ -348,7 +348,7 @@ export default function MyOrdersPage() {
                   {/* Order Details */}
                   <div className="grid gap-4 md:grid-cols-2">
                     <div className="bg-ivory/50 rounded-2xl p-5 border border-obsidian/10">
-                      <h3 className="font-bold text-gold mb-4 flex items-center gap-2">
+                      <h3 className="font-bold text-wood mb-4 flex items-center gap-2">
                         <MapPin size={18} />
                         Shipping Information
                       </h3>
@@ -384,7 +384,7 @@ export default function MyOrdersPage() {
                       </div>
                     </div>
                     <div className="bg-ivory/50 rounded-2xl p-5 border border-obsidian/10">
-                      <h3 className="font-bold text-gold mb-4 flex items-center gap-2">
+                      <h3 className="font-bold text-wood mb-4 flex items-center gap-2">
                         <Calendar size={18} />
                         Order Details
                       </h3>
@@ -405,12 +405,12 @@ export default function MyOrdersPage() {
                         {order.couponCode && (
                           <div className="flex items-center justify-between py-2 border-b border-obsidian/10">
                             <span className="text-obsidian/60">Coupon Code</span>
-                            <span className="font-bold text-gold">{order.couponCode}</span>
+                            <span className="font-bold text-wood">{order.couponCode}</span>
                           </div>
                         )}
-                        <div className="flex items-center justify-between py-2 bg-gold/10 rounded-lg px-3 mt-2">
+                        <div className="flex items-center justify-between py-2 bg-wood/10 rounded-lg px-3 mt-2">
                           <span className="font-bold">Total Paid</span>
-                          <span className="font-bold text-gold text-lg">{formatPrice(order.total)}</span>
+                          <span className="font-bold text-wood text-lg">{formatPrice(order.total)}</span>
                         </div>
                       </div>
                     </div>

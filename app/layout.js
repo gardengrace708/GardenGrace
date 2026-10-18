@@ -8,9 +8,9 @@ const display = Cormorant_Garamond({ subsets: ['latin'], weight: ['400', '500', 
 const body = DM_Sans({ subsets: ['latin'], weight: ['400', '500', '700'], variable: '--font-body' });
 
 export const metadata = {
-  metadataBase: new URL('https://makhsoos.online'),
-  title: 'MAKHSOOS | Luxury Pakistani Clothing',
-  description: 'A world-class luxury ecommerce experience for Pakistani fashion.',
+  metadataBase: new URL('https://GardenGrace.pk'),
+  title: 'GardenGrace | Premium Furniture & Home Decor',
+  description: 'A world-class luxury ecommerce experience for premium furniture and home decor.',
   icons: {
     icon: [
       { url: '/images/logo.png', sizes: '192x192', type: 'image/png' },

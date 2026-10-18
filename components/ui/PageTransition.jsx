@@ -18,7 +18,7 @@ export default function PageTransition({ children }) {
               times: [0, 0.25, 0.75, 1],
               ease: "easeInOut"
             }}
-            className="fixed inset-0 z-[100] bg-gold origin-top flex items-center justify-center"
+            className="fixed inset-0 z-[100] bg-wood origin-top flex items-center justify-center"
           >
             <motion.div
               initial={{ opacity: 0, scale: 0.8 }}
@@ -35,7 +35,7 @@ export default function PageTransition({ children }) {
     delay: 0.5
   }}
 >
-  MAKHSOOS
+  GardenGrace
 </motion.h1>
               <motion.div
                 className="mt-4 flex justify-center gap-2"

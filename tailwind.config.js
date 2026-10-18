@@ -5,8 +5,18 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        gold: '#C9A84C',
-        'gold-light': '#E2C47A',
+        // Wood tones
+        wood: '#8B5A2B',
+        'wood-light': '#A0522D',
+        'wood-dark': '#6B4423',
+        'wood-accent': '#D2691E',
+        'wood-pale': '#DEB887',
+        'wood-warm': '#CD853F',
+        // Black and white
+        black: '#000000',
+        white: '#FFFFFF',
+        offwhite: '#F5F5F5',
+        charcoal: '#1A1A1A',
         ivory: '#F5F0E8',
         obsidian: '#0A0A0A',
         surface: '#141414',
@@ -25,7 +35,7 @@ module.exports = {
         marquee: 'marquee 24s linear infinite',
         kenburns: 'kenburns 5s ease-out forwards'
       },
-      boxShadow: { luxury: '0 24px 80px rgba(201,168,76,0.14)' }
+      boxShadow: { luxury: '0 24px 80px rgba(139,90,43,0.14)' }
     }
   },
   plugins: []

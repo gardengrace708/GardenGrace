@@ -51,11 +51,11 @@ export default function ProductCard({ product, className = '' }) {
           <ImageLayer src={product.images[1]} alt={product.name} className="opacity-0 transition duration-700 group-hover:opacity-100" />
           <div className="absolute left-4 top-4 z-10"><Badge>{product.badge}</Badge></div>
           <div className="absolute inset-x-4 bottom-4 z-10 translate-y-16 opacity-0 transition duration-500 group-hover:translate-y-0 group-hover:opacity-100">
-            <button onClick={(event) => { event.preventDefault(); cart?.addToCart(product); }} className="w-full rounded-full bg-ivory px-5 py-3 text-xs font-bold uppercase tracking-[0.22em] text-obsidian transition hover:bg-gold">Add to Cart</button>
+            <button onClick={(event) => { event.preventDefault(); cart?.addToCart(product); }} className="w-full rounded-full bg-ivory px-5 py-3 text-xs font-bold uppercase tracking-[0.22em] text-obsidian transition hover:bg-wood">Add to Cart</button>
           </div>
         </div>
       </NavLink>
-      <button onClick={() => wishlist?.toggleWishlist(product)} className="absolute right-4 top-4 z-20 rounded-full bg-obsidian/70 p-2 backdrop-blur transition hover:bg-gold hover:text-obsidian" aria-label="Toggle wishlist">
+      <button onClick={() => wishlist?.toggleWishlist(product)} className="absolute right-4 top-4 z-20 rounded-full bg-obsidian/70 p-2 backdrop-blur transition hover:bg-wood hover:text-obsidian" aria-label="Toggle wishlist">
         <Heart size={18} fill={wished ? 'currentColor' : 'none'} />
       </button>
       <div className="mt-4 flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
@@ -66,17 +66,17 @@ export default function ProductCard({ product, className = '' }) {
             <div className="mt-2 flex items-center gap-1">
               <div className="flex">
                 {[1, 2, 3, 4, 5].map((star) => (
-                  <Star key={star} size={12} fill={star <= Math.round(averageRating) ? 'currentColor' : 'none'} className={star <= Math.round(averageRating) ? 'text-gold' : 'text-gold/30'} />
+                  <Star key={star} size={12} fill={star <= Math.round(averageRating) ? 'currentColor' : 'none'} className={star <= Math.round(averageRating) ? 'text-wood' : 'text-wood/30'} />
                 ))}
               </div>
-              <span className="text-xs font-semibold text-gold">{averageRating}</span>
+              <span className="text-xs font-semibold text-wood">{averageRating}</span>
               <span className="text-xs text-muted">({reviews.length} reviews)</span>
             </div>
           )}
           {product.characteristics && product.characteristics.length > 0 && (
             <div className="mt-2 flex flex-wrap gap-1">
               {product.characteristics.map((char, index) => (
-                <span key={index} className="inline-flex items-center rounded-full bg-gold/20 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-gold">
+                <span key={index} className="inline-flex items-center rounded-full bg-wood/20 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-wood">
                   {char}
                 </span>
               ))}
@@ -93,7 +93,7 @@ export default function ProductCard({ product, className = '' }) {
               <p className="whitespace-nowrap text-xs text-muted line-through">{formatPrice(product.price)}</p>
             </>
           ) : (
-            <p className="whitespace-nowrap text-sm font-semibold text-gold">{formatPrice(product.price)}</p>
+            <p className="whitespace-nowrap text-sm font-semibold text-wood">{formatPrice(product.price)}</p>
           )}
         </div>
       </div>

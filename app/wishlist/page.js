@@ -37,7 +37,7 @@ export default function WishlistPage() {
       <main className="min-h-screen bg-obsidian pt-28 text-ivory">
         <section className="luxury-container py-16">
           <div className="mb-10">
-            <p className="text-sm font-bold uppercase tracking-[0.35em] text-gold">Wishlist</p>
+            <p className="text-sm font-bold uppercase tracking-[0.35em] text-wood">Wishlist</p>
             <h1 className="mt-3 font-display text-7xl">Your Favorites</h1>
             <p className="mt-2 text-ivory/60">{wishlist.items.length} {wishlist.items.length === 1 ? 'item' : 'items'} saved</p>
           </div>
@@ -59,10 +59,10 @@ export default function WishlistPage() {
                   <h3 className="font-display text-xl mb-2">{item.name}</h3>
                   <p className="text-sm text-ivory/60 mb-3">{item.category || 'Product'}</p>
                   <div className="flex items-center justify-between">
-                    <p className="font-bold text-gold">{formatPrice(item.price)}</p>
+                    <p className="font-bold text-wood">{formatPrice(item.price)}</p>
                     <button
                       onClick={() => cart.addToCart(item)}
-                      className="flex items-center gap-2 rounded-full bg-gold px-4 py-2 text-sm font-bold uppercase tracking-[0.2em] text-obsidian transition hover:bg-ivory"
+                      className="flex items-center gap-2 rounded-full bg-wood px-4 py-2 text-sm font-bold uppercase tracking-[0.2em] text-obsidian transition hover:bg-ivory"
                     >
                       <ShoppingBag size={16} />
                       Add

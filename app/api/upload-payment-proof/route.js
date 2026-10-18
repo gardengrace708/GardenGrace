@@ -30,7 +30,7 @@ export async function POST(request) {
     }
 
     const timestamp = Math.round(Date.now() / 1000);
-    const folder = 'makhsoos/payment-proofs';
+    const folder = 'GardenGrace/payment-proofs';
 
     const signature = signCloudinaryParams(
       { folder, timestamp },
