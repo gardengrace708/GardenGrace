@@ -28,16 +28,16 @@ export function CartProvider({ children }) {
     }
   }, [items, isLoaded]);
 
-  const addToCart = (product, size = 'M', color = '') => {
+  const addToCart = (product, color = '') => {
     setItems((current) => {
-      const key = `${product.id}-${size}-${color}`;
+      const key = `${product.id}-${color}`;
       const existing = current.find((item) => item.key === key);
       if (existing) {
         showToast(`${product.name} quantity updated in cart`);
         return current.map((item) => item.key === key ? { ...item, quantity: item.quantity + 1 } : item);
       }
       showToast(`${product.name} added to cart`);
-      return [...current, { ...product, key, size, color, quantity: 1 }];
+      return [...current, { ...product, key, color, quantity: 1 }];
     });
   };
 

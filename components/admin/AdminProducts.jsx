@@ -18,7 +18,7 @@ const emptyForm = {
   description: '',
   characteristics: '',
   colors: '',
-  availableSizes: '',
+  colorQuantities: '{}',
   allowCustomMeasurements: false,
   colorImages: '{}'
 };
@@ -57,7 +57,9 @@ const orderStatuses = ['Pending', 'Processing', 'Confirmed', 'Shipped', 'Deliver
 function toForm(product) {
   return {
     ...product,
-    images: product.images.join(', ')
+    images: product.images.join(', '),
+    colorQuantities: JSON.stringify(product.colorQuantities || {}),
+    colorImages: JSON.stringify(product.colorImages || {})
   };
 }
 
@@ -882,28 +884,41 @@ export default function AdminProducts({ initialProducts, initialOrders = [], ini
                 </div>
               )}
               <div>
-                <label className="mb-2 block text-sm font-bold uppercase tracking-[0.2em]">Available Sizes (comma separated)</label>
-                <input value={form.availableSizes} onChange={(event) => updateField('availableSizes', event.target.value)} placeholder="XS, S, M, L, XL" className="w-full rounded-2xl border border-obsidian/15 bg-white px-4 py-3 text-obsidian outline-none focus:border-wood" />
-                <p className="mt-1 text-xs text-obsidian/60">Available sizes for this product</p>
+                <label className="mb-2 block text-sm font-bold uppercase tracking-[0.2em]">Color-wise Quantities</label>
+                <p className="mb-3 text-xs text-obsidian/60">Set quantity for each color. Total quantity will be calculated automatically.</p>
+                {(() => {
+                  const colorList = String(form.colors || '').split(',').map((c) => c.trim()).filter(Boolean);
+                  let colorQuantitiesObj = {};
+                  try {
+                    colorQuantitiesObj = JSON.parse(form.colorQuantities || '{}');
+                  } catch (e) {
+                    colorQuantitiesObj = {};
+                  }
+
+                  const updateColorQuantity = (color, qty) => {
+                    colorQuantitiesObj[color] = Number(qty) || 0;
+                    updateField('colorQuantities', JSON.stringify(colorQuantitiesObj));
+                  };
+
+                  if (colorList.length === 0) {
+                    return <p className="text-sm text-obsidian/60">Add colors first to set quantities</p>;
+                  }
+
+                  return colorList.map((color) => (
+                    <div key={color} className="mb-3 flex items-center gap-3">
+                      <label className="w-24 text-sm font-semibold text-obsidian">{color}</label>
+                      <input
+                        type="number"
+                        min="0"
+                        value={colorQuantitiesObj[color] || 0}
+                        onChange={(event) => updateColorQuantity(color, event.target.value)}
+                        placeholder="Quantity"
+                        className="flex-1 rounded-2xl border border-obsidian/15 bg-white px-4 py-3 text-obsidian outline-none focus:border-wood"
+                      />
+                    </div>
+                  ));
+                })()}
               </div>
-              <div>
-                <label className="mb-2 block text-sm font-bold uppercase tracking-[0.2em]">Quantity</label>
-                <input value={form.quantity} onChange={(event) => updateField('quantity', event.target.value)} type="number" min="0" placeholder="Quantity in stock" className="w-full rounded-2xl border border-obsidian/15 bg-white px-4 py-3 text-obsidian outline-none focus:border-wood" />
-                <p className="mt-1 text-xs text-obsidian/60">0 = Sold Out, 1-10 = Limited Stock, 10+ = Available</p>
-              </div>
-              <div className="flex items-center gap-3 rounded-2xl border border-obsidian/15 p-4">
-                <input
-                  type="checkbox"
-                  id="allowCustomMeasurements"
-                  checked={form.allowCustomMeasurements}
-                  onChange={(event) => updateField('allowCustomMeasurements', event.target.checked)}
-                  className="h-5 w-5 accent-wood"
-                />
-                <label htmlFor="allowCustomMeasurements" className="text-sm font-semibold">
-                  Allow Custom Measurements
-                </label>
-              </div>
-              <p className="text-xs text-obsidian/60">If checked, customers can provide custom waist and length measurements during checkout</p>
               <button disabled={saving} className="flex w-full items-center justify-center gap-2 rounded-full bg-obsidian px-6 py-4 text-sm font-bold uppercase tracking-[0.25em] text-ivory transition hover:bg-wood hover:text-obsidian disabled:opacity-60">{editingId ? <Save size={18} /> : <Plus size={18} />}{saving ? 'Saving...' : editingId ? 'Save Changes' : 'Add Product'}</button>
               {message && <p className="text-center text-sm font-bold text-wood">{message}</p>}
             </div>

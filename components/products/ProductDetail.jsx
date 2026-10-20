@@ -10,11 +10,8 @@ import { useCart } from '@/components/providers/CartProvider';
 import { Star } from 'lucide-react';
 import { handleFormError, getLastError } from '@/lib/errorHandler';
 
-const sizes = ['XS', 'S', 'M', 'L', 'XL'];
-
 export default function ProductDetail({ product, related }) {
   const [main, setMain] = useState(product.images[0]);
-  const [size, setSize] = useState(product.availableSizes?.[0] || 'M');
   const [color, setColor] = useState(product.colors?.[0] || '');
   const cart = useCart();
   const [globalDiscount, setGlobalDiscount] = useState({ active: false, discountPercent: 0 });
@@ -149,28 +146,27 @@ export default function ProductDetail({ product, related }) {
             <div className="mt-10">
               <p className="mb-3 text-sm font-bold uppercase tracking-[0.22em]">Select Color</p>
               <div className="flex flex-wrap gap-3">
-                {product.colors.map((item) => (
-                  <button key={item} onClick={() => setColor(item)} className={`px-4 py-2 rounded-full border text-sm font-bold ${color === item ? 'border-wood bg-wood text-obsidian' : 'border-obsidian/20'}`}>
-                    {item}
-                  </button>
-                ))}
+                {product.colors.map((item) => {
+                  const colorQty = product.colorQuantities?.[item] || 0;
+                  const isOutOfStock = colorQty === 0;
+                  return (
+                    <button
+                      key={item}
+                      onClick={() => !isOutOfStock && setColor(item)}
+                      disabled={isOutOfStock}
+                      className={`px-4 py-2 rounded-full border text-sm font-bold ${color === item ? 'border-wood bg-wood text-obsidian' : isOutOfStock ? 'border-obsidian/10 opacity-50 cursor-not-allowed' : 'border-obsidian/20'}`}
+                    >
+                      {item} ({colorQty})
+                    </button>
+                  );
+                })}
               </div>
             </div>
           )}
-          <div className="mt-10">
-            <p className="mb-3 text-sm font-bold uppercase tracking-[0.22em]">Select Size</p>
-            <div className="flex gap-3">
-              {(product.availableSizes && product.availableSizes.length > 0 ? product.availableSizes : sizes).map((item) => (
-                <button key={item} onClick={() => setSize(item)} className={`h-12 w-12 rounded-full border text-sm font-bold ${size === item ? 'border-wood bg-wood text-obsidian' : 'border-obsidian/20'}`}>
-                  {item}
-                </button>
-              ))}
-            </div>
-          </div>
           <div className="mt-10  flex gap-4">
-            <Button className="flex-1 text-sm" onClick={() => cart?.addToCart(product, size, color)}>{product.inStock ? 'Add to Cart' : 'Sold Out'}</Button>
+            <Button className="flex-1 text-sm" onClick={() => cart?.addToCart(product, color)}>{product.inStock ? 'Add to Cart' : 'Sold Out'}</Button>
             {product.inStock && (
-              <Button className="flex-1 bg-white shadow-xl text-ivory hover:bg-obsidian/10 text-lg" onClick={() => { cart?.addToCart(product, size, color); window.location.href = '/checkout'; }}>
+              <Button className="flex-1 bg-white shadow-xl text-ivory hover:bg-obsidian/10 text-lg" onClick={() => { cart?.addToCart(product, color); window.location.href = '/checkout'; }}>
                 Buy Now
               </Button>
             )}

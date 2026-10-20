@@ -443,7 +443,7 @@ export default function CheckoutPage() {
                           <h3 className="font-semibold">{item.name}</h3>
                           <p className="text-sm text-ivory/60">
                             {item.color && `Color: ${item.color} · `}
-                            Size {item.size} · Qty {item.quantity}
+                            Qty {item.quantity}
                           </p>
                           {item.category && (item.category.toLowerCase().includes('pant') || item.category.toLowerCase().includes('trouser')) && (
                             <input

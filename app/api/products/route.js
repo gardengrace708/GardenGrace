@@ -25,7 +25,6 @@ export async function POST(request) {
 
   const body = await request.json();
   const db = await getDb();
-  await ensureProductsSeeded();
   const id = await getNextProductId();
   const product = buildProductPayload({ ...body, id });
 

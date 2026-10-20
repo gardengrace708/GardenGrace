@@ -51,7 +51,7 @@ export default function ProductCard({ product, className = '' }) {
           <ImageLayer src={product.images[1]} alt={product.name} className="opacity-0 transition duration-700 group-hover:opacity-100" />
           <div className="absolute left-4 top-4 z-10"><Badge>{product.badge}</Badge></div>
           <div className="absolute inset-x-4 bottom-4 z-10 translate-y-16 opacity-0 transition duration-500 group-hover:translate-y-0 group-hover:opacity-100">
-            <button onClick={(event) => { event.preventDefault(); cart?.addToCart(product); }} className="w-full rounded-full bg-ivory px-5 py-3 text-xs font-bold uppercase tracking-[0.22em] text-obsidian transition hover:bg-wood">Add to Cart</button>
+            <button onClick={(event) => { event.preventDefault(); cart?.addToCart(product, product.colors?.[0] || ''); }} className="w-full rounded-full bg-ivory px-5 py-3 text-xs font-bold uppercase tracking-[0.22em] text-obsidian transition hover:bg-wood">Add to Cart</button>
           </div>
         </div>
       </NavLink>
